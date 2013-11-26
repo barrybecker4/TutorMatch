@@ -78,19 +78,24 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
  */ 
 function subjectSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
-
   var courseDroplist = app.getElementById("courseDroplist");
+  courseDroplist.clear();
+  var tutorDroplist = app.getElementById("tutorDroplist");
+  tutorDroplist.clear();
   
   var selectedSubject = e.parameter.subjectDroplist;
   Logger.log("sub="+selectedSubject);
-  courseDroplist.setTag(selectedSubject);
   
-  var dataMap = JSON.parse(e.parameter.hiddenDataMap);
-  var courseMap = dataMap[selectedSubject];
-  courseDroplist.clear();
-  courseDroplist.addItem(NO_SELECTION);
-  for (var course in courseMap) {
-    courseDroplist.addItem(course);
+  
+  if (selectedSubject != NO_SELECTION) {
+    courseDroplist.setTag(selectedSubject);
+  
+    var dataMap = JSON.parse(e.parameter.hiddenDataMap);
+    var courseMap = dataMap[selectedSubject];
+    courseDroplist.addItem(NO_SELECTION);
+    for (var course in courseMap) {
+      courseDroplist.addItem(course);
+    }
   }
  
   setSubmitState(false);
@@ -124,23 +129,32 @@ function createCourseSelection(app, dataMap, hiddenDataMap) {
  */ 
 function courseSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
- 
+   
   var selectedSubject = e.parameter.courseDroplist_tag;
   var selectedCourse = e.parameter.courseDroplist;
   Logger.log("subject="+ selectedSubject);  
   Logger.log("course="+ selectedCourse);
   
   var tutorDroplist = app.getElementById("tutorDroplist");
-  tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
-  
-  // populate tutors based on subject and course.
-  var dataMap = JSON.parse(e.parameter.hiddenDataMap);
-  var courseMap = dataMap[selectedSubject];
-  var tutorList = courseMap[selectedCourse];
   tutorDroplist.clear();
-  tutorDroplist.addItem(NO_SELECTION);
-  for (var i = 0; i < tutorList.length; i++) {
-    tutorDroplist.addItem(tutorList[i]);
+  
+  if (selectedCourse != NO_SELECTION) {    
+    tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
+  
+    // populate tutors based on subject and course.
+    var dataMap = JSON.parse(e.parameter.hiddenDataMap);
+    var courseMap = dataMap[selectedSubject];
+    var tutorList = courseMap[selectedCourse];
+    
+    tutorDroplist.addItem(NO_SELECTION);
+    for (var i = 0; i < tutorList.length; i++) {
+      tutorDroplist.addItem(tutorList[i]);
+    }
+  }
+  else {
+    // clear tutor droplist to be sure there is nothing in it.
+    var tutorDroplist = app.getElementById("tutorDroplist");
+    tutorDroplist.clear();
   }
   
   setSubmitState(false);
@@ -173,15 +187,18 @@ function createTutorSelection(app, dataMap) {
  */ 
 function tutorSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
-
-  var selectedTutor = e.parameter.tutorDroplist;
-  var selectedValues = e.parameter.tutorDroplist_tag;  
-  Logger.log("selected tutor = " + selectedTutor);
-  Logger.log("prior selected = " + selectedValues);
-  var values = selectedValues.split(DELIMITER);
-  Logger.log("seelctedArray = "+ values);  
   
-  setSubmitState(true);
+  var selectedTutor = e.parameter.tutorDroplist;
+  
+  if (selectedTutor != NO_SELECTION) {
+    var selectedValues = e.parameter.tutorDroplist_tag;  
+    Logger.log("selected tutor = " + selectedTutor);
+    Logger.log("prior selected = " + selectedValues);
+    var values = selectedValues.split(DELIMITER);
+    Logger.log("seelctedArray = "+ values);  
+  
+    setSubmitState(true);
+  }
   app.close();
   return app;
 }
