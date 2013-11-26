@@ -1,5 +1,5 @@
 
-// Names of pages in the application
+// Names of pages in the application.
 var LANDING_PAGE = "landginPage";
 var TUTORING_REQUEST_PAGE = "tutoringRequestPage";
 
