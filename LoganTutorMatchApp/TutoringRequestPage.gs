@@ -26,7 +26,7 @@ function createTutoringRequestPage(app) {
                 .setStyleAttributes(2, 0, css.gridCell)
                 .setStyleAttributes(3, 0, css.gridCell)
                 .setStyleAttributes(4, 0, css.gridCell)
-                .setStyleAttributes(6, 0, css.gridCell)
+                .setStyleAttributes(6, 0, css.gridCell);
   
   body.add(title); 
   
@@ -93,6 +93,7 @@ function subjectSelectedHandler(e) {
     courseDroplist.addItem(course);
   }
  
+  setSubmitState(false);
   app.close();
   return app;
 }
@@ -142,6 +143,7 @@ function courseSelectedHandler(e) {
     tutorDroplist.addItem(tutorList[i]);
   }
   
+  setSubmitState(false);
   app.close();
   return app;
 }
@@ -179,10 +181,18 @@ function tutorSelectedHandler(e) {
   var values = selectedValues.split(DELIMITER);
   Logger.log("seelctedArray = "+ values);  
   
-  app.getElementById("submitButton").setStyleAttributes(css.button)
-                                    .setEnabled(true); 
+  setSubmitState(true);
   app.close();
   return app;
+}
+
+/** enable or disable the submit button at the bottom */
+function setSubmitState(enable) {
+	var app = UiApp.getActiveApplication();
+	var style = enable ? css.button : css.buttonDisabled;
+	app.getElementById("submitButton")
+	   .setStyleAttributes(style)
+	   .setEnabled(enable); 
 }
 
 /**
@@ -212,7 +222,6 @@ function createNavigationPanel(app, dataMap) {
   
   var submitHandler = app.createServerHandler('submitClickHandler');
   submitHandler.addCallbackElement(submitButton);
-  //             .addCallbackElement(app.getElementById("subjectDroplist"));
   submitButton.addClickHandler(submitHandler);
   
   return navigationPanel;

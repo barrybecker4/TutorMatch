@@ -22,7 +22,7 @@ css.grid = {
   //borderColor: 'aaaaaa',
   //borderStyle: 'solid',
   width: 600
-}
+};
 
 css.gridCell = {
   padding: 5,
@@ -32,7 +32,7 @@ css.gridCell = {
   borderWidth: 3,
   borderColor: 'f8f8f8',
   borderStyle: 'solid'
-}
+};
 
 css.title = {
   fontSize: 62,
@@ -58,7 +58,7 @@ css.hiddenLink = {
   left: 10, 
   fontSize: 20,
   color: 'transparent' // '#8899ff' 
-}
+};
 
 css.button = {
   color: TEXT_COLOR,
@@ -77,7 +77,7 @@ css.droplist = {
   fontSize: 20,
   //fontFamily: TEXT_FONT,
   color: TEXT_COLOR, 
-}
+};
 
 css.notification = {
   border: '2px solid #0c0',
@@ -88,4 +88,4 @@ css.notification = {
 /** allows for children to have absolute positioning relative to this parent */
 css.buttonPanel = {
   position: 'relative'
-}
+};
