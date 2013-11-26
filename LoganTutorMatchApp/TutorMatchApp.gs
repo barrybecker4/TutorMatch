@@ -4,7 +4,7 @@ var LANDING_PAGE = "landginPage";
 var TUTORING_REQUEST_PAGE = "tutoringRequestPage";
 
 /**
- * Entry point for TutorMatching website.
+ * The entry point for TutorMatching website.
  * A link to this application should be placed on the JLHS homepage.
  * It has 3 primary components
  *

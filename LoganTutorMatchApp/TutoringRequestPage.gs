@@ -1,5 +1,6 @@
 // something to separate the values set in the tag of a droplist.
 var DELIMITER = "::";
+var NO_SELECTION = " --- Select --- ";
 
 /**
  * Creates the user interface elements to show in the tutoring request form.
@@ -58,7 +59,7 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
                            .setId('subjectDroplist')
                            .setStyleAttributes(css.droplist);
   
-  subjectDroplist.addItem("--- Select ---");
+  subjectDroplist.addItem(NO_SELECTION);
   for (var subject in dataMap) {
     subjectDroplist.addItem(subject);
   }
@@ -87,6 +88,7 @@ function subjectSelectedHandler(e) {
   var dataMap = JSON.parse(e.parameter.hiddenDataMap);
   var courseMap = dataMap[selectedSubject];
   courseDroplist.clear();
+  courseDroplist.addItem(NO_SELECTION);
   for (var course in courseMap) {
     courseDroplist.addItem(course);
   }
@@ -122,7 +124,7 @@ function createCourseSelection(app, dataMap, hiddenDataMap) {
 function courseSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
  
-  var selectedSubject = e.parameter.courseDroplist_tag   
+  var selectedSubject = e.parameter.courseDroplist_tag;
   var selectedCourse = e.parameter.courseDroplist;
   Logger.log("subject="+ selectedSubject);  
   Logger.log("course="+ selectedCourse);
@@ -130,11 +132,12 @@ function courseSelectedHandler(e) {
   var tutorDroplist = app.getElementById("tutorDroplist");
   tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
   
-  // polulate tutors based on subject and course.
+  // populate tutors based on subject and course.
   var dataMap = JSON.parse(e.parameter.hiddenDataMap);
   var courseMap = dataMap[selectedSubject];
   var tutorList = courseMap[selectedCourse];
   tutorDroplist.clear();
+  tutorDroplist.addItem(NO_SELECTION);
   for (var i = 0; i < tutorList.length; i++) {
     tutorDroplist.addItem(tutorList[i]);
   }
