@@ -72,6 +72,20 @@ css.buttonDisabled = {
   borderRadius: '6px'
 };
 
+css.textbox = {
+    marginLeft: 24,
+    fontSize: 20,
+    //fontFamily: TEXT_FONT,
+    color: TEXT_COLOR, 
+  };
+
+css.popup = {
+    padding: 40,
+    borderWidth: 3,
+    borderColor: '11aa99',
+    borderStyle: 'solid', 
+  };
+
 css.droplist = {
   //padding: 5,
   marginTop: 10,

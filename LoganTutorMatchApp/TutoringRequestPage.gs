@@ -15,10 +15,6 @@ function createTutoringRequestPage(app) {
   var title = app.createLabel("Tutoring Request Form")
                  .setStyleAttributes(css.title);
   body.add(title);
-
-  var instrText = "The following selections will determine your tutor. " +
-    "Each selection determines the values shown in successive drop lists.";
-  var instructions = app.createLabel(instrText).setStyleAttributes(css.text);  
                                
   var grid = createGrid(app, 7);
   
@@ -28,17 +24,18 @@ function createTutoringRequestPage(app) {
   var hiddenDataMap = app.createHidden("hiddenDataMap", Utilities.jsonStringify(dataMap));
   body.add(hiddenDataMap);
   // stores the final result of all the selections
-  var hiddenResult = app.createHidden("hiddenResult").setId("hiddenResult");;
+  var hiddenResult = app.createHidden("hiddenResult", "{}").setId("hiddenResult");
   body.add(hiddenResult);
   
   var navigationButtonPanel = createNavigationPanel(app, hiddenResult, hiddenDataMap);
   
   // Place the UI elements in the cells of the grid
-  grid.setWidget(0, 0, instructions);
-  grid.setWidget(1, 0, createSubjectSelection(app, dataMap, hiddenDataMap));  
-  grid.setWidget(2, 0, createCourseSelection(app, dataMap, hiddenDataMap));   
-  grid.setWidget(3, 0, createTutorSelection(app, dataMap));    
-  grid.setWidget(5, 0, navigationButtonPanel);  
+  grid.setWidget(0, 0, createNameField(app, hiddenResult));
+  grid.setWidget(1, 0, createInstructions(app));
+  grid.setWidget(2, 0, createSubjectSelection(app, dataMap, hiddenDataMap));  
+  grid.setWidget(3, 0, createCourseSelection(app, dataMap, hiddenDataMap));   
+  grid.setWidget(4, 0, createTutorSelection(app, dataMap, hiddenResult)); 
+  grid.setWidget(6, 0, navigationButtonPanel);  
   body.add(grid);  
   
   return body;
@@ -53,10 +50,51 @@ function createGrid(app, numRows) {
 	return grid;
 }
 
+/**
+ * Collect the users name. We could just address them with their id, but that
+ * would not be very user-friendly.
+ * @returns a label and text field where the user can supply their name.
+ */
+function createNameField(app, hiddenResult) {
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel("What is your name?").setStyleAttributes(css.text); 
+  var textField = app.createTextBox().setName("nameField")
+                                     .setStyleAttributes(css.textbox);
+  
+  var fieldHandler = app.createServerHandler("nameFieldUpdateHandler");
+  fieldHandler.addCallbackElement(textField)
+              .addCallbackElement(hiddenResult);
+  textField.addValueChangeHandler(fieldHandler);
+  
+  panel.add(label).add(textField);
+  return panel;
+}
+
+/**
+ * Handler that is call when the requester's name has been entered.
+ */ 
+function nameFieldUpdateHandler(e) {
+  var app = UiApp.getActiveApplication(); 
+  
+  var currentResult = JSON.parse(e.parameter.hiddenResult);
+  currentResult.name = e.parameter.nameField;
+  
+  setHiddenResultValue(app, currentResult);
+ 
+  app.close();
+  return app;
+}
+
+function createInstructions(app) {
+  var instrText = "The following selections will determine your tutor. " +
+  "Each selection determines the values shown in successive drop lists.";
+  return app.createLabel(instrText).setStyleAttributes(css.text);  
+}
+
 /** @returns a panel with the subject droplist and its label */
 function createSubjectSelection(app, dataMap, hiddenDataMap) {
   
-  var text = "1) Select the subject you would like tutoring in.";                       
+  var text = "1) Select the subject you would like tutoring in."; 
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
   populateDroplist(subjectDroplist, dataMap);
      
@@ -132,7 +170,7 @@ function courseSelectedHandler(e) {
 }
 
 /** @returns a panel with the course droplist and its label */
-function createTutorSelection(app, dataMap) {
+function createTutorSelection(app, dataMap, hiddenResult) {
   
   var text = "3) Select from the following list of available tutors for that course.";
                         
@@ -140,8 +178,10 @@ function createTutorSelection(app, dataMap) {
   var panel = createSelectEntry(app, text, tutorDroplist);
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
-  tutorSelectedHandler.addCallbackElement(tutorDroplist);
+  tutorSelectedHandler.addCallbackElement(tutorDroplist)
+                      .addCallbackElement(hiddenResult);
   tutorDroplist.addChangeHandler(tutorSelectedHandler);
+               
   
   return panel;
 }
@@ -158,10 +198,15 @@ function tutorSelectedHandler(e) {
     var selectedValues = e.parameter.tutorDroplist_tag;  
     Logger.log("selected tutor = " + selectedTutor);
     Logger.log("prior selected = " + selectedValues);
-  
-    var hiddenResult = app.getElementById("hiddenResult");
-    hiddenResult.setValue(selectedValues + DELIMITER + selectedTutor);
     
+    var vals = selectedValues.split(DELIMITER);
+    
+    var currentResult = JSON.parse(e.parameter.hiddenResult);
+    currentResult.subject = vals[0];
+    currentResult.course = vals[1];
+    currentResult.tutor = selectedTutor;
+    
+    setHiddenResultValue(app, currentResult); 
     setSubmitState(true);
   }
   app.close();
@@ -261,6 +306,15 @@ function populateDroplist(droplist, items) {
 }
 
 /**
+ * Set the value of the hiddenResult element.
+ * @param value an object to serialize and store as the hidden value.
+ */
+function setHiddenResultValue(app, value) {
+  var hiddenResult = app.getElementById("hiddenResult");
+  hiddenResult.setValue(Utilities.jsonStringify(value));
+}
+
+/**
  * When a selection is changed, to prevent invalid submissions, all
  * the down stream droplists should have their current selections cleared, 
  * and the submit button is disabled. 
@@ -281,14 +335,55 @@ function clearDownStreamSelections(app, droplists) {
 function submitClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
-  var selectionStr = e.parameter.hiddenResult;
+  var selections = JSON.parse(e.parameter.hiddenResult);
   var dataMap = JSON.parse(e.parameter.hiddenDataMap); 
-  var values = selectionStr.split(DELIMITER);
-  var selections = {subject:values[0], course: values[1], tutor:values[2]};
+
   selections.tutorInfo = 
     dataMap[selections.subject][selections.course][selections.tutor];
  
   createTutoringRequest(selections);
+  
+  showConfirmationPopup(app);
+  
+  app.close();
+  return app;
+}
+
+/** give some feedback that the request for tutoring was accepted */
+function showConfirmationPopup(app) {
+  
+  //Create a popup panel and set it to be modal.
+  var popupPanel = app.createPopupPanel(false, true)
+                      .setId("popupPanel");
+  
+  var panel = app.createVerticalPanel().setStyleAttributes(css.popup);
+  var label = app.createLabel("Request for tutoring accepted. Emails sent.")
+                 .setStyleAttributes(css.text);
+  var okButton = app.createButton("OK")
+                    .setStyleAttributes(css.button);
+  
+  var okHandler = app.createServerHandler('okClickHandler');
+  okHandler.addCallbackElement(okButton);
+  okButton.addClickHandler(okHandler);
+  
+  panel.add(label).add(okButton);
+  popupPanel.add(panel).setPopupPosition(300, 300);
+
+  // Show the panel. Note that it does not have to be "added" to the UiInstance.
+  popupPanel.show();
+}
+
+/** 
+ * Dismiss the popup when OK button clicked.
+ * Also clear all selections so they do not immediately resubmit a request.
+ */
+function okClickHandler(e) {
+  var app = UiApp.getActiveApplication();
+  var popupPanel = app.getElementById("popupPanel");
+  popupPanel.hide();
+  
+  clearDownStreamSelections(app, ["courseDroplist", "tutorDroplist"]);
+  
   app.close();
   return app;
 }
