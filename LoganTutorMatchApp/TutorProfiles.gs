@@ -1,10 +1,14 @@
-//var TUTOR_PROFILES_SPREADSHEET = "0ArK43-kBNSp0dFRoSGFFcWxYcktJckNtRlZNQ3huZVE";
 
-// these delimiters allow us to parse the subject and course values out of the spreadsheet.
-// They are stored in the form  <subject1> : <course1>, <subject1> : <course2>, <subject2> : <course3>, etc
+/**
+ *This delimiter separates the subject:course values to be parsed out of the spreadsheet.
+ *They are stored in the form  <subject1> : <course1>, <subject1> : <course2>, <subject2> : <course3>, etc
+ */
 var ENTRY_DELIM = ", ";
+
+/** separates subject and course values */
 var COURSE_DELIM = " : ";
-// Sometimes &nbsp; is in the string so we need to remove it
+
+/** Sometimes &nbsp; is in the string so we need to remove it */
 var NBSP_REGEXP = new RegExp(String.fromCharCode(160), "g");
 
 /**
@@ -21,10 +25,10 @@ function getDataMap() {
   for (var i=0; i<cellData.length; i++) {
     var row = cellData[i];
     var tutorName = row[0];
-    //var email = row[1];
-    //var phone = row[2];
+    var tutorEmail = row[1];
+    var tutorPhone = row[2];
     var courseList = row[3];
-    addToMap(dataMap, tutorName, courseList);
+    addToMap(dataMap, tutorName, tutorEmail, tutorPhone, courseList);
   }
   
   return dataMap;
@@ -34,9 +38,11 @@ function getDataMap() {
  * parse the subjects and courses out of courseList and put them in the dataMap.
  The dataMap maps subjects to courses and courses to the tutors who can tutor them.
  */
-function addToMap(dataMap, tutorName, courseList) {
+function addToMap(dataMap, tutorName, tutorEmail, tutorPhone, courseList) {
+  
   courseList = courseList.replace(NBSP_REGEXP, " ");
   var courses = courseList.split(ENTRY_DELIM);
+  
   for (var i=0; i<courses.length; i++) {
     var a = courses[i].split(COURSE_DELIM);
     var subject = a[0];
@@ -46,10 +52,15 @@ function addToMap(dataMap, tutorName, courseList) {
     }
     var courseMap = dataMap[subject];
     if (!courseMap[course]) {
-      courseMap[course] = [];
+      courseMap[course] = {};
     }
-    if (courseMap[course].indexOf(tutorName) < 0) {
-      courseMap[course].push(tutorName);
+    if (!courseMap[course][tutorName]) {
+      var tutorMap = courseMap[course];
+      tutorMap[tutorName] = {
+          name: tutorName, 
+          email: tutorEmail, 
+          phone: tutorPhone
+      };
     }
   }
 }

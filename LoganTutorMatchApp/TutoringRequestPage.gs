@@ -31,7 +31,7 @@ function createTutoringRequestPage(app) {
   var hiddenResult = app.createHidden("hiddenResult").setId("hiddenResult");;
   body.add(hiddenResult);
   
-  var navigationButtonPanel = createNavigationPanel(app, hiddenResult);
+  var navigationButtonPanel = createNavigationPanel(app, hiddenResult, hiddenDataMap);
   
   // Place the UI elements in the cells of the grid
   grid.setWidget(0, 0, instructions);
@@ -147,7 +147,6 @@ function createTutorSelection(app, dataMap) {
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
   tutorSelectedHandler.addCallbackElement(tutorDroplist);
-   //                   .addCallbackElement(hiddenResult);
   tutorDroplist.addChangeHandler(tutorSelectedHandler);
   
   return panel;
@@ -189,7 +188,7 @@ function setSubmitState(enable) {
  * When the submit button is clicked the hiddenResult (containing the uses selections)
  * are sent to the server callback to be submitted. 
  */
-function createNavigationPanel(app, hiddenResult) {
+function createNavigationPanel(app, hiddenResult, hiddenDataMap) {
 
   var navigationPanel = app.createHorizontalPanel();
   
@@ -213,7 +212,8 @@ function createNavigationPanel(app, hiddenResult) {
   
   var submitHandler = app.createServerHandler('submitClickHandler');
   submitHandler.addCallbackElement(submitButton)
-               .addCallbackElement(hiddenResult);
+               .addCallbackElement(hiddenResult)
+               .addCallbackElement(hiddenDataMap);
   submitButton.addClickHandler(submitHandler);
   
   return navigationPanel;
@@ -247,16 +247,8 @@ function createDroplist(app, name) {
  */
 function populateDroplist(droplist, items) {
   droplist.addItem(NO_SELECTION);
-  
-  if (items instanceof Array) {
-    for (var i in items) {
-      droplist.addItem(items[i]);
-    }
-  }
-  else {
-    for (var value in items) {
-      droplist.addItem(value);
-    }
+  for (var value in items) {
+    droplist.addItem(value);
   }
 }
 
@@ -282,8 +274,10 @@ function submitClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
   var selectionStr = e.parameter.hiddenResult;
+  var dataMap = JSON.parse(e.parameter.hiddenDataMap); 
   var values = selectionStr.split(DELIMITER);
   var selections = {subject:values[0], course: values[1], tutor:values[2]};
+  selections.tutorInfo = dataMap[selections.subject][selections.course][selections.tutor];
  
   createTutoringRequest(selections);
   app.close();
