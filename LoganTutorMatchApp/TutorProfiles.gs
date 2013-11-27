@@ -1,4 +1,4 @@
-var TUTOR_PROFILES_SPREADSHEET = "0ArK43-kBNSp0dFRoSGFFcWxYcktJckNtRlZNQ3huZVE";
+//var TUTOR_PROFILES_SPREADSHEET = "0ArK43-kBNSp0dFRoSGFFcWxYcktJckNtRlZNQ3huZVE";
 
 // these delimiters allow us to parse the subject and course values out of the spreadsheet.
 // They are stored in the form  <subject1> : <course1>, <subject1> : <course2>, <subject2> : <course3>, etc
@@ -7,25 +7,19 @@ var COURSE_DELIM = " : ";
 // Sometimes &nbsp; is in the string so we need to remove it
 var NBSP_REGEXP = new RegExp(String.fromCharCode(160), "g");
 
-
 /**
  * Reads from the "Tutor Profile Form (Responses)" spreadsheet 
  * and returns a map from subjects to courses to tutors.
  */ 
 function getDataMap() {
   
-  Logger.log("now reading sheet");
-  var sheet = SpreadsheetApp.openById(TUTOR_PROFILES_SPREADSHEET).getActiveSheet(); 
-  
+  var sheet = SpreadsheetApp.openById(config.tutorProfilesSpreadSheet)
+                            .getActiveSheet();
   var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 4);
   
-  var sdata = "";
   var dataMap = {};
   for (var i=0; i<cellData.length; i++) {
     var row = cellData[i];
-    for (var j=0; j<row.length; j++) {
-      sdata += "i="+ i + " j="+ j +"  " + row[j] + "\n";
-    }
     var tutorName = row[0];
     //var email = row[1];
     //var phone = row[2];
@@ -33,7 +27,6 @@ function getDataMap() {
     addToMap(dataMap, tutorName, courseList);
   }
   
-  Logger.log("data="+ sdata);
   return dataMap;
 }
 

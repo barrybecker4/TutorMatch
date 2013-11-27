@@ -12,12 +12,11 @@ function createLandingPage(app) {
 
   var instructions = app.createLabel("Do you want to...")
                         .setStyleAttributes(css.text);
-                        
-  var tutorProfileUrl = "https://docs.google.com/forms/d/1QFkDoEEpj6iiO569L8rIgiL_YhZch4VBi4vqbXnYPbE/viewform";
+
   var tutorButtonText = "be a tutor";
-  var tutorProfileLink = app.createAnchor(tutorButtonText, tutorProfileUrl)
+  var tutorProfileLink = app.createAnchor(tutorButtonText, config.tutorProfileFormUrl)
                             .setTarget("_self")
-                            .setStyleAttributes(css.hiddenLink);       
+                            .setStyleAttributes(css.hiddenLink);
   
   var tutorButton = app.createButton(tutorButtonText)
                        .setStyleAttributes(css.button);
@@ -33,7 +32,7 @@ function createLandingPage(app) {
                 .setStyleAttributes(0, 0, css.gridCell)
                 .setStyleAttributes(1, 0, css.gridCell)
                 .setStyleAttributes(2, 0, css.gridCell)
-                .setStyleAttributes(3, 0, css.gridCell)
+                .setStyleAttributes(3, 0, css.gridCell);
   
   body.add(title);
   
@@ -48,16 +47,11 @@ function createLandingPage(app) {
   return body;
 }
 
-
 /**
  * Handler for tutoring profile button
  */ 
 function tutoringClickHandler(e) {
   var app = UiApp.getActiveApplication();
-
-  //var label = app.getElementById('buttonStatusLabel');
-  //label.setText('The tutoring button was clicked.');
-  //label.setVisible(true);
   
   app.getElementById(LANDING_PAGE).setVisible(false);
   app.getElementById(TUTORING_REQUEST_PAGE).setVisible(true);

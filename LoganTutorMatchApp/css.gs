@@ -3,9 +3,9 @@
  * See http://www.harryonline.net/scripts/stylesheets-in-google-apps-script-uiapp/494
  */
 var css={};
-var TEXT_FONT = 'sans-serif'
-var TEXT_COLOR = '#007799'
-var DISABLED_TEXT_COLOR = '#bbbbbb'
+var TEXT_FONT = 'sans-serif';
+var TEXT_COLOR = '#007799';
+var DISABLED_TEXT_COLOR = '#bbbbbb';
 
 css.body = { 
   margin:'20px auto',
