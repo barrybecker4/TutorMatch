@@ -1,5 +1,6 @@
 // something to separate the values set in the tag of a droplist.
 var DELIMITER = "::";
+// shown as first item in droplist so user knows they must make a selection.
 var NO_SELECTION = " --- Select --- ";
 
 /**
@@ -13,28 +14,24 @@ function createTutoringRequestPage(app) {
     
   var title = app.createLabel("Tutoring Request Form")
                  .setStyleAttributes(css.title);
+  body.add(title);
 
-  var instructions = app.createLabel("The following selections will determine your tutor. Each selection determines the values shown in successive drop lists.")
-                        .setStyleAttributes(css.text);  
+  var instrText = "The following selections will determine your tutor. " +
+    "Each selection determines the values shown in successive drop lists.";
+  var instructions = app.createLabel(instrText).setStyleAttributes(css.text);  
                                
-  var navigationButtonPanel = createNavigationPanel(app);
-  
-  var grid = app.createGrid(7, 1)
-                .setStyleAttributes(css.grid)
-                .setStyleAttributes(0, 0, css.gridCell)
-                .setStyleAttributes(1, 0, css.gridCell)
-                .setStyleAttributes(2, 0, css.gridCell)
-                .setStyleAttributes(3, 0, css.gridCell)
-                .setStyleAttributes(4, 0, css.gridCell)
-                .setStyleAttributes(6, 0, css.gridCell);
-  
-  body.add(title); 
+  var grid = createGrid(app, 7);
   
   // This little trick allows us to access the dataMap from the server side event handlers.
   // a hidden UI element (hiddenDataMap) stores the dataMap as a JSON string
   var dataMap = getDataMap(app);
   var hiddenDataMap = app.createHidden("hiddenDataMap", Utilities.jsonStringify(dataMap));
   body.add(hiddenDataMap);
+  // stores the final result of all the selections
+  var hiddenResult = app.createHidden("hiddenResult").setId("hiddenResult");;
+  body.add(hiddenResult);
+  
+  var navigationButtonPanel = createNavigationPanel(app, hiddenResult);
   
   // Place the UI elements in the cells of the grid
   grid.setWidget(0, 0, instructions);
@@ -47,28 +44,30 @@ function createTutoringRequestPage(app) {
   return body;
 }
 
-/** create subject droplist */
+/** @returns new grid container with one column and the specified number of rows  */
+function createGrid(app, numRows) {
+	var grid = app.createGrid(numRows, 1).setStyleAttributes(css.grid);
+	for (var i = 0; i<numRows; i++) {
+	    grid.setStyleAttributes(i, 0, css.gridCell);
+	} 
+	return grid;
+}
+
+/** @returns a panel with the subject droplist and its label */
 function createSubjectSelection(app, dataMap, hiddenDataMap) {
   var panel = app.createHorizontalPanel();
   
   var label = app.createLabel("1) Select the subject you would like tutoring in.")
-                 .setStyleAttributes(css.text);
-                        
-  var subjectDroplist = app.createListBox()
-                           .setName("subjectDroplist")
-                           .setId('subjectDroplist')
-                           .setStyleAttributes(css.droplist);
+                 .setStyleAttributes(css.text);                        
+  var subjectDroplist = createDroplist(app, 'subjectDroplist');  
+  populateDroplist(subjectDroplist, dataMap);
+  panel.add(label).add(subjectDroplist);
   
-  subjectDroplist.addItem(NO_SELECTION);
-  for (var subject in dataMap) {
-    subjectDroplist.addItem(subject);
-  }
   var subjectSelectedHandler = app.createServerHandler('subjectSelectedHandler');
   subjectSelectedHandler.addCallbackElement(subjectDroplist)
                         .addCallbackElement(hiddenDataMap);
   subjectDroplist.addChangeHandler(subjectSelectedHandler);
-                           
-  panel.add(label).add(subjectDroplist);
+                             
   return panel;
 }
 
@@ -78,42 +77,29 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
  */ 
 function subjectSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
-  var courseDroplist = app.getElementById("courseDroplist");
-  courseDroplist.clear();
-  var tutorDroplist = app.getElementById("tutorDroplist");
-  tutorDroplist.clear();
+  clearDownStreamSelections(app, ["courseDroplist", "tutorDroplist"]);
   
   var selectedSubject = e.parameter.subjectDroplist;
-  Logger.log("sub="+selectedSubject);
-  
   
   if (selectedSubject != NO_SELECTION) {
+    var courseDroplist = app.getElementById("courseDroplist");
     courseDroplist.setTag(selectedSubject);
   
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
-    var courseMap = dataMap[selectedSubject];
-    courseDroplist.addItem(NO_SELECTION);
-    for (var course in courseMap) {
-      courseDroplist.addItem(course);
-    }
+    populateDroplist(courseDroplist, dataMap[selectedSubject]);
   }
  
-  setSubmitState(false);
   app.close();
   return app;
 }
 
+/** @returns a panel with the course droplist and its label */
 function createCourseSelection(app, dataMap, hiddenDataMap) {
   var panel = app.createHorizontalPanel();
   
   var label = app.createLabel("2) Select the specific course you would like tutoring in.")
-                 .setStyleAttributes(css.text);
-                        
-  var courseDroplist = app.createListBox()
-                          .setName('courseDroplist')
-                          .setId('courseDroplist')
-                          .setStyleAttributes(css.droplist);
-  
+                 .setStyleAttributes(css.text);                        
+  var courseDroplist = createDroplist(app, 'courseDroplist');  
   panel.add(label).add(courseDroplist);
   
   var courseSelectedHandler = app.createServerHandler('courseSelectedHandler');
@@ -132,51 +118,36 @@ function courseSelectedHandler(e) {
    
   var selectedSubject = e.parameter.courseDroplist_tag;
   var selectedCourse = e.parameter.courseDroplist;
-  Logger.log("subject="+ selectedSubject);  
-  Logger.log("course="+ selectedCourse);
   
-  var tutorDroplist = app.getElementById("tutorDroplist");
-  tutorDroplist.clear();
+  clearDownStreamSelections(app, ["tutorDroplist"]);
   
-  if (selectedCourse != NO_SELECTION) {    
+  if (selectedCourse != NO_SELECTION) {  
+    var tutorDroplist = app.getElementById("tutorDroplist");
     tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
   
     // populate tutors based on subject and course.
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
-    var courseMap = dataMap[selectedSubject];
-    var tutorList = courseMap[selectedCourse];
-    
-    tutorDroplist.addItem(NO_SELECTION);
-    for (var i = 0; i < tutorList.length; i++) {
-      tutorDroplist.addItem(tutorList[i]);
-    }
+    var courseMap = dataMap[selectedSubject];    
+    populateDroplist(tutorDroplist, courseMap[selectedCourse]);
   }
-  else {
-    // clear tutor droplist to be sure there is nothing in it.
-    var tutorDroplist = app.getElementById("tutorDroplist");
-    tutorDroplist.clear();
-  }
-  
-  setSubmitState(false);
+
   app.close();
   return app;
 }
 
+/** @returns a panel with the course droplist and its label */
 function createTutorSelection(app, dataMap) {
   var panel = app.createHorizontalPanel();
   
   var label = app.createLabel("3) Select from the following list of available tutors for that course.")
                  .setStyleAttributes(css.text);
                         
-  var tutorDroplist = app.createListBox()
-                         .setName('tutorDroplist')
-                         .setId('tutorDroplist')
-                         .setStyleAttributes(css.droplist);
-                           
+  var tutorDroplist = createDroplist(app, "tutorDroplist");                           
   panel.add(label).add(tutorDroplist);
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
   tutorSelectedHandler.addCallbackElement(tutorDroplist);
+   //                   .addCallbackElement(hiddenResult);
   tutorDroplist.addChangeHandler(tutorSelectedHandler);
   
   return panel;
@@ -194,9 +165,10 @@ function tutorSelectedHandler(e) {
     var selectedValues = e.parameter.tutorDroplist_tag;  
     Logger.log("selected tutor = " + selectedTutor);
     Logger.log("prior selected = " + selectedValues);
-    var values = selectedValues.split(DELIMITER);
-    Logger.log("seelctedArray = "+ values);  
   
+    var hiddenResult = app.getElementById("hiddenResult");
+    hiddenResult.setValue(selectedValues + DELIMITER + selectedTutor);
+    
     setSubmitState(true);
   }
   app.close();
@@ -205,17 +177,19 @@ function tutorSelectedHandler(e) {
 
 /** enable or disable the submit button at the bottom */
 function setSubmitState(enable) {
-	var app = UiApp.getActiveApplication();
-	var style = enable ? css.button : css.buttonDisabled;
-	app.getElementById("submitButton")
-	   .setStyleAttributes(style)
-	   .setEnabled(enable); 
+  var app = UiApp.getActiveApplication();
+  var style = enable ? css.button : css.buttonDisabled;
+  app.getElementById("submitButton")
+	 .setStyleAttributes(style)
+	 .setEnabled(enable); 
 }
 
 /**
- * contains the back and submit buttons at the bottom 
+ * Contains the back and submit buttons at the bottom.
+ * When the submit button is clicked the hiddenResult (containing the uses selections)
+ * are sent to the server callback to be submitted. 
  */
-function createNavigationPanel(app, dataMap) {
+function createNavigationPanel(app, hiddenResult) {
 
   var navigationPanel = app.createHorizontalPanel();
   
@@ -238,7 +212,8 @@ function createNavigationPanel(app, dataMap) {
   backButton.addClickHandler(backHandler);
   
   var submitHandler = app.createServerHandler('submitClickHandler');
-  submitHandler.addCallbackElement(submitButton);
+  submitHandler.addCallbackElement(submitButton)
+               .addCallbackElement(hiddenResult);
   submitButton.addClickHandler(submitHandler);
   
   return navigationPanel;
@@ -258,6 +233,47 @@ function backClickHandler(e) {
   return app;
 }
 
+/** @returns a new droplist instance with the specified name */
+function createDroplist(app, name) {
+  return app.createListBox().setName(name)
+            .setId(name)
+            .setStyleAttributes(css.droplist);
+}
+
+/**
+ * The first item is always NO_SELECTION so the user is forced to select something.
+ * @param droplist the droplist to populate selection items for
+ * @param items array or map entries represent the items to show in the list
+ */
+function populateDroplist(droplist, items) {
+  droplist.addItem(NO_SELECTION);
+  
+  if (items instanceof Array) {
+    for (var i in items) {
+      droplist.addItem(items[i]);
+    }
+  }
+  else {
+    for (var value in items) {
+      droplist.addItem(value);
+    }
+  }
+}
+
+/**
+ * When a selection is changed, to prevent invalid submissions, all
+ * the down stream droplists should have their current selections cleared, 
+ * and the submit button is disabled. 
+ * @param droplists an array of down stream droplists to clear.
+ */
+function clearDownStreamSelections(app, droplists) {
+  for (var i=0; i<droplists.length; i++) {
+    var droplist = app.getElementById(droplists[i]);
+    droplist.clear();
+  }
+  setSubmitState(false);
+}
+
 /**
  * Handler for when the submit button is clicked.
  * Create the tutoring request, send emails, update calendars, etc.
@@ -265,11 +281,11 @@ function backClickHandler(e) {
 function submitClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
-  Logger.log("Selections were made.");
-  //Logger.log("Subject:" + e.parameter.subjectDroplist_tag);
-  //Logger.log("Course:" + course);
-  //Logger.log("Tutor:" + tutor);
-
+  var selectionStr = e.parameter.hiddenResult;
+  var values = selectionStr.split(DELIMITER);
+  var selections = {subject:values[0], course: values[1], tutor:values[2]};
+ 
+  createTutoringRequest(selections);
   app.close();
   return app;
 }

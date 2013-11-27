@@ -27,8 +27,8 @@ function getDataMap() {
       sdata += "i="+ i + " j="+ j +"  " + row[j] + "\n";
     }
     var tutorName = row[0];
-    var email = row[1];
-    var phone = row[2];
+    //var email = row[1];
+    //var phone = row[2];
     var courseList = row[3];
     addToMap(dataMap, tutorName, courseList);
   }
