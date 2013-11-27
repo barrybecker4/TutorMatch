@@ -55,19 +55,17 @@ function createGrid(app, numRows) {
 
 /** @returns a panel with the subject droplist and its label */
 function createSubjectSelection(app, dataMap, hiddenDataMap) {
-  var panel = app.createHorizontalPanel();
   
-  var label = app.createLabel("1) Select the subject you would like tutoring in.")
-                 .setStyleAttributes(css.text);                        
+  var text = "1) Select the subject you would like tutoring in.";                       
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
   populateDroplist(subjectDroplist, dataMap);
-  panel.add(label).add(subjectDroplist);
+     
+  var panel = createSelectEntry(app, text, subjectDroplist);
   
   var subjectSelectedHandler = app.createServerHandler('subjectSelectedHandler');
   subjectSelectedHandler.addCallbackElement(subjectDroplist)
                         .addCallbackElement(hiddenDataMap);
   subjectDroplist.addChangeHandler(subjectSelectedHandler);
-                             
   return panel;
 }
 
@@ -95,12 +93,10 @@ function subjectSelectedHandler(e) {
 
 /** @returns a panel with the course droplist and its label */
 function createCourseSelection(app, dataMap, hiddenDataMap) {
-  var panel = app.createHorizontalPanel();
   
-  var label = app.createLabel("2) Select the specific course you would like tutoring in.")
-                 .setStyleAttributes(css.text);                        
+  var text = "2) Select the specific course you would like tutoring in.";            
   var courseDroplist = createDroplist(app, 'courseDroplist');  
-  panel.add(label).add(courseDroplist);
+  var panel = createSelectEntry(app, text, courseDroplist);
   
   var courseSelectedHandler = app.createServerHandler('courseSelectedHandler');
   courseSelectedHandler.addCallbackElement(courseDroplist)
@@ -137,13 +133,11 @@ function courseSelectedHandler(e) {
 
 /** @returns a panel with the course droplist and its label */
 function createTutorSelection(app, dataMap) {
-  var panel = app.createHorizontalPanel();
   
-  var label = app.createLabel("3) Select from the following list of available tutors for that course.")
-                 .setStyleAttributes(css.text);
+  var text = "3) Select from the following list of available tutors for that course.";
                         
   var tutorDroplist = createDroplist(app, "tutorDroplist");                           
-  panel.add(label).add(tutorDroplist);
+  var panel = createSelectEntry(app, text, tutorDroplist);
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
   tutorSelectedHandler.addCallbackElement(tutorDroplist);
@@ -233,6 +227,20 @@ function backClickHandler(e) {
   return app;
 }
 
+
+/**
+ * @param labelText text label for the droplist
+ * @param dropList selector
+ * @return panel containing the label and the droplist
+ */
+function createSelectEntry(app, labelText, droplist) {
+  var panel = app.createVerticalPanel();
+  var label = app.createLabel(labelText)
+                 .setStyleAttributes(css.text); 
+  panel.add(label).add(droplist);
+  return panel;
+}
+
 /** @returns a new droplist instance with the specified name */
 function createDroplist(app, name) {
   return app.createListBox().setName(name)
@@ -277,7 +285,8 @@ function submitClickHandler(e) {
   var dataMap = JSON.parse(e.parameter.hiddenDataMap); 
   var values = selectionStr.split(DELIMITER);
   var selections = {subject:values[0], course: values[1], tutor:values[2]};
-  selections.tutorInfo = dataMap[selections.subject][selections.course][selections.tutor];
+  selections.tutorInfo = 
+    dataMap[selections.subject][selections.course][selections.tutor];
  
   createTutoringRequest(selections);
   app.close();

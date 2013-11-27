@@ -73,7 +73,10 @@ css.buttonDisabled = {
 };
 
 css.droplist = {
-  padding: 5,
+  //padding: 5,
+  marginTop: 10,
+  marginBottom: 20,
+  marginLeft: 24,
   fontSize: 20,
   //fontFamily: TEXT_FONT,
   color: TEXT_COLOR, 
