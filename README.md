@@ -8,7 +8,7 @@ The application has 3 primary components
 * Tutor profile form - a [Google form](https://support.google.com/drive/answer/87809?hl=en) which writes to a TutorProfiles spreadsheet.
 * Tutoring request page - a dynamically generated form for creating a request.
 
-When a student sees the page that allows them to request tutoring, they first select a subject. Next they select a course for that subject. Finally they select a tutor that is available to tutor for that course. More options may be added int eh future (like language, time, and place). The items listed in each successive selection is determined by the one before it. The submit button is enabled only when valid selections have been made.
+When a student sees the page that allows them to request tutoring, they first select a subject. Next they select a course for that subject. Finally they select a tutor that is available to tutor for that course. More options may be added in the future (like language, time, and place). The items listed in each successive selection is determined by the one before it. The submit button is enabled only when valid selections have been made.
 
 When the submit button is clicked, an email is sent to the following people.
 * To the requester to let them know that there request has been made and provide a link to a feedback form.
