@@ -1,7 +1,7 @@
 
 /**
- *This delimiter separates the subject:course values to be parsed out of the spreadsheet.
- *They are stored in the form  <subject1> : <course1>, <subject1> : <course2>, <subject2> : <course3>, etc
+ * This delimiter separates the subject:course values to be parsed out of the spreadsheet.
+ * They are stored in the form  <subject1> : <course1>, <subject1> : <course2>, <subject2> : <course3>, etc
  */
 var ENTRY_DELIM = ", ";
 
@@ -19,16 +19,19 @@ function getDataMap() {
   
   var sheet = SpreadsheetApp.openById(config.tutorProfilesSpreadSheet)
                             .getActiveSheet();
-  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 4);
+  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 5);
   
   var dataMap = {};
   for (var i=0; i<cellData.length; i++) {
     var row = cellData[i];
-    var tutorName = row[0];
-    var tutorEmail = row[1];
-    var tutorPhone = row[2];
-    var courseList = row[3];
-    addToMap(dataMap, tutorName, tutorEmail, tutorPhone, courseList);
+    var tutorInfo = {
+        name: row[0], 
+        gender: row[1], 
+        email:row[2], 
+        phone: row[3]
+    };
+    var courseList = row[4];
+    addToMap(dataMap, tutorInfo, courseList);
   }
   
   return dataMap;
@@ -36,9 +39,9 @@ function getDataMap() {
 
 /** 
  * parse the subjects and courses out of courseList and put them in the dataMap.
- The dataMap maps subjects to courses and courses to the tutors who can tutor them.
+ * The dataMap maps subjects to courses and courses to the tutors who can tutor them.
  */
-function addToMap(dataMap, tutorName, tutorEmail, tutorPhone, courseList) {
+function addToMap(dataMap, tutorInfo, courseList) {
   
   courseList = courseList.replace(NBSP_REGEXP, " ");
   var courses = courseList.split(ENTRY_DELIM);
@@ -54,13 +57,9 @@ function addToMap(dataMap, tutorName, tutorEmail, tutorPhone, courseList) {
     if (!courseMap[course]) {
       courseMap[course] = {};
     }
-    if (!courseMap[course][tutorName]) {
+    if (!courseMap[course][tutorInfo.name]) {
       var tutorMap = courseMap[course];
-      tutorMap[tutorName] = {
-          name: tutorName, 
-          email: tutorEmail, 
-          phone: tutorPhone
-      };
+      tutorMap[tutorInfo.name] = tutorInfo;
     }
   }
 }

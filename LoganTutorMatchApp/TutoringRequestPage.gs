@@ -338,10 +338,10 @@ function submitClickHandler(e) {
   var selections = JSON.parse(e.parameter.hiddenResult);
   var dataMap = JSON.parse(e.parameter.hiddenDataMap); 
 
-  selections.tutorInfo = 
+  var tutorInfo = 
     dataMap[selections.subject][selections.course][selections.tutor];
  
-  createTutoringRequest(selections);
+  createTutoringRequest(selections, tutorInfo);
   
   showConfirmationPopup(app);
   
@@ -367,7 +367,7 @@ function showConfirmationPopup(app) {
   okButton.addClickHandler(okHandler);
   
   panel.add(label).add(okButton);
-  popupPanel.add(panel).setPopupPosition(300, 300);
+  popupPanel.add(panel).setPopupPosition(250, 250);
 
   // Show the panel. Note that it does not have to be "added" to the UiInstance.
   popupPanel.show();
@@ -381,7 +381,7 @@ function okClickHandler(e) {
   var app = UiApp.getActiveApplication();
   var popupPanel = app.getElementById("popupPanel");
   popupPanel.hide();
-  
+  app.getElementById("subjectDroplist").setItemSelected(0, true);
   clearDownStreamSelections(app, ["courseDroplist", "tutorDroplist"]);
   
   app.close();
