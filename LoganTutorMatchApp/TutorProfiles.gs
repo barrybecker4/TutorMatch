@@ -22,7 +22,7 @@ function getDataMap() {
   var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 5);
   
   var dataMap = {};
-  for (var i=0; i<cellData.length; i++) {
+  for (var i=0; i < cellData.length; i++) {
     var row = cellData[i];
     var tutorInfo = {
         name: row[0], 

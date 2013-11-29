@@ -96,6 +96,20 @@ css.droplist = {
   color: TEXT_COLOR, 
 };
 
+css.languageLabel = {
+    marginLeft : 440,
+    paddingTop: 4,
+    fontSize: 11,
+    fontFamily: TEXT_FONT,
+    color: TEXT_COLOR, 
+  };
+
+css.languageDroplist = {
+    fontSize: 11,
+    fontFamily: TEXT_FONT,
+    color: TEXT_COLOR, 
+ };
+
 css.notification = {
   border: '2px solid #0c0',
   padding:'0.5em', 

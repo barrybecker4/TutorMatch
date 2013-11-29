@@ -16,8 +16,6 @@ function createTutoringRequest(selections, tutorInfo) {
   Logger.log("Tutor email:" + tutorInfo.email);
   Logger.log("Tutor phone:" + tutorInfo.phone);
   
-  Logger.log("Remaingin email quota : " + MailApp.getRemainingDailyQuota());
-  
   sendEmailToRequester(selections, tutorInfo);
   sendEmailToTutor(selections, tutorInfo);
   sendEmailToAdmins(selections, tutorInfo);
@@ -26,6 +24,8 @@ function createTutoringRequest(selections, tutorInfo) {
   if (config["course: " + selections.course]) {
     sendEmailToTeacher(selections, tutorInfo, config["course: " + selections.course]);
   }
+  
+  // should log an entry to a spreadsheet as well.
   Logger.log("done sending emails.");
 }
 
@@ -51,9 +51,10 @@ function sendEmailToRequester(selections, tutorInfo) {
   MailApp.sendEmail(requesterEmail, subject, body);
 }
 
+/** Notify the tutor that his/her services have been requested. */
 function sendEmailToTutor(selections, tutorInfo) {
   
-  Logger.log("sending mail to "+ tutorInfo.email);
+  Logger.log("Sending mail to "+ tutorInfo.email);
 
   var subject = "Tutoring Request from " + selections.name;
 
@@ -65,23 +66,43 @@ function sendEmailToTutor(selections, tutorInfo) {
   var requesterEmail = Session.getEffectiveUser().getEmail();
   MailApp.sendEmail(tutorInfo.email, requesterEmail, subject, body);
 }
-
+ 
+/** Notify the administrators that are configured that a request has been made */
 function sendEmailToAdmins(selections, tutorInfo) {
-  // config.adminEmails
+
+  Logger.log("Sending mail to "+ config.adminEmails);
+  
+  var subject = "Tutor Match between tutor " + tutorInfo.name + " and " + selections.name;
+  var body = "TutorMatch Adminstrator, \n" + getAdminBodyText(selections, tutorInfo)
+      + "\nRemaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".\n";
+  
+  var emails = config.adminEmails.split(',');
+  for (var i = 0; i < emails.length; i++) {
+    MailApp.sendEmail(emails[i], subject, body);
+  }
 }
 
+/** If a teacher(s) has been configured for this specific course, then send them an email too */
 function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
+  
+  Logger.log("Sending teacher mail to "+ teacherEmails);
+ 
+  var subject = "Tutor Match between tutor " + tutorInfo.name + " and " + selections.name;
+  var body = "Dear " + selections.course + " teacher,\n  " + getAdminBodyText(selections, tutorInfo);
+  
+  var emails = teacherEmails.split(',');
+  for (var i = 0; i < emails.length; i++) {
+    MailApp.sendEmail(emails[i], tutorInfo.email, subject, body);
+  }
 }
 
-/*
-function emailStatusUpdates() {
-  var sheet = SpreadsheetApp.getActiveSheet();
-  var row = sheet.getActiveRange().getRowIndex();
-  var userEmail = sheet.getRange(row, getColIndexByName("Contact email")).getValue();
-  var subject = "Helpdesk Ticket #" + row;
-  var body = "We've updated the status of your ticket.\n\nStatus: " + sheet.getRange(row, getColIndexByName("Status")).getValue();
-  body += "\n\nNotes: " + sheet.getRange(row, getColIndexByName("Notes")).getValue();
-  body += "\n\nResolution: " + sheet.getRange(row, getColIndexByName("Resolution")).getValue();
-
-  MailApp.sendEmail(userEmail, subject, body, {name:"Help Desk"});
-}*/
+/** get the email body text for administrators and teachers */
+function getAdminBodyText(selections, tutorInfo) {
+  
+  var requesterEmail = Session.getEffectiveUser().getEmail();
+  var body = "A tutoring request for " + selections.course 
+    + " has been submitted by " + selections.name + " (" + requesterEmail + ")"
+    + " for tutoring by " 
+    + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").";
+  return body;
+}

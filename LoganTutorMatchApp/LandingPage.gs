@@ -6,14 +6,18 @@ function createLandingPage(app) {
   var body = app.createFlowPanel()
                 .setId(LANDING_PAGE)
                 .setStyleAttributes(css.body);
-    
-  var title = app.createLabel("Logan TutorMatch")
+  
+  // show a droplist for selecting a language
+  var languageSelector = createLanguageSelector(app);
+  body.add(languageSelector);
+  
+  var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);
 
   var instructions = app.createLabel("Do you want to...")
                         .setStyleAttributes(css.text);
 
-  var tutorButtonText = "be a tutor";
+  var tutorButtonText = "be a tutor?";
   var tutorProfileLink = app.createAnchor(tutorButtonText, config.tutorProfileFormUrl)
                             .setTarget("_self")
                             .setStyleAttributes(css.hiddenLink);
@@ -24,7 +28,7 @@ function createLandingPage(app) {
                             .add(tutorButton)
                             .add(tutorProfileLink);
                   
-  var tutoringButton = app.createButton('be tutored')
+  var tutoringButton = app.createButton('be tutored?')
                   .setStyleAttributes(css.button);
                                              
   var grid = app.createGrid(7, 1)
@@ -59,3 +63,60 @@ function tutoringClickHandler(e) {
   app.close();
   return app;
 }
+
+/**
+ * Allows selecting the default language for a user.
+ * The selection will be persisted in UserProperties.
+ * @returns a panel that contains the selector.
+ */
+function createLanguageSelector(app) {
+  
+  var languageDroplist = app.createListBox().setName("languageDroplist")
+                                            .setId("languageDroplist")
+                                            .setStyleAttributes(css.languageDroplist);
+  
+  var currentLocale = UserProperties.getProperty("LOCALE");
+  if (!currentLocale || messages.localesList.indexOf(currentLocale) < 0) {
+    currentLocale = messages.defaultLocale;
+  }
+  messages.currentLocale = currentLocale;
+  Logger.log("current lang = "+ currentLocale);
+  
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel("Language :")
+                 .setStyleAttributes(css.languageLabel); 
+  panel.add(label).add(languageDroplist);
+     
+  for (var i=0; i<messages.localesList.length; i++) {
+    var locale = messages.localesList[i];
+    languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
+  }
+  var index = messages.localesList.indexOf(currentLocale);
+  languageDroplist.setItemSelected(index, true);
+  
+  var languageSelectedHandler = app.createServerHandler('languageSelectedHandler');
+  languageSelectedHandler.addCallbackElement(languageDroplist);
+  languageDroplist.addChangeHandler(languageSelectedHandler);
+  return panel;
+}
+
+/**
+ * Handler for when a default language has been selected by the user.
+ */ 
+function languageSelectedHandler(e) {
+  
+  var app = UiApp.getActiveApplication();
+  var selectedValue = e.parameter.languageDroplist;  
+  Logger.log("selected lang value = " + selectedValue);
+  UserProperties.setProperty("LOCALE", selectedValue);
+  messages.currentLocale = selectedValue;
+  
+  // refresh the page by removing the body and recreating it with the new locale.
+  app.remove(app.getElementById(LANDING_PAGE));
+  app.add(createLandingPage(app));
+  
+  app.close();
+  return app;
+}
+
+
