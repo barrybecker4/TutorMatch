@@ -16,7 +16,7 @@ function createMessages(spreadSheetId) {
   
   var sheet = SpreadsheetApp.openById(spreadSheetId).getActiveSheet(); 
 
-  var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow()-1, sheet.getLastColumn());  
+  var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow(), sheet.getLastColumn());  
   
   initLocalesList(msg, cellData[0]);
   initMessages(msg, cellData);
@@ -51,18 +51,13 @@ function initMessages(msg, cellData) {
   var localesList = msg["localesList"];
   for (var i=1; i < cellData.length; i++) {
     var row = cellData[i];
-    //Logger.log("row=");
     for (var j=1; j < row.length; j++) {
-       //Logger.log( localesList[j-1] + " " + row[0] + " " + row[j]);
        msg[localesList[j-1]][row[0]] = row[j];
     }
-    //Logger.log("\n");
   }
-  
 }
 
 /**
- * 
  * @param key message key
  * @return the localized text for the current locale
  */
@@ -72,4 +67,4 @@ messages.getLabel = function getLabel(key) {
     return bundle[key];
   }
   return key;
-}
+};

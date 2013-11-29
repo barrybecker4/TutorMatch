@@ -14,10 +14,10 @@ function createLandingPage(app) {
   var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);
 
-  var instructions = app.createLabel("Do you want to...")
+  var instructions = app.createLabel(messages.getLabel("DO_YOU_WANT_TO"))
                         .setStyleAttributes(css.text);
 
-  var tutorButtonText = "be a tutor?";
+  var tutorButtonText = messages.getLabel("BE_AT_TUTOR");
   var tutorProfileLink = app.createAnchor(tutorButtonText, config.tutorProfileFormUrl)
                             .setTarget("_self")
                             .setStyleAttributes(css.hiddenLink);
@@ -28,7 +28,7 @@ function createLandingPage(app) {
                             .add(tutorButton)
                             .add(tutorProfileLink);
                   
-  var tutoringButton = app.createButton('be tutored?')
+  var tutoringButton = app.createButton(messages.getLabel("BE_TUTORED"))
                   .setStyleAttributes(css.button);
                                              
   var grid = app.createGrid(7, 1)
@@ -118,5 +118,3 @@ function languageSelectedHandler(e) {
   app.close();
   return app;
 }
-
-
