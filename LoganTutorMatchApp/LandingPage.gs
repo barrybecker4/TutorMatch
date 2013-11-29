@@ -1,5 +1,5 @@
 /**
- * creates the user interface elements to show in the body of the landing page.
+ * Creates the user interface elements to show in the body of the landing page.
  * @return the root container element of the landing page.
  */
 function createLandingPage(app) {
@@ -31,12 +31,7 @@ function createLandingPage(app) {
   var tutoringButton = app.createButton(messages.getLabel("BE_TUTORED"))
                   .setStyleAttributes(css.button);
                                              
-  var grid = app.createGrid(7, 1)
-                .setStyleAttributes(css.grid)
-                .setStyleAttributes(0, 0, css.gridCell)
-                .setStyleAttributes(1, 0, css.gridCell)
-                .setStyleAttributes(2, 0, css.gridCell)
-                .setStyleAttributes(3, 0, css.gridCell);
+  var grid = createGrid(app, 4);
   
   body.add(title);
   
@@ -49,6 +44,15 @@ function createLandingPage(app) {
   tutoringHandler.addCallbackElement(tutorButton);
   tutoringButton.addClickHandler(tutoringHandler);
   return body;
+}
+
+/** @returns new grid container with one column and the specified number of rows  */
+function createGrid(app, numRows) {
+  var grid = app.createGrid(numRows, 1).setStyleAttributes(css.grid);
+  for (var i = 0; i<numRows; i++) {
+      grid.setStyleAttributes(i, 0, css.gridCell);
+  } 
+  return grid;
 }
 
 /**
@@ -67,6 +71,8 @@ function tutoringClickHandler(e) {
 /**
  * Allows selecting the default language for a user.
  * The selection will be persisted in UserProperties.
+ * In the process of creating this selector the users current locale
+ * is set. If it was previously set, then that value will be used.
  * @returns a panel that contains the selector.
  */
 function createLanguageSelector(app) {

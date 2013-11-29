@@ -41,15 +41,6 @@ function createTutoringRequestPage(app) {
   return body;
 }
 
-/** @returns new grid container with one column and the specified number of rows  */
-function createGrid(app, numRows) {
-	var grid = app.createGrid(numRows, 1).setStyleAttributes(css.grid);
-	for (var i = 0; i<numRows; i++) {
-	    grid.setStyleAttributes(i, 0, css.gridCell);
-	} 
-	return grid;
-}
-
 /**
  * Collect the users name. We could just address them with their id, but that
  * would not be very user-friendly.
