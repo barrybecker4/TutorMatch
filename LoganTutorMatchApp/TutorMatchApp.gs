@@ -18,7 +18,7 @@ function doGet() {
   var landingPage = createLandingPage(app);
   app.add(landingPage);
   
-  //this page is hidden initially
+  // this page is just a stub and hidden initially
   var tutoringRequestPage = app.createFlowPanel().setId(TUTORING_REQUEST_PAGE);
   tutoringRequestPage.setVisible(false);
   app.add(tutoringRequestPage);

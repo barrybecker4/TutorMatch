@@ -59,7 +59,11 @@ function createGrid(app, numRows) {
 function tutoringClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
-  app.getElementById(TUTORING_REQUEST_PAGE).setVisible(true);
+  var tutoringRequestPage = app.getElementById(TUTORING_REQUEST_PAGE);
+  app.remove(tutoringRequestPage); 
+  tutoringRequestPage = createTutoringRequestPage(app);
+  
+  app.add(tutoringRequestPage);
   app.getElementById(LANDING_PAGE).setVisible(false);
   
   app.close();
@@ -110,14 +114,7 @@ function languageSelectedHandler(e) {
   
   // refresh the page by removing the body and recreating it with the new locale.
   app.remove(app.getElementById(LANDING_PAGE));
-  app.add(createLandingPage(app));
-  
-  var tutoringRequestPage = app.getElementById(TUTORING_REQUEST_PAGE);
-  app.remove(tutoringRequestPage);
-  
-  tutoringRequestPage = createTutoringRequestPage(app);
-  app.add(tutoringRequestPage);
-  tutoringRequestPage.setVisible(false); 
+  app.add(createLandingPage(app)); 
   
   app.close();
   return app;
