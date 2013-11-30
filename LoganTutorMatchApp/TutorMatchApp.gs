@@ -1,7 +1,7 @@
 
 // Names of pages in the application.
-var LANDING_PAGE = "landginPage";
-var TUTORING_REQUEST_PAGE = "tutoringRequestPage";
+var LANDING_PAGE = "landingPage";
+var TUTORING_REQUEST_PAGE = "tutoringRequestPage"; 
 
 /**
  * The entry point for TutorMatching website.
@@ -14,14 +14,14 @@ var TUTORING_REQUEST_PAGE = "tutoringRequestPage";
  */
 function doGet() {
   var app = UiApp.createApplication();
-
-  var landingPage = createLandingPage(app);
-  app.add(landingPage); 
   
-  // this page is hidden initially
-  var tutoringRequestPage = createTutoringRequestPage(app);
+  var landingPage = createLandingPage(app);
+  app.add(landingPage);
+  
+  //this page is hidden initially
+  var tutoringRequestPage = app.createFlowPanel().setId(TUTORING_REQUEST_PAGE);
   tutoringRequestPage.setVisible(false);
   app.add(tutoringRequestPage);
-
+  
   return app;
 }

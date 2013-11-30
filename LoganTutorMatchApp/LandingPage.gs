@@ -52,18 +52,16 @@ function createGrid(app, numRows) {
   for (var i = 0; i<numRows; i++) {
       grid.setStyleAttributes(i, 0, css.gridCell);
   } 
-  return grid;
+  return grid; 
 }
 
-/**
- * Handler for tutoring profile button
- */ 
+/** Handler for tutoring request button. Navigate to the request page. */ 
 function tutoringClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
-  app.getElementById(LANDING_PAGE).setVisible(false);
   app.getElementById(TUTORING_REQUEST_PAGE).setVisible(true);
-
+  app.getElementById(LANDING_PAGE).setVisible(false);
+  
   app.close();
   return app;
 }
@@ -77,17 +75,10 @@ function tutoringClickHandler(e) {
  */
 function createLanguageSelector(app) {
   
-  var languageDroplist = app.createListBox().setName("languageDroplist")
-                                            .setId("languageDroplist")
-                                            .setStyleAttributes(css.languageDroplist);
-  
-  var currentLocale = UserProperties.getProperty("LOCALE");
-  if (!currentLocale || messages.localesList.indexOf(currentLocale) < 0) {
-    currentLocale = messages.defaultLocale;
-  }
-  messages.currentLocale = currentLocale;
-  Logger.log("current lang = "+ currentLocale);
-  
+  var languageDroplist = app.createListBox()
+                            .setName("languageDroplist")
+                            .setId("languageDroplist")
+                            .setStyleAttributes(css.languageDroplist);
   var panel = app.createHorizontalPanel();
   var label = app.createLabel("Language :")
                  .setStyleAttributes(css.languageLabel); 
@@ -97,12 +88,14 @@ function createLanguageSelector(app) {
     var locale = messages.localesList[i];
     languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
   }
-  var index = messages.localesList.indexOf(currentLocale);
+  Logger.log("init lang droplist with " + messages.currentLocale);
+  var index = messages.localesList.indexOf(messages.currentLocale);
   languageDroplist.setItemSelected(index, true);
   
   var languageSelectedHandler = app.createServerHandler('languageSelectedHandler');
   languageSelectedHandler.addCallbackElement(languageDroplist);
   languageDroplist.addChangeHandler(languageSelectedHandler);
+  
   return panel;
 }
 
@@ -113,13 +106,18 @@ function languageSelectedHandler(e) {
   
   var app = UiApp.getActiveApplication();
   var selectedValue = e.parameter.languageDroplist;  
-  Logger.log("selected lang value = " + selectedValue);
-  UserProperties.setProperty("LOCALE", selectedValue);
-  messages.currentLocale = selectedValue;
+  messages.setLocale(selectedValue);
   
   // refresh the page by removing the body and recreating it with the new locale.
   app.remove(app.getElementById(LANDING_PAGE));
   app.add(createLandingPage(app));
+  
+  var tutoringRequestPage = app.getElementById(TUTORING_REQUEST_PAGE);
+  app.remove(tutoringRequestPage);
+  
+  tutoringRequestPage = createTutoringRequestPage(app);
+  app.add(tutoringRequestPage);
+  tutoringRequestPage.setVisible(false); 
   
   app.close();
   return app;

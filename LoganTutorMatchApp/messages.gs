@@ -1,4 +1,7 @@
 
+/** UserProperties key used to persist the locale preference. */
+var LOCALE_PROPERTY = "LOCALE";
+
 /**
  * A global instance that holds all the localized messages for the application
  * that are read from a spreadsheet specified by the configuration.
@@ -20,10 +23,8 @@ function createMessages(spreadSheetId) {
   
   initLocalesList(msg, cellData[0]);
   initMessages(msg, cellData);
-  
-  msg.defaultLocale = msg.localesList[0];
-  msg.currentLocale = msg.defaultLocale;
-  
+  initCurrentLocale(msg);
+
   return msg;
 }
 
@@ -47,7 +48,8 @@ function initLocalesList(msg, firstRow) {
 /**
  * For each locale there will be a map from message key to localized string.
  */
-function initMessages(msg, cellData) {
+function initMessages(msg, cellData) { 
+  
   var localesList = msg["localesList"];
   for (var i=1; i < cellData.length; i++) {
     var row = cellData[i];
@@ -57,11 +59,29 @@ function initMessages(msg, cellData) {
   }
 }
 
+/** use the locale from UserProperties if its there, else use the first available. */
+function initCurrentLocale(msg) {
+  msg.defaultLocale = msg.localesList[0];
+
+  var currentLocale = UserProperties.getProperty(LOCALE_PROPERTY);
+  if (!currentLocale || msg.localesList.indexOf(currentLocale) < 0) {
+    currentLocale = msg.defaultLocale;
+  }
+  msg.currentLocale = currentLocale;
+}
+
+/** set the locale and persist it in UserProperties */
+messages.setLocale = function setLocale(locale) {
+  
+  UserProperties.setProperty(LOCALE_PROPERTY, locale);
+  messages.currentLocale = locale;
+};
+
 /**
  * @param key message key
  * @return the localized text for the current locale
  */
-messages.getLabel = function getLabel(key) {
+messages.getLabel = function(key) {
   var bundle = messages[messages.currentLocale];
   if (bundle[key]) {
     return bundle[key];

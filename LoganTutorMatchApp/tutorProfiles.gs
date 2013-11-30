@@ -5,7 +5,7 @@
  */
 var ENTRY_DELIM = ", ";
 
-/** separates subject and course values */
+/** separates subject and course values */ 
 var COURSE_DELIM = " : ";
 
 /** Sometimes &nbsp; is in the string so we need to remove it */

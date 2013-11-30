@@ -1,18 +1,18 @@
 // something to separate the values set in the tag of a droplist.
 var DELIMITER = "::";
-// shown as first item in droplist so user knows they must make a selection.
-var NO_SELECTION = " --- Select --- ";
+
 
 /**
  * Creates the user interface elements to show in the tutoring request form.
  * @return the page body element.
  */
 function createTutoringRequestPage(app) {
+  
   var body = app.createFlowPanel()
                 .setId(TUTORING_REQUEST_PAGE)
                 .setStyleAttributes(css.body);
-    
-  var title = app.createLabel("Tutoring Request Form")
+  
+  var title = app.createLabel(messages.getLabel("TUTORING_REQUEST_FORM"))
                  .setStyleAttributes(css.title);
   body.add(title);
                                
@@ -48,9 +48,11 @@ function createTutoringRequestPage(app) {
  */
 function createNameField(app, hiddenResult) {
   var panel = app.createHorizontalPanel();
-  var label = app.createLabel("What is your name?").setStyleAttributes(css.text); 
-  var textField = app.createTextBox().setName("nameField")
-                                     .setStyleAttributes(css.textbox);
+  var label = app.createLabel(messages.getLabel("WHAT_NAME"))
+                 .setStyleAttributes(css.text); 
+  var textField = app.createTextBox()
+                     .setName("nameField")
+                     .setStyleAttributes(css.textbox);
   
   var fieldHandler = app.createServerHandler("nameFieldUpdateHandler");
   fieldHandler.addCallbackElement(textField)
@@ -76,16 +78,16 @@ function nameFieldUpdateHandler(e) {
   return app;
 }
 
+/** some request form instructions to guide the user */
 function createInstructions(app) {
-  var instrText = "The following selections will determine your tutor. " +
-  "Each selection determines the values shown in successive drop lists.";
+  var instrText = messages.getLabel("REQUEST_PAGE_INSTR");
   return app.createLabel(instrText).setStyleAttributes(css.text);  
 }
 
 /** @returns a panel with the subject droplist and its label */
 function createSubjectSelection(app, dataMap, hiddenDataMap) {
   
-  var text = "1) Select the subject you would like tutoring in."; 
+  var text = messages.getLabel("SUBJECT_SELECT_INSTR"); 
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
   populateDroplist(subjectDroplist, dataMap);
      
@@ -108,7 +110,7 @@ function subjectSelectedHandler(e) {
   
   var selectedSubject = e.parameter.subjectDroplist;
   
-  if (selectedSubject != NO_SELECTION) {
+  if (selectedSubject != messages.getLabel("NOT_SELECTED")) {
     var courseDroplist = app.getElementById("courseDroplist");
     courseDroplist.setTag(selectedSubject);
   
@@ -123,7 +125,7 @@ function subjectSelectedHandler(e) {
 /** @returns a panel with the course droplist and its label */
 function createCourseSelection(app, dataMap, hiddenDataMap) {
   
-  var text = "2) Select the specific course you would like tutoring in.";            
+  var text = messages.getLabel("COURSE_SELECT_INSTR");
   var courseDroplist = createDroplist(app, 'courseDroplist');  
   var panel = createSelectEntry(app, text, courseDroplist);
   
@@ -146,7 +148,7 @@ function courseSelectedHandler(e) {
   
   clearDownStreamSelections(app, ["tutorDroplist"]);
   
-  if (selectedCourse != NO_SELECTION) {  
+  if (selectedCourse != messages.getLabel("NOT_SELECTED")) {  
     var tutorDroplist = app.getElementById("tutorDroplist");
     tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
   
@@ -163,9 +165,8 @@ function courseSelectedHandler(e) {
 /** @returns a panel with the course droplist and its label */
 function createTutorSelection(app, dataMap, hiddenResult) {
   
-  var text = "3) Select from the following list of available tutors for that course.";
-                        
-  var tutorDroplist = createDroplist(app, "tutorDroplist");                           
+  var text = messages.getLabel("TUTOR_SELECT_INSTR"); 
+  var tutorDroplist = createDroplist(app, "tutorDroplist");  
   var panel = createSelectEntry(app, text, tutorDroplist);
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
@@ -185,10 +186,8 @@ function tutorSelectedHandler(e) {
   
   var selectedTutor = e.parameter.tutorDroplist;
   
-  if (selectedTutor != NO_SELECTION) {
+  if (selectedTutor != messages.getLabel("NOT_SELECTED")) {
     var selectedValues = e.parameter.tutorDroplist_tag;  
-    Logger.log("selected tutor = " + selectedTutor);
-    Logger.log("prior selected = " + selectedValues);
     
     var vals = selectedValues.split(DELIMITER);
     
@@ -222,12 +221,12 @@ function createNavigationPanel(app, hiddenResult, hiddenDataMap) {
 
   var navigationPanel = app.createHorizontalPanel();
   
-  var backButton = app.createButton('Back')
+  var backButton = app.createButton(messages.getLabel("BACK"))
                       .setStyleAttributes(css.button);
   var fill = app.createHorizontalPanel().setWidth(600);
   
   // disabled until all the selections have been made.
-  var submitButton = app.createButton('Submit')
+  var submitButton = app.createButton(messages.getLabel("SUBMIT"))
                         .setId("submitButton")
                         .setEnabled(false)
                         .setStyleAttributes(css.buttonDisabled);
@@ -263,7 +262,6 @@ function backClickHandler(e) {
   return app;
 }
 
-
 /**
  * @param labelText text label for the droplist
  * @param dropList selector
@@ -290,7 +288,7 @@ function createDroplist(app, name) {
  * @param items array or map entries represent the items to show in the list
  */
 function populateDroplist(droplist, items) {
-  droplist.addItem(NO_SELECTION);
+  droplist.addItem(messages.getLabel("NOT_SELECTED"));
   for (var value in items) {
     droplist.addItem(value);
   }

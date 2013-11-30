@@ -35,7 +35,7 @@ css.gridCell = {
 };
 
 css.title = {
-  fontSize: 62,
+  fontSize: 54,
   fontWeight: 'bold',
   padding: 20
 };
