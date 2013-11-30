@@ -78,6 +78,9 @@ messages.setLocale = function setLocale(locale) {
 };
 
 /**
+ * If the translation is not found the spreadsheet containing
+ * the localizations, and there are not "_"s in the key,
+ * then LanguageApp.translate is used to provide a default translation.
  * @param key message key
  * @return the localized text for the current locale
  */
@@ -86,5 +89,10 @@ messages.getLabel = function(key) {
   if (bundle[key]) {
     return bundle[key];
   }
-  return key;
+  else if (key.indexOf('_') < 0) {
+    return LanguageApp.translate(key, "en", messages.currentLocale);
+  }
+  else {
+    return key;
+  }
 };

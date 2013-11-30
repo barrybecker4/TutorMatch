@@ -89,7 +89,7 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
   
   var text = messages.getLabel("SUBJECT_SELECT_INSTR"); 
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
-  populateDroplist(subjectDroplist, dataMap);
+  populateDroplist(subjectDroplist, dataMap, true);
      
   var panel = createSelectEntry(app, text, subjectDroplist);
   
@@ -102,7 +102,7 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
 
 /**
  * Handler that is call when a subject is selected.
- * The selected value will be used to limit successive selectors
+ * The selected value will be used to limit successive selectors.
  */ 
 function subjectSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
@@ -115,7 +115,7 @@ function subjectSelectedHandler(e) {
     courseDroplist.setTag(selectedSubject);
   
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
-    populateDroplist(courseDroplist, dataMap[selectedSubject]);
+    populateDroplist(courseDroplist, dataMap[selectedSubject], true);
   }
  
   app.close();
@@ -286,11 +286,20 @@ function createDroplist(app, name) {
  * The first item is always NO_SELECTION so the user is forced to select something.
  * @param droplist the droplist to populate selection items for
  * @param items array or map entries represent the items to show in the list
+ * @param translate if true, attempt to get localized strings for the items.
+ *    We should not try to translate tutor names.
  */
-function populateDroplist(droplist, items) {
+function populateDroplist(droplist, items, translate) {
   droplist.addItem(messages.getLabel("NOT_SELECTED"));
-  for (var value in items) {
-    droplist.addItem(value);
+  if (translate) {
+    for (var value in items) {
+       droplist.addItem(messages.getLabel(value), value);
+    }
+  }
+  else {
+    for (var value in items) {
+      droplist.addItem(value);
+   }
   }
 }
 
