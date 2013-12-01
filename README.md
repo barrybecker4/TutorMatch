@@ -11,9 +11,9 @@ The application has 3 primary components
 When a student sees the page that allows them to request tutoring, they first select a subject. Next they select a course for that subject. Finally they select a tutor that is available to tutor for that course. More options may be added in the future (like language, time, and place). The items listed in each successive selection is determined by the one before it. The submit button is enabled only when valid selections have been made.
 
 When the submit button is clicked, an email is sent to the following people.
-* To the requester to let them know that there request has been made and provide a link to a feedback form.
+* To the requester to let them know that their request has been made, and provide a link to a feedback form.
 * To the tutor requested to let them know to make tutoring arrangements with requester, and also provide a link to a progress form that can be filled out to track tutoring progress over time.
 * To administrator(s) to notify of the new pairing and to review it.
-* Optionally to the teacher who's course it is. The configuration can specify teachers that should be emails for specific courses.
+* Optionally, to the teacher who's course it is. The configuration can specify teachers that should be emails for specific courses.
 
 A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dGVBZjRlNE9nYkJObkc2N19tVTVMS3c&usp=drive_web#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
