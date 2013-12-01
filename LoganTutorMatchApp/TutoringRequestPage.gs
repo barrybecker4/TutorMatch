@@ -248,8 +248,36 @@ function updateCurrentResult(app, selectedTutor, selectedValues, currentResult) 
 function showTutorDetails(app, tutorInfo) {
   var details = app.getElementById("tutorDetails");
   details.remove(0);
-  details.add(app.createLabel(tutorInfo.name + " " + tutorInfo.email));
+  
+  var container = app.createSimplePanel()
+                     .setStyleAttributes(css.text)
+                     .setStyleAttribute("paddingLeft", 50);
+  var grid = createGrid(app, 5, 2);
+  createGridRow(app, grid, 0, "Name", tutorInfo.name);
+  createGridRow(app, grid, 1, "Email", tutorInfo.email);
+  createGridRow(app, grid, 2, "Availability", tutorInfo.availability);
+  createGridRow(app, grid, 3, "Alternate Language", tutorInfo.foreignLanguages);
+  createGridRow(app, grid, 4, "Graduation year", tutorInfo.graduationYear);
+  /*
+  var tableHtml = "<table style='color:green;'>" +
+    "<tr><td>Name:</td><td>" + tutorInfo.name + "</td></tr>" +
+    "<tr><td>Email:</td><td>" + tutorInfo.email + "</td></tr>" +
+    "<tr><td>Availability:</td><td>" + tutorInfo.availability + "</td></tr>" +
+    "<tr><td>Alternative language:</td><td>" + tutorInfo.foreignLanguages + "</td></tr>" +
+    "<tr><td>Graduation year:</td><td>" + tutorInfo.graduationYear + "</td></tr>" +
+    "</table>";
+  var table = app.createHTML(tableHtml)
+                 .setStyleAttributes(css.text);
+  */
+  container.add(grid);
+  
+  details.add(container);
   details.setVisible(true);
+}
+
+function createGridRow(app, grid, rowIndex, firstVal, secondVal) {
+  grid.setWidget(rowIndex, 0, app.createLabel(firstVal));
+  grid.setWidget(rowIndex, 1, app.createLabel(secondVal));
 }
 
 /** hide the current tutor details panel */
@@ -263,8 +291,8 @@ function setSubmitState(enable) {
   var app = UiApp.getActiveApplication();
   var style = enable ? css.button : css.buttonDisabled;
   app.getElementById("submitButton")
-	 .setStyleAttributes(style)
-	 .setEnabled(enable); 
+     .setStyleAttributes(style)
+     .setEnabled(enable); 
 }
 
 /**

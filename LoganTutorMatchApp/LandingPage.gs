@@ -47,10 +47,13 @@ function createLandingPage(app) {
 }
 
 /** @returns new grid container with one column and the specified number of rows  */
-function createGrid(app, numRows) {
-  var grid = app.createGrid(numRows, 1).setStyleAttributes(css.grid);
+function createGrid(app, numRows, numCols) {
+  var numColumns = numCols ? numCols : 1;
+  var grid = app.createGrid(numRows, numColumns).setStyleAttributes(css.grid);
   for (var i = 0; i<numRows; i++) {
-      grid.setStyleAttributes(i, 0, css.gridCell);
+    for (var j = 0; j<numColumns; j++) {
+      grid.setStyleAttributes(i, j, css.gridCell);
+    }
   } 
   return grid; 
 }

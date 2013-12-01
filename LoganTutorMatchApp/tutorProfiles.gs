@@ -29,9 +29,9 @@ function getDataMap() {
         gender: row[1], 
         email:row[2], 
         phone: row[3],
-        foreignLanguages: row[6],
-        availability: row[7],
-        graduationYear: row[8]
+        foreignLanguages: row[5],
+        availability: row[6],
+        graduationYear: row[7]
     };
     var courseList = row[4];
     addToMap(dataMap, tutorInfo, courseList);
