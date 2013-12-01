@@ -17,24 +17,25 @@ function createTutoringRequestPage(app) {
   body.add(title);
                                
   var grid = createGrid(app, 7);
-  
-  // This little trick allows us to access the dataMap from the server side event handlers.
-  // a hidden UI element (hiddenDataMap) stores the dataMap as a JSON string
+   
   var dataMap = getDataMap(app);
-  var hiddenDataMap = app.createHidden("hiddenDataMap", Utilities.jsonStringify(dataMap));
-  body.add(hiddenDataMap);
-  // stores the final result of all the selections
-  var hiddenResult = app.createHidden("hiddenResult", "{}").setId("hiddenResult");
-  body.add(hiddenResult);
   
-  var navigationButtonPanel = createNavigationPanel(app, hiddenResult, hiddenDataMap);
+  // these store data that can be access by server side callbacks
+  body.add(createHiddenDataMap(app, dataMap));
+  body.add(createHiddenResult(app));
+  
+  var navigationButtonPanel = createNavigationPanel(app);
+  
+  // this will become visible when a tutor is selected.
+  var tutorDetails = createTutorDetailsPanel(app);
   
   // Place the UI elements in the cells of the grid
-  grid.setWidget(0, 0, createNameField(app, hiddenResult));
+  grid.setWidget(0, 0, createNameField(app));
   grid.setWidget(1, 0, createInstructions(app));
-  grid.setWidget(2, 0, createSubjectSelection(app, dataMap, hiddenDataMap));  
-  grid.setWidget(3, 0, createCourseSelection(app, dataMap, hiddenDataMap));   
-  grid.setWidget(4, 0, createTutorSelection(app, dataMap, hiddenResult)); 
+  grid.setWidget(2, 0, createSubjectSelection(app, dataMap));  
+  grid.setWidget(3, 0, createCourseSelection(app, dataMap));   
+  grid.setWidget(4, 0, createTutorSelection(app, dataMap)); 
+  grid.setWidget(5, 0, tutorDetails); 
   grid.setWidget(6, 0, navigationButtonPanel);  
   body.add(grid);  
   
@@ -42,11 +43,36 @@ function createTutoringRequestPage(app) {
 }
 
 /**
+ * This little trick allows us to access the dataMap from the server side event handlers.
+ * a hidden UI element (hiddenDataMap) stores the dataMap as a JSON string
+ */
+function createHiddenDataMap(app, dataMap) {
+  return app.createHidden("hiddenDataMap", Utilities.jsonStringify(dataMap))
+            .setId("hiddenDataMap");
+}
+
+/** stores the final result of all the selections */
+function createHiddenResult(app) {
+  return  app.createHidden("hiddenResult", "{}")
+             .setId("hiddenResult");
+}
+
+/** create a placeholder to show details for selected tutor. Invisible initially */
+function createTutorDetailsPanel(app) {
+  var detailsPanel = app.createFlowPanel()
+                        .setId("tutorDetails")
+                        .setVisible(false);
+  var placeholder = app.createSimplePanel();
+  detailsPanel.add(placeholder);
+  return detailsPanel;
+}
+
+/**
  * Collect the users name. We could just address them with their id, but that
  * would not be very user-friendly.
  * @returns a label and text field where the user can supply their name.
  */
-function createNameField(app, hiddenResult) {
+function createNameField(app) {
   var panel = app.createHorizontalPanel();
   var label = app.createLabel(messages.getLabel("WHAT_NAME"))
                  .setStyleAttributes(css.text); 
@@ -56,7 +82,7 @@ function createNameField(app, hiddenResult) {
   
   var fieldHandler = app.createServerHandler("nameFieldUpdateHandler");
   fieldHandler.addCallbackElement(textField)
-              .addCallbackElement(hiddenResult);
+              .addCallbackElement(app.getElementById("hiddenResult"));
   textField.addValueChangeHandler(fieldHandler);
   
   panel.add(label).add(textField);
@@ -85,7 +111,7 @@ function createInstructions(app) {
 }
 
 /** @returns a panel with the subject droplist and its label */
-function createSubjectSelection(app, dataMap, hiddenDataMap) {
+function createSubjectSelection(app, dataMap) {
   
   var text = messages.getLabel("SUBJECT_SELECT_INSTR"); 
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
@@ -95,7 +121,7 @@ function createSubjectSelection(app, dataMap, hiddenDataMap) {
   
   var subjectSelectedHandler = app.createServerHandler('subjectSelectedHandler');
   subjectSelectedHandler.addCallbackElement(subjectDroplist)
-                        .addCallbackElement(hiddenDataMap);
+                        .addCallbackElement(app.getElementById("hiddenDataMap"));
   subjectDroplist.addChangeHandler(subjectSelectedHandler);
   return panel;
 }
@@ -114,6 +140,7 @@ function subjectSelectedHandler(e) {
     var courseDroplist = app.getElementById("courseDroplist");
     courseDroplist.setTag(selectedSubject);
   
+    Logger.log("h data map="+ e.parameter.hiddenDataMap);
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
     populateDroplist(courseDroplist, dataMap[selectedSubject], true);
   }
@@ -123,7 +150,7 @@ function subjectSelectedHandler(e) {
 }
 
 /** @returns a panel with the course droplist and its label */
-function createCourseSelection(app, dataMap, hiddenDataMap) {
+function createCourseSelection(app, dataMap) {
   
   var text = messages.getLabel("COURSE_SELECT_INSTR");
   var courseDroplist = createDroplist(app, 'courseDroplist');  
@@ -131,7 +158,7 @@ function createCourseSelection(app, dataMap, hiddenDataMap) {
   
   var courseSelectedHandler = app.createServerHandler('courseSelectedHandler');
   courseSelectedHandler.addCallbackElement(courseDroplist)
-                       .addCallbackElement(hiddenDataMap);
+                       .addCallbackElement(app.getElementById("hiddenDataMap"));
   courseDroplist.addChangeHandler(courseSelectedHandler);
   
   return panel;
@@ -163,7 +190,7 @@ function courseSelectedHandler(e) {
 }
 
 /** @returns a panel with the course droplist and its label */
-function createTutorSelection(app, dataMap, hiddenResult) {
+function createTutorSelection(app, dataMap) {
   
   var text = messages.getLabel("TUTOR_SELECT_INSTR"); 
   var tutorDroplist = createDroplist(app, "tutorDroplist");  
@@ -171,36 +198,64 @@ function createTutorSelection(app, dataMap, hiddenResult) {
   
   var tutorSelectedHandler = app.createServerHandler('tutorSelectedHandler');
   tutorSelectedHandler.addCallbackElement(tutorDroplist)
-                      .addCallbackElement(hiddenResult);
+                      .addCallbackElement(app.getElementById("hiddenResult"))
+                      .addCallbackElement(app.getElementById("hiddenDataMap"));
   tutorDroplist.addChangeHandler(tutorSelectedHandler);
                
-  
   return panel;
 }
 
-/**
- * Handler for when the tutor is selected from the droplist.
+/** 
+ * Handler for when the tutor is selected from the droplist. 
+ * The hiddentResult widget will get populated with the current selections,
+ * and the tutor details will be displayed.
  */ 
 function tutorSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
-  
   var selectedTutor = e.parameter.tutorDroplist;
   
   if (selectedTutor != messages.getLabel("NOT_SELECTED")) {
     var selectedValues = e.parameter.tutorDroplist_tag;  
+    var dataMap = JSON.parse(e.parameter.hiddenDataMap);
+    var selections = JSON.parse(e.parameter.hiddenResult);
+    selections = updateCurrentResult(app, selectedTutor, selectedValues, selections);
+    var tutorInfo = dataMap[selections.subject][selections.course][selectedTutor];
     
-    var vals = selectedValues.split(DELIMITER);
-    
-    var currentResult = JSON.parse(e.parameter.hiddenResult);
-    currentResult.subject = vals[0];
-    currentResult.course = vals[1];
-    currentResult.tutor = selectedTutor;
-    
-    setHiddenResultValue(app, currentResult); 
-    setSubmitState(true);
+    showTutorDetails(app, tutorInfo);
   }
+  else {
+    hideTutorDetails(app);
+  }
+  
   app.close();
   return app;
+}
+
+/** store off the current selections in the hiddenResult widget */
+function updateCurrentResult(app, selectedTutor, selectedValues, currentResult) {
+  var vals = selectedValues.split(DELIMITER);
+  
+  currentResult.subject = vals[0];
+  currentResult.course = vals[1];
+  currentResult.tutor = selectedTutor;
+  
+  setHiddenResultValue(app, currentResult); 
+  setSubmitState(true);
+  return currentResult;
+}
+
+/** Remove existing details and show the ones for the currently selected tutor */
+function showTutorDetails(app, tutorInfo) {
+  var details = app.getElementById("tutorDetails");
+  details.remove(0);
+  details.add(app.createLabel(tutorInfo.name + " " + tutorInfo.email));
+  details.setVisible(true);
+}
+
+/** hide the current tutor details panel */
+function hideTutorDetails(app) {
+  var details = app.getElementById("tutorDetails");
+  details.setVisible(false);
 }
 
 /** enable or disable the submit button at the bottom */
@@ -217,7 +272,7 @@ function setSubmitState(enable) {
  * When the submit button is clicked the hiddenResult (containing the uses selections)
  * are sent to the server callback to be submitted. 
  */
-function createNavigationPanel(app, hiddenResult, hiddenDataMap) {
+function createNavigationPanel(app) {
 
   var navigationPanel = app.createHorizontalPanel();
   
@@ -241,8 +296,8 @@ function createNavigationPanel(app, hiddenResult, hiddenDataMap) {
   
   var submitHandler = app.createServerHandler('submitClickHandler');
   submitHandler.addCallbackElement(submitButton)
-               .addCallbackElement(hiddenResult)
-               .addCallbackElement(hiddenDataMap);
+               .addCallbackElement(app.getElementById("hiddenResult"))
+               .addCallbackElement(app.getElementById("hiddenDataMap"));
   submitButton.addClickHandler(submitHandler);
   
   return navigationPanel;

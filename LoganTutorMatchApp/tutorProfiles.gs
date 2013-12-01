@@ -19,7 +19,7 @@ function getDataMap() {
   
   var sheet = SpreadsheetApp.openById(config.tutorProfilesSpreadSheet)
                             .getActiveSheet();
-  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 5);
+  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 9);
   
   var dataMap = {};
   for (var i=0; i < cellData.length; i++) {
@@ -28,7 +28,10 @@ function getDataMap() {
         name: row[0], 
         gender: row[1], 
         email:row[2], 
-        phone: row[3]
+        phone: row[3],
+        foreignLanguages: row[6],
+        availability: row[7],
+        graduationYear: row[8]
     };
     var courseList = row[4];
     addToMap(dataMap, tutorInfo, courseList);
