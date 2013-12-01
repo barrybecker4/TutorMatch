@@ -82,17 +82,31 @@ messages.setLocale = function setLocale(locale) {
  * the localizations, and there are not "_"s in the key,
  * then LanguageApp.translate is used to provide a default translation.
  * @param key message key
+ * @param substitutions an optional array of substitutions to make in the localized string.
+ *   The first element will be substituted for {0}, the second for {1}, and so on.
  * @return the localized text for the current locale
  */
-messages.getLabel = function(key) {
+messages.getLabel = function(key, substitutions) {
   var bundle = messages[messages.currentLocale];
+  var result = "";
+  
   if (bundle[key]) {
-    return bundle[key];
+    result = bundle[key];
+    if (substitutions) {
+      for (var i=0; i<substitutions.length; i++) {
+        // replace all occurrences of {i} with substitutions[i]
+        var re = new RegExp('{'+i+'}', 'g');
+        result = result.replace(re, substitutions[i]);
+      }
+    }
   }
-  else if (key.indexOf('_') < 0) {
-    return LanguageApp.translate(key, "en", messages.currentLocale);
+  else if (key.indexOf('_') < 0 
+           && messages.currentLocale != messages.defaultLocale) {
+    result = LanguageApp.translate(key, 
+        messages.defaultLocale, messages.currentLocale);
   }
   else {
-    return key;
+    result = key;
   }
+  return result;
 };

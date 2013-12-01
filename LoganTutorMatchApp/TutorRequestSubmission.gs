@@ -37,16 +37,11 @@ function sendEmailToRequester(selections, tutorInfo) {
   var requesterEmail = Session.getEffectiveUser().getEmail();
   Logger.log("sending mail to "+ requesterEmail);
 
-  var subject = "Tutoring Request Confirmation";
+  var subject = messages.getLabel("REQUEST_CONFIRMATION_SUBJECT");
 
-  //var name = Session.getEffectiveUser().getName();
-  var proNoun1 = tutorInfo.gender == "Male" ? "His" : "Her";
-  var proNoun2 = tutorInfo.gender == "Male" ? "He" : "She";
-  var body = selections.name + ", your request for tutoring has been recieved and processed.\n" +
-      "Your tutor is " + tutorInfo.name + ". "  + proNoun1 + " contact info is the following: \n"
-      + " email: " + tutorInfo.email + "\n"
-      + " phone: " + tutorInfo.phone + "\n"
-      + proNoun2 + " will contact you shortly with a proposed time and place to meet.";
+  var substitutions = [selections.name, tutorInfo.name, tutorInfo.email, tutorInfo.phone];
+  var msgKey = (tutorInfo.gender == "Male" ? "MALE" : "FEMALE") + "_TUTOR_REQUESTOR_MSG";
+  var body = messages.getLabel(msgKey , substitutions);
   
   MailApp.sendEmail(requesterEmail, subject, body);
 }

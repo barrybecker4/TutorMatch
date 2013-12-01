@@ -355,9 +355,9 @@ function showConfirmationPopup(app) {
                       .setId("popupPanel");
   
   var panel = app.createVerticalPanel().setStyleAttributes(css.popup);
-  var label = app.createLabel("Request for tutoring accepted. Emails sent.")
+  var label = app.createLabel(messages.getLabel("REQUEST_CONFIRMATION"))
                  .setStyleAttributes(css.text);
-  var okButton = app.createButton("OK")
+  var okButton = app.createButton(messages.getLabel("OK"))
                     .setStyleAttributes(css.button);
   
   var okHandler = app.createServerHandler('okClickHandler');
