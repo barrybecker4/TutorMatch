@@ -253,22 +253,11 @@ function showTutorDetails(app, tutorInfo) {
                      .setStyleAttributes(css.text)
                      .setStyleAttribute("paddingLeft", 50);
   var grid = createGrid(app, 5, 2);
-  createGridRow(app, grid, 0, "Name", tutorInfo.name);
-  createGridRow(app, grid, 1, "Email", tutorInfo.email);
-  createGridRow(app, grid, 2, "Availability", tutorInfo.availability);
-  createGridRow(app, grid, 3, "Alternate Language", tutorInfo.foreignLanguages);
-  createGridRow(app, grid, 4, "Graduation year", tutorInfo.graduationYear);
-  /*
-  var tableHtml = "<table style='color:green;'>" +
-    "<tr><td>Name:</td><td>" + tutorInfo.name + "</td></tr>" +
-    "<tr><td>Email:</td><td>" + tutorInfo.email + "</td></tr>" +
-    "<tr><td>Availability:</td><td>" + tutorInfo.availability + "</td></tr>" +
-    "<tr><td>Alternative language:</td><td>" + tutorInfo.foreignLanguages + "</td></tr>" +
-    "<tr><td>Graduation year:</td><td>" + tutorInfo.graduationYear + "</td></tr>" +
-    "</table>";
-  var table = app.createHTML(tableHtml)
-                 .setStyleAttributes(css.text);
-  */
+  createGridRow(app, grid, 0, messages.getLabel("NAME"), tutorInfo.name);
+  createGridRow(app, grid, 1, messages.getLabel("EMAIL"), tutorInfo.email);
+  createGridRow(app, grid, 2, messages.getLabel("AVAILABILITY"), tutorInfo.availability);
+  createGridRow(app, grid, 3, messages.getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
+  createGridRow(app, grid, 4, messages.getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
   container.add(grid);
   
   details.add(container);
