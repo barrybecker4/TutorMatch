@@ -395,6 +395,7 @@ function clearDownStreamSelections(app, droplists) {
     droplist.clear();
   }
   setSubmitState(false);
+  app.getElementById("tutorDetails").setVisible(false);
 }
 
 /**
