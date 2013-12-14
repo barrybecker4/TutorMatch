@@ -1,7 +1,6 @@
 // something to separate the values set in the tag of a droplist.
 var DELIMITER = "::";
 
-
 /**
  * Creates the user interface elements to show in the tutoring request form.
  * @return the page body element.

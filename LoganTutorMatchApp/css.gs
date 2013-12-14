@@ -1,5 +1,5 @@
 /**
- * This is not a real CSS file, but it allows us to decouple the stying from the code.
+ * This is not a real CSS file, but it allows us to decouple the styling from the code.
  * See http://www.harryonline.net/scripts/stylesheets-in-google-apps-script-uiapp/494
  */
 var css={};
