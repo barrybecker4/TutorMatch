@@ -78,9 +78,10 @@ messages.setLocale = function setLocale(locale) {
 };
 
 /**
- * If the translation is not found the spreadsheet containing
- * the localizations, and there are not "_"s in the key,
+ * If the translation is not found in the spreadsheet containing
+ * the localized messages, and there are not "_"s in the key,
  * then LanguageApp.translate is used to provide a default translation.
+ * LanguageApp provides an API to Google Translate.
  * @param key message key
  * @param substitutions an optional array of substitutions to make in the localized string.
  *   The first element will be substituted for {0}, the second for {1}, and so on.
@@ -106,6 +107,7 @@ messages.getLabel = function(key, substitutions) {
         messages.defaultLocale, messages.currentLocale);
   }
   else {
+    // if all else fails, just show the message key itself
     result = key;
   }
   return result;

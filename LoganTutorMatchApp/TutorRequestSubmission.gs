@@ -30,7 +30,7 @@ function createTutoringRequest(selections, tutorInfo) {
 }
 
 /** 
- * Let the requester know that there request was processed and
+ * Let the requester know that their request was processed, and
  * provide a link to a form where they can provide feedback.
  */
 function sendEmailToRequester(selections, tutorInfo) {
@@ -82,7 +82,7 @@ function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
   
   Logger.log("Sending teacher mail to "+ teacherEmails);
  
-  var subject = "Tutor Match between tutor " + tutorInfo.name + " and " + selections.name;
+  var subject = "There was a Tutor Match made between tutor " + tutorInfo.name + " and " + selections.name;
   var body = "Dear " + selections.course + " teacher,\n  " + getAdminBodyText(selections, tutorInfo);
   
   var emails = teacherEmails.split(',');

@@ -50,7 +50,7 @@ function createHiddenDataMap(app, dataMap) {
             .setId("hiddenDataMap");
 }
 
-/** stores the final result of all the selections */
+/** stores the final result of all the selections in a hidden UI element. */
 function createHiddenResult(app) {
   return  app.createHidden("hiddenResult", "{}")
              .setId("hiddenResult");
@@ -67,7 +67,7 @@ function createTutorDetailsPanel(app) {
 }
 
 /**
- * Collect the users name. We could just address them with their id, but that
+ * Collect the user's name. We could just address them with their id, but that
  * would not be very user-friendly.
  * @returns a label and text field where the user can supply their name.
  */
@@ -139,7 +139,6 @@ function subjectSelectedHandler(e) {
     var courseDroplist = app.getElementById("courseDroplist");
     courseDroplist.setTag(selectedSubject);
   
-    Logger.log("h data map="+ e.parameter.hiddenDataMap);
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
     populateDroplist(courseDroplist, dataMap[selectedSubject], true);
   }
@@ -285,7 +284,7 @@ function setSubmitState(enable) {
 
 /**
  * Contains the back and submit buttons at the bottom.
- * When the submit button is clicked the hiddenResult (containing the uses selections)
+ * When the submit button is clicked the hiddenResult (containing the user's selections)
  * are sent to the server callback to be submitted. 
  */
 function createNavigationPanel(app) {
@@ -334,6 +333,7 @@ function backClickHandler(e) {
 }
 
 /**
+ * Create a panel to hold a drop list and its label.
  * @param labelText text label for the droplist
  * @param dropList selector
  * @return panel containing the label and the droplist
@@ -354,11 +354,11 @@ function createDroplist(app, name) {
 }
 
 /**
- * The first item is always NO_SELECTION so the user is forced to select something.
+ * The first item is always NOT_SELECTED so the user is forced to select something.
  * @param droplist the droplist to populate selection items for
  * @param items array or map entries represent the items to show in the list
  * @param translate if true, attempt to get localized strings for the items.
- *    We should not try to translate tutor names.
+ *    We should not try to translate things like tutor names though.
  */
 function populateDroplist(droplist, items, translate) {
   droplist.addItem(messages.getLabel("NOT_SELECTED"));
@@ -418,10 +418,13 @@ function submitClickHandler(e) {
   return app;
 }
 
-/** give some feedback that the request for tutoring was accepted */
+/** 
+ * Give some feedback that the request for tutoring was accepted.
+ * A modal dialog with a confirmation message is popped open.
+ */
 function showConfirmationPopup(app) {
   
-  //Create a popup panel and set it to be modal.
+  // Create a popup panel and set it to be modal.
   var popupPanel = app.createPopupPanel(false, true)
                       .setId("popupPanel");
   

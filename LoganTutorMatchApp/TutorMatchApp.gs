@@ -1,10 +1,10 @@
 
-// Names of pages in the application.
+// Names of the two pages in the application.
 var LANDING_PAGE = "landingPage";
 var TUTORING_REQUEST_PAGE = "tutoringRequestPage"; 
 
 /**
- * The entry point for TutorMatching website.
+ * The entry point for TutorMatching web application.
  * A link to this application should be placed on the JLHS homepage.
  * It has 3 primary components
  *
