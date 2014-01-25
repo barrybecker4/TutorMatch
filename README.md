@@ -16,4 +16,4 @@ When the submit button is clicked, an email is sent to the following people.
 * To administrator(s) to notify of the new pairing and to review it.
 * Optionally, to the teacher who's course it is. The configuration can specify teachers that should be emails for specific courses.
 
-A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dGVBZjRlNE9nYkJObkc2N19tVTVMS3c&usp=drive_web#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
+A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dHZhWFFpaHZrSVp5V2lYSzlKWEZiSmc#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
