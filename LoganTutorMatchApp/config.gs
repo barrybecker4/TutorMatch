@@ -15,6 +15,7 @@ var config = createConfig(ScriptProperties.getProperty("CONFIG_SHEET_ID"));
  *   - tutorProfileFormUrl
  *   - tutorProfilesSpreadSheet
  *   - localizationSpreadSheet
+ *     loggingSpreadSheet
  *   - adminEmails
  *   - course: <course>    [Optional emails for individual courses]
  * 

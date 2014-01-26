@@ -105,3 +105,53 @@ function getAdminBodyText(selections, tutorInfo) {
     + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").";
   return body;
 }
+
+/**
+ * Write a row entry to the configured logging spreadsheet.
+ * If this is the first entry, an initial header row will also be written.
+ */
+function writeLogEntry(selections, tutorInfo) {
+  var sheet = SpreadsheetApp.openById(config.loggingSpreadSheet).getSheets()[0];
+  var lastRow = sheet.getLastRow();
+  Logger.log("logging to "+ config.loggingSpreadSheet + " lastRow = "+ lastRow);
+  
+  // if this is the first time the spreadsheet has been written to, add the header row
+  if (lastRow == 0) {
+    var headerRange = sheet.getRange("A1:G1");
+    headerRange.setValues([[
+        "Date", "Time", 
+        "Requester", "Requester Email", 
+        "Tutor Requested", "Tutor Email", 
+        "Course"
+    ]]);
+    lastRow = 2;
+  }
+  
+  // add the entry
+  var rowRange = sheet.getRange("A" + lastRow + ":G" + lastRow);
+  
+  var date = new Date();
+  rowRange.setValues([[
+      date.toLocaleDateString(), date.toLocaleTimeString(), 
+      selections.name, Session.getEffectiveUser().getEmail(),
+      tutorInfo.name, tutorInfo.email, 
+      selections.course
+  ]]);
+}
+
+/**
+ * Create the messages object that will be used to get localized strings.
+ * @returns configuration property map
+ */
+function createMessages(spreadSheetId) {
+  var msg = {};
+  
+  var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow(), sheet.getLastColumn());  
+  
+  initLocalesList(msg, cellData[0]);
+  initMessages(msg, cellData);
+  initCurrentLocale(msg);
+
+  return msg;
+}
+
