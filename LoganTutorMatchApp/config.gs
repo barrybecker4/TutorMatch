@@ -31,6 +31,8 @@ function createConfig(configSpreadSheetId) {
   for (var i=0; i < cellData.length; i++) {
     var row = cellData[i];
     Logger.log("row=" + row);
+    
+    // row[0] is the KEY and row[1] is the value
     cfg[row[0]] = row[1];
   }
   

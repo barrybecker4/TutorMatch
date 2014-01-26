@@ -1,8 +1,10 @@
 /**
  * Submit the request to match a tutor with a student needing tutoring.
- * This will send an email to the tutor, the student, and at least one administrator.
- * It could also automatically schedule Google Calendar events given time and place preferences,
- * but does not do this yet.
+ * This will do the following: 
+ *  - send an email to the tutor, the student, and at least one administrator.
+ *  - write a row to a logging configured logging spreadsheet that a request was made.
+ *  - Potentially automatically schedule Google Calendar events given time and place preferences, 
+ *    but does not do this yet.
  * @param selections - an object with properties for the selected subject, course, and tutor.
  * @param tutorInfo information about the selected tutor like name, gender, email, and phone.
  */
@@ -24,6 +26,8 @@ function createTutoringRequest(selections, tutorInfo) {
   if (config["course: " + selections.course]) {
     sendEmailToTeacher(selections, tutorInfo, config["course: " + selections.course]);
   }
+  
+  writeLogEntry(selections, tutorInfo);
   
   // should log an entry to a spreadsheet as well.
   Logger.log("done sending emails.");
