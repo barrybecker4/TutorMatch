@@ -124,10 +124,10 @@ function writeLogEntry(selections, tutorInfo) {
         "Tutor Requested", "Tutor Email", 
         "Course"
     ]]);
-    lastRow = 2;
   }
   
-  // add the entry
+  // add the entry at the position right after the last row
+  lastRow++;
   var rowRange = sheet.getRange("A" + lastRow + ":G" + lastRow);
   
   var date = new Date();
