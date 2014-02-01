@@ -76,7 +76,7 @@ messages.setLocale = function setLocale(locale) {
   
   UserProperties.setProperty(LOCALE_PROPERTY, locale);
   messages.currentLocale = locale;
-};
+}
 
 /**
  * If the translation is not found in the spreadsheet containing
@@ -112,4 +112,4 @@ messages.getLabel = function(key, substitutions) {
     result = key;
   }
   return result;
-};
+}
