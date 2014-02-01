@@ -11,7 +11,7 @@ function createTutoringRequestPage(app) {
                 .setId(TUTORING_REQUEST_PAGE)
                 .setStyleAttributes(css.body);
   
-  var title = app.createLabel(getMessages().getLabel("TUTORING_REQUEST_FORM"))
+  var title = app.createLabel(messages.getLabel("TUTORING_REQUEST_FORM"))
                  .setStyleAttributes(css.title);
   body.add(title);
                                
@@ -73,7 +73,7 @@ function createTutorDetailsPanel(app) {
  */
 function createNameField(app) {
   var panel = app.createHorizontalPanel();
-  var label = app.createLabel(getMessages().getLabel("WHAT_NAME"))
+  var label = app.createLabel(messages.getLabel("WHAT_NAME"))
                  .setStyleAttributes(css.text); 
   var textField = app.createTextBox()
                      .setName("nameField")
@@ -105,14 +105,14 @@ function nameFieldUpdateHandler(e) {
 
 /** some request form instructions to guide the user */
 function createInstructions(app) {
-  var instrText = getMessages().getLabel("REQUEST_PAGE_INSTR");
+  var instrText = messages.getLabel("REQUEST_PAGE_INSTR");
   return app.createLabel(instrText).setStyleAttributes(css.text);  
 }
 
 /** @returns a panel with the subject droplist and its label */
 function createSubjectSelection(app, dataMap) {
   
-  var text = getMessages().getLabel("SUBJECT_SELECT_INSTR"); 
+  var text = messages.getLabel("SUBJECT_SELECT_INSTR"); 
   var subjectDroplist = createDroplist(app, 'subjectDroplist');  
   populateDroplist(subjectDroplist, dataMap, true);
      
@@ -135,7 +135,7 @@ function subjectSelectedHandler(e) {
   
   var selectedSubject = e.parameter.subjectDroplist;
   
-  if (selectedSubject != getMessages().getLabel("NOT_SELECTED")) {
+  if (selectedSubject != messages.getLabel("NOT_SELECTED")) {
     var courseDroplist = app.getElementById("courseDroplist");
     courseDroplist.setTag(selectedSubject);
   
@@ -150,7 +150,7 @@ function subjectSelectedHandler(e) {
 /** @returns a panel with the course droplist and its label */
 function createCourseSelection(app, dataMap) {
   
-  var text = getMessages().getLabel("COURSE_SELECT_INSTR");
+  var text = messages.getLabel("COURSE_SELECT_INSTR");
   var courseDroplist = createDroplist(app, 'courseDroplist');  
   var panel = createSelectEntry(app, text, courseDroplist);
   
@@ -173,7 +173,7 @@ function courseSelectedHandler(e) {
   
   clearDownStreamSelections(app, ["tutorDroplist"]);
   
-  if (selectedCourse != getMessages().getLabel("NOT_SELECTED")) {  
+  if (selectedCourse != messages.getLabel("NOT_SELECTED")) {  
     var tutorDroplist = app.getElementById("tutorDroplist");
     tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
   
@@ -190,7 +190,7 @@ function courseSelectedHandler(e) {
 /** @returns a panel with the course droplist and its label */
 function createTutorSelection(app, dataMap) {
   
-  var text = getMessages().getLabel("TUTOR_SELECT_INSTR"); 
+  var text = messages.getLabel("TUTOR_SELECT_INSTR"); 
   var tutorDroplist = createDroplist(app, "tutorDroplist");  
   var panel = createSelectEntry(app, text, tutorDroplist);
   
@@ -212,7 +212,7 @@ function tutorSelectedHandler(e) {
   var app = UiApp.getActiveApplication();
   var selectedTutor = e.parameter.tutorDroplist;
   
-  if (selectedTutor != getMessages().getLabel("NOT_SELECTED")) {
+  if (selectedTutor != messages.getLabel("NOT_SELECTED")) {
     var selectedValues = e.parameter.tutorDroplist_tag;  
     var dataMap = JSON.parse(e.parameter.hiddenDataMap);
     var selections = JSON.parse(e.parameter.hiddenResult);
@@ -251,11 +251,11 @@ function showTutorDetails(app, tutorInfo) {
                      .setStyleAttributes(css.text)
                      .setStyleAttribute("paddingLeft", 50);
   var grid = createGrid(app, 5, 2);
-  createGridRow(app, grid, 0, getMessages().getLabel("NAME"), tutorInfo.name);
-  createGridRow(app, grid, 1, getMessages().getLabel("EMAIL"), tutorInfo.email);
-  createGridRow(app, grid, 2, getMessages().getLabel("AVAILABILITY"), tutorInfo.availability);
-  createGridRow(app, grid, 3, getMessages().getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
-  createGridRow(app, grid, 4, getMessages().getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
+  createGridRow(app, grid, 0, messages.getLabel("NAME"), tutorInfo.name);
+  createGridRow(app, grid, 1, messages.getLabel("EMAIL"), tutorInfo.email);
+  createGridRow(app, grid, 2, messages.getLabel("AVAILABILITY"), tutorInfo.availability);
+  createGridRow(app, grid, 3, messages.getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
+  createGridRow(app, grid, 4, messages.getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
   container.add(grid);
   
   details.add(container);
@@ -291,12 +291,12 @@ function createNavigationPanel(app) {
 
   var navigationPanel = app.createHorizontalPanel();
   
-  var backButton = app.createButton(getMessages().getLabel("BACK"))
+  var backButton = app.createButton(messages.getLabel("BACK"))
                       .setStyleAttributes(css.button);
   var fill = app.createHorizontalPanel().setWidth(600);
   
   // disabled until all the selections have been made.
-  var submitButton = app.createButton(getMessages().getLabel("SUBMIT"))
+  var submitButton = app.createButton(messages.getLabel("SUBMIT"))
                         .setId("submitButton")
                         .setEnabled(false)
                         .setStyleAttributes(css.buttonDisabled);
@@ -361,10 +361,10 @@ function createDroplist(app, name) {
  *    We should not try to translate things like tutor names though.
  */
 function populateDroplist(droplist, items, translate) {
-  droplist.addItem(getMessages().getLabel("NOT_SELECTED"));
+  droplist.addItem(messages.getLabel("NOT_SELECTED"));
   if (translate) {
     for (var value in items) {
-       droplist.addItem(getMessages().getLabel(value), value);
+       droplist.addItem(messages.getLabel(value), value);
     }
   }
   else {
@@ -430,9 +430,9 @@ function showConfirmationPopup(app) {
                       .setId("popupPanel");
   
   var panel = app.createVerticalPanel().setStyleAttributes(css.popup);
-  var label = app.createLabel(getMessages().getLabel("REQUEST_CONFIRMATION"))
+  var label = app.createLabel(messages.getLabel("REQUEST_CONFIRMATION"))
                  .setStyleAttributes(css.text);
-  var okButton = app.createButton(getMessages().getLabel("OK"))
+  var okButton = app.createButton(messages.getLabel("OK"))
                     .setStyleAttributes(css.button);
   
   var okHandler = app.createServerHandler('okClickHandler');

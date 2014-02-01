@@ -14,7 +14,7 @@ var config;
  */
 function getConfig() {
   if (!config) {
-    createConfig(ScriptProperties.getProperty("CONFIG_SHEET_ID"));
+    config = createConfig(ScriptProperties.getProperty("CONFIG_SHEET_ID"));
   }
   return config;
 }

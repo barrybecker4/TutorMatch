@@ -41,11 +41,11 @@ function sendEmailToRequester(selections, tutorInfo) {
   var requesterEmail = Session.getEffectiveUser().getEmail();
   Logger.log("sending mail to "+ requesterEmail);
 
-  var subject = getMessages().getLabel("REQUEST_CONFIRMATION_SUBJECT");
+  var subject = messages.getLabel("REQUEST_CONFIRMATION_SUBJECT");
 
   var substitutions = [selections.name, tutorInfo.name, tutorInfo.email, tutorInfo.phone];
   var msgKey = (tutorInfo.gender == "Male" ? "MALE" : "FEMALE") + "_TUTOR_REQUESTOR_MSG";
-  var body = getMessages().getLabel(msgKey , substitutions);
+  var body = messages.getLabel(msgKey , substitutions);
   
   MailApp.sendEmail(requesterEmail, subject, body);
 }

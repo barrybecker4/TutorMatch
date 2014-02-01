@@ -11,13 +11,13 @@ function createLandingPage(app) {
   var languageSelector = createLanguageSelector(app);
   body.add(languageSelector);
   
-  var title = app.createLabel(getMessages().getLabel("APP_TITLE"))
+  var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);
 
-  var instructions = app.createLabel(getMessages().getLabel("DO_YOU_WANT_TO"))
+  var instructions = app.createLabel(messages.getLabel("DO_YOU_WANT_TO"))
                         .setStyleAttributes(css.text);
 
-  var tutorButtonText = getMessages().getLabel("BE_AT_TUTOR");
+  var tutorButtonText = messages.getLabel("BE_AT_TUTOR");
   var tutorProfileLink = app.createAnchor(tutorButtonText, getConfig().tutorProfileFormUrl)
                             .setTarget("_self")
                             .setStyleAttributes(css.hiddenLink);
@@ -28,7 +28,7 @@ function createLandingPage(app) {
                             .add(tutorButton)
                             .add(tutorProfileLink);
                   
-  var tutoringButton = app.createButton(getMessages().getLabel("BE_TUTORED"))
+  var tutoringButton = app.createButton(messages.getLabel("BE_TUTORED"))
                   .setStyleAttributes(css.button);
                                              
   var grid = createGrid(app, 4);
@@ -91,12 +91,12 @@ function createLanguageSelector(app) {
                  .setStyleAttributes(css.languageLabel); 
   panel.add(label).add(languageDroplist);
      
-  for (var i=0; i<getMessages().localesList.length; i++) {
-    var locale = getMessages().localesList[i];
+  for (var i=0; i<messages.localesList.length; i++) {
+    var locale = messages.localesList[i];
     languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
   }
-  Logger.log("init language droplist with " + getMessages().currentLocale);
-  var index = getMessages().localesList.indexOf(getMessages().currentLocale);
+  Logger.log("init language droplist with " + messages.currentLocale);
+  var index = messages.localesList.indexOf(messages.currentLocale);
   languageDroplist.setItemSelected(index, true);
   
   var languageSelectedHandler = app.createServerHandler('languageSelectedHandler');
@@ -113,7 +113,7 @@ function languageSelectedHandler(e) {
   
   var app = UiApp.getActiveApplication();
   var selectedValue = e.parameter.languageDroplist;  
-  getMessages().setLocale(selectedValue);
+  messages.setLocale(selectedValue);
   
   // refresh the page by removing the body and recreating it with the new locale.
   app.remove(app.getElementById(LANDING_PAGE));
