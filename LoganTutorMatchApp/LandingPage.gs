@@ -95,7 +95,7 @@ function createLanguageSelector(app) {
     var locale = messages.localesList[i];
     languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
   }
-  Logger.log("init language droplist with " + messages.currentLocale);
+
   var index = messages.localesList.indexOf(messages.currentLocale);
   languageDroplist.setItemSelected(index, true);
   

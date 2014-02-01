@@ -40,7 +40,7 @@ function initLocalesList(msg, firstRow) {
   for (var j=1; j < firstRow.length; j++) {
     var locale = firstRow[j];
     localesList.push(locale);
-    Logger.log("adding obj for "+ locale);
+    //Logger.log("adding obj for "+ locale);
     msg[locale] = {};
   }
   msg["localesList"] = localesList;

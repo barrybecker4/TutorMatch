@@ -305,8 +305,9 @@ function createNavigationPanel(app) {
   navigationPanel.add(fill);
   navigationPanel.add(submitButton);
   
-  var backHandler = app.createServerHandler('backClickHandler');
-  backHandler.addCallbackElement(backButton);
+  var backHandler = app.createClientHandler()
+      .forTargets(app.getElementById(LANDING_PAGE)).setVisible(true)
+      .forTargets(app.getElementById(TUTORING_REQUEST_PAGE)).setVisible(false);
   backButton.addClickHandler(backHandler);
   
   var submitHandler = app.createServerHandler('submitClickHandler');
@@ -316,20 +317,6 @@ function createNavigationPanel(app) {
   submitButton.addClickHandler(submitHandler);
   
   return navigationPanel;
-}
-
-/**
- * Handler for when the back button is clicked.
- * Return to the main landing page
- */ 
-function backClickHandler(e) {
-  var app = UiApp.getActiveApplication();
-
-  app.getElementById(LANDING_PAGE).setVisible(true);
-  app.getElementById(TUTORING_REQUEST_PAGE).setVisible(false);
-
-  app.close();
-  return app;
 }
 
 /**
@@ -412,7 +399,6 @@ function submitClickHandler(e) {
     dataMap[selections.subject][selections.course][selections.tutor];
  
   createTutoringRequest(selections, tutorInfo);
-  
   showConfirmationPopup(app);
   
   app.close();
