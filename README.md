@@ -17,3 +17,4 @@ When the submit button is clicked, an email is sent to the following people.
 * Optionally, to the teacher who's course it is. The configuration can specify teachers that should be emails for specific courses.
 
 A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dHZhWFFpaHZrSVp5V2lYSzlKWEZiSmc#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
+ 
