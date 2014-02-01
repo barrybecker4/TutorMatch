@@ -2,10 +2,22 @@
  * Some global configuration properties for the TutorMatch application.
  * The parameter is the id to the spreadsheet containing the properties.
  * To protect the configuration file, set the CONFIG_SHEET_ID once, remove it, and
- * then only access it as a script property.
+ * then only access it as a script property. ScriptProperties are scoped per script 
+ * regardless of the user running it. 
+ * Do not access this variable directly. Instead use getConfig.
  */
 //ScriptProperties.setProperty("CONFIG_SHEET_ID", "<put your own configuration sheet id here>");
-var config = createConfig(ScriptProperties.getProperty("CONFIG_SHEET_ID"));
+var config;
+
+/**
+ * @return the config object. Created on first call using lazy initialization.
+ */
+function getConfig() {
+  if (!config) {
+    createConfig(ScriptProperties.getProperty("CONFIG_SHEET_ID"));
+  }
+  return config;
+}
 
 /**
  * Create the configuration object.

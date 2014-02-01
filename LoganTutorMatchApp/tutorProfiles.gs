@@ -17,7 +17,7 @@ var NBSP_REGEXP = new RegExp(String.fromCharCode(160), "g");
  */ 
 function getDataMap() {
   
-  var sheet = SpreadsheetApp.openById(config.tutorProfilesSpreadSheet)
+  var sheet = SpreadsheetApp.openById(getConfig().tutorProfilesSpreadSheet)
                             .getActiveSheet();
   var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 9);
   

@@ -22,9 +22,9 @@ function createTutoringRequest(selections, tutorInfo) {
   sendEmailToTutor(selections, tutorInfo);
   sendEmailToAdmins(selections, tutorInfo);
   
-  // Send email to the teacher who's course it is if one has been configured
-  if (config["course: " + selections.course]) {
-    sendEmailToTeacher(selections, tutorInfo, config["course: " + selections.course]);
+  // Send email to the teacher who's course it is if one has been configured 
+  if (getConfig()["course: " + selections.course]) {
+    sendEmailToTeacher(selections, tutorInfo, getConfig()["course: " + selections.course]);
   }
   
   writeLogEntry(selections, tutorInfo);
@@ -41,11 +41,11 @@ function sendEmailToRequester(selections, tutorInfo) {
   var requesterEmail = Session.getEffectiveUser().getEmail();
   Logger.log("sending mail to "+ requesterEmail);
 
-  var subject = messages.getLabel("REQUEST_CONFIRMATION_SUBJECT");
+  var subject = getMessages().getLabel("REQUEST_CONFIRMATION_SUBJECT");
 
   var substitutions = [selections.name, tutorInfo.name, tutorInfo.email, tutorInfo.phone];
   var msgKey = (tutorInfo.gender == "Male" ? "MALE" : "FEMALE") + "_TUTOR_REQUESTOR_MSG";
-  var body = messages.getLabel(msgKey , substitutions);
+  var body = getMessages().getLabel(msgKey , substitutions);
   
   MailApp.sendEmail(requesterEmail, subject, body);
 }
@@ -69,13 +69,13 @@ function sendEmailToTutor(selections, tutorInfo) {
 /** Notify the administrators that are configured that a request has been made */
 function sendEmailToAdmins(selections, tutorInfo) {
 
-  Logger.log("Sending mail to "+ config.adminEmails);
+  Logger.log("Sending mail to "+ getConfig().adminEmails);
   
   var subject = "Tutor Match between tutor " + tutorInfo.name + " and " + selections.name;
   var body = "TutorMatch Adminstrator, \n" + getAdminBodyText(selections, tutorInfo)
       + "\nRemaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".\n";
   
-  var emails = config.adminEmails.split(',');
+  var emails = getConfig().adminEmails.split(',');
   for (var i = 0; i < emails.length; i++) {
     MailApp.sendEmail(emails[i], subject, body);
   }
@@ -111,9 +111,9 @@ function getAdminBodyText(selections, tutorInfo) {
  * If this is the first entry, an initial header row will also be written.
  */
 function writeLogEntry(selections, tutorInfo) {
-  var sheet = SpreadsheetApp.openById(config.loggingSpreadSheet).getSheets()[0];
+  var sheet = SpreadsheetApp.openById(getConfig().loggingSpreadSheet).getSheets()[0];
   var lastRow = sheet.getLastRow();
-  Logger.log("logging to "+ config.loggingSpreadSheet + " lastRow = "+ lastRow);
+  Logger.log("logging to "+ getConfig().loggingSpreadSheet + " lastRow = "+ lastRow);
   
   // if this is the first time the spreadsheet has been written to, add the header row
   if (lastRow == 0) {

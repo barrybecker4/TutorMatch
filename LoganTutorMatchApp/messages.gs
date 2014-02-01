@@ -3,12 +3,22 @@
 var LOCALE_PROPERTY = "LOCALE";
 
 /**
- * A global instance that holds all the localized messages for the application
+ * The global instance. Do not access this directly. Instead use getMessages()
+ */
+var messages;
+
+/**
+ * @return An object that holds all the localized messages for the application
  * that are read from a spreadsheet specified by the configuration.
  * The order in which the local columns appear in the spreadsheet determine the
  * order in which they will appear in the language droplist.
  */
-var messages = createMessages(config.localizationSpreadSheet);
+function getMessages() {
+  if (!messages) {
+    messages = createMessages(getConfig().localizationSpreadSheet);
+  }
+  return messages;
+}
 
 /**
  * Create the messages object that will be used to get localized strings.
