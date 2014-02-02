@@ -19,7 +19,6 @@ function createMessages(spreadSheetId) {
   var msg = {};
   
   var sheet = SpreadsheetApp.openById(spreadSheetId).getActiveSheet(); 
-
   var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow(), sheet.getLastColumn());  
   
   initLocalesList(msg, cellData[0]);
@@ -76,7 +75,7 @@ messages.setLocale = function setLocale(locale) {
   
   UserProperties.setProperty(LOCALE_PROPERTY, locale);
   messages.currentLocale = locale;
-}
+};
 
 /**
  * If the translation is not found in the spreadsheet containing
@@ -112,4 +111,4 @@ messages.getLabel = function(key, substitutions) {
     result = key;
   }
   return result;
-}
+};

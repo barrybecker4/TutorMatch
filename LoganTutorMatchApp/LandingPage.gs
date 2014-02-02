@@ -58,15 +58,15 @@ function createGrid(app, numRows, numCols) {
   return grid; 
 }
 
-/** Handler for tutoring request button. Navigate to the request page. */ 
+/** 
+ * Handler for tutoring request button. 
+ * Remove the old request page, add a newly created one, and navigate to the it.
+ */ 
 function tutoringClickHandler(e) {
   var app = UiApp.getActiveApplication();
   
-  var tutoringRequestPage = app.getElementById(TUTORING_REQUEST_PAGE);
-  app.remove(tutoringRequestPage); 
-  tutoringRequestPage = createTutoringRequestPage(app);
-  
-  app.add(tutoringRequestPage);
+  app.remove(app.getElementById(TUTORING_REQUEST_PAGE)); 
+  app.add(createTutoringRequestPage(app));
   app.getElementById(LANDING_PAGE).setVisible(false);
   
   app.close();
