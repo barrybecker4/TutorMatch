@@ -316,6 +316,11 @@ function createNavigationPanel(app) {
                .addCallbackElement(app.getElementById("hiddenDataMap"));
   submitButton.addClickHandler(submitHandler);
   
+  // also add a quick client handler to disable the submit button to prevent multiple clicks.
+  var disableSubmitHandler = app.createClientHandler()
+      .forEventSource().setEnabled(false);
+  submitButton.addClickHandler(disableSubmitHandler);
+  
   return navigationPanel;
 }
 
@@ -422,7 +427,7 @@ function showConfirmationPopup(app) {
                     .setStyleAttributes(css.button);
   
   var okHandler = app.createServerHandler('okClickHandler');
-  okHandler.addCallbackElement(okButton);
+  //okHandler.addCallbackElement(okButton);
   okButton.addClickHandler(okHandler);
   
   panel.add(label).add(okButton);
@@ -439,6 +444,7 @@ function showConfirmationPopup(app) {
 function okClickHandler(e) {
   var app = UiApp.getActiveApplication();
   var popupPanel = app.getElementById("popupPanel");
+  Logger.log("now hiding ok dlg");
   popupPanel.hide();
   app.getElementById("subjectDroplist").setItemSelected(0, true);
   clearDownStreamSelections(app, ["courseDroplist", "tutorDroplist"]);
