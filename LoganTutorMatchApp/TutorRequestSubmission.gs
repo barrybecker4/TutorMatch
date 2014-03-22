@@ -7,6 +7,7 @@
  *    but does not do this yet.
  * @param selections - an object with properties for the selected subject, course, and tutor.
  * @param tutorInfo information about the selected tutor like name, gender, email, and phone.
+ * @return true if all emails successfully sent. False if quota limit exceeded or some other problem.
  */
 function createTutoringRequest(selections, tutorInfo) {
   
@@ -18,24 +19,33 @@ function createTutoringRequest(selections, tutorInfo) {
   Logger.log("Tutor email:" + tutorInfo.email);
   Logger.log("Tutor phone:" + tutorInfo.phone);
   
-  sendEmailToRequester(selections, tutorInfo);
-  sendEmailToTutor(selections, tutorInfo);
-  sendEmailToAdmins(selections, tutorInfo);
   
-  // Send email to the teacher who's course it is if one has been configured 
-  if (getConfig()["course: " + selections.course]) {
-    sendEmailToTeacher(selections, tutorInfo, getConfig()["course: " + selections.course]);
+  var success = sendEmailToRequester(selections, tutorInfo);
+  if (success) {
+      success = sendEmailToTutor(selections, tutorInfo);
+  }
+  if (success) {
+      success = sendEmailToAdmins(selections, tutorInfo);
   }
   
-  writeLogEntry(selections, tutorInfo);
+  // Send email to the teacher who's course it is if one has been configured 
+  if (success && getConfig()["course: " + selections.course]) {
+    success = sendEmailToTeacher(selections, tutorInfo, getConfig()["course: " + selections.course]);
+  }
   
-  // should log an entry to a spreadsheet as well.
-  Logger.log("done sending emails.");
+  if (success) {
+      writeLogEntry(selections, tutorInfo);
+  
+      // should log an entry to a spreadsheet as well.
+      Logger.log("done sending emails.");
+  }
+  return success;
 }
 
 /** 
  * Let the requester know that their request was processed, and
  * provide a link to a form where they can provide feedback.
+ * @return true if email successfully sent. 
  */
 function sendEmailToRequester(selections, tutorInfo) {
   var requesterEmail = Session.getEffectiveUser().getEmail();
@@ -47,10 +57,13 @@ function sendEmailToRequester(selections, tutorInfo) {
   var msgKey = (tutorInfo.gender == "Male" ? "MALE" : "FEMALE") + "_TUTOR_REQUESTOR_MSG";
   var body = messages.getLabel(msgKey , substitutions);
   
-  MailApp.sendEmail(requesterEmail, subject, body);
+  return sendEmail(requesterEmail, requesterEmail, subject, body);
 }
 
-/** Notify the tutor that his/her services have been requested. */
+/** 
+ * Notify the tutor that his/her services have been requested. 
+ * @return true if email successfully sent. 
+ */
 function sendEmailToTutor(selections, tutorInfo) {
   
   Logger.log("Sending mail to "+ tutorInfo.email);
@@ -63,10 +76,13 @@ function sendEmailToTutor(selections, tutorInfo) {
       + "If you are unable to tutor them, please let them know, so they can find an alternate.";
   
   var requesterEmail = Session.getEffectiveUser().getEmail();
-  MailApp.sendEmail(tutorInfo.email, requesterEmail, subject, body);
+  return sendEmail(tutorInfo.email, requesterEmail, subject, body);
 }
  
-/** Notify the administrators that are configured that a request has been made */
+/** 
+ * Notify the administrators that are configured that a request has been made 
+ * @return true if email(s) successfully sent.
+ */
 function sendEmailToAdmins(selections, tutorInfo) {
 
   Logger.log("Sending mail to "+ getConfig().adminEmails);
@@ -76,12 +92,18 @@ function sendEmailToAdmins(selections, tutorInfo) {
       + "\nRemaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".\n";
   
   var emails = getConfig().adminEmails.split(',');
+
   for (var i = 0; i < emails.length; i++) {
-    MailApp.sendEmail(emails[i], subject, body);
+    if (!sendEmail(emails[i], tutorInfo.email, subject, body))
+       return false;
   }
+  return true;
 }
 
-/** If a teacher(s) has been configured for this specific course, then send them an email too */
+/** 
+ * If a teacher(s) has been configured for this specific course, then send them an email too 
+ * @return true if all teacher emails successfully sent. 
+ */
 function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
   
   Logger.log("Sending teacher mail to "+ teacherEmails);
@@ -91,8 +113,10 @@ function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
   
   var emails = teacherEmails.split(',');
   for (var i = 0; i < emails.length; i++) {
-    MailApp.sendEmail(emails[i], tutorInfo.email, subject, body);
+    if (!sendEmail(emails[i], tutorInfo.email, subject, body))
+      return false;
   }
+  return true;
 }
 
 /** get the email body text for administrators and teachers */
@@ -107,36 +131,74 @@ function getAdminBodyText(selections, tutorInfo) {
 }
 
 /**
+ * Try to send the email to the specified recipient.
+ * If an error occurs (probably because a quota was hit) log the error.
+ * @return true if email successfully sent. False if quota exceeded or some other error.
+ */
+function sendEmail(toEmail, fromEmail, subject, body) {
+  try {
+    MailApp.sendEmail(toEmail, fromEmail, subject, String(body));
+  }
+  catch (error) {
+    writeErrorToLog(fromEmail, toEmail, subject, "Unable to send email. " + error.message);
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Write a row entry to the configured logging spreadsheet.
+ * If this is the first entry, an initial header row will also be written.
+ */
+function writeErrorToLog(fromEmail, toEmail, subject, errorMessage) {
+  var rowRange = getNextLogEntryToWriteTo();
+  
+  var date = new Date();
+  rowRange.setValues([[
+      date.toLocaleDateString(), date.toLocaleTimeString(), 
+      "", Session.getEffectiveUser().getEmail(),
+      subject, "", "", errorMessage
+  ]]);
+}
+
+/**
  * Write a row entry to the configured logging spreadsheet.
  * If this is the first entry, an initial header row will also be written.
  */
 function writeLogEntry(selections, tutorInfo) {
-  var sheet = SpreadsheetApp.openById(getConfig().loggingSpreadSheet).getSheets()[0];
-  var lastRow = sheet.getLastRow();
-  Logger.log("logging to "+ getConfig().loggingSpreadSheet + " lastRow = "+ lastRow);
-  
-  // if this is the first time the spreadsheet has been written to, add the header row
-  if (lastRow == 0) {
-    var headerRange = sheet.getRange("A1:G1");
-    headerRange.setValues([[
-        "Date", "Time", 
-        "Requester", "Requester Email", 
-        "Tutor Requested", "Tutor Email", 
-        "Course"
-    ]]);
-  }
-  
-  // add the entry at the position right after the last row
-  lastRow++;
-  var rowRange = sheet.getRange("A" + lastRow + ":G" + lastRow);
+  var rowRange = getNextLogEntryToWriteTo();
   
   var date = new Date();
   rowRange.setValues([[
       date.toLocaleDateString(), date.toLocaleTimeString(), 
       selections.name, Session.getEffectiveUser().getEmail(),
-      tutorInfo.name, tutorInfo.email, 
-      selections.course
+      tutorInfo.name, tutorInfo.email, selections.course, "-"
   ]]);
+}
+
+/**
+ * Open the spreadsheet and get the newly created next row.
+ * If this is the first time the spreadsheet has been written to, add the header row.
+ * @return the next row of cells in the logging spread sheet to write to.
+ */
+function getNextLogEntryToWriteTo() {
+  var sheet = SpreadsheetApp.openById(getConfig().loggingSpreadSheet).getSheets()[0];
+  var lastRow = sheet.getLastRow();
+  Logger.log("logging to "+ getConfig().loggingSpreadSheet + " lastRow = "+ lastRow);
+  
+  if (lastRow == 0) {
+    var headerRange = sheet.getRange("A1:H1");
+    headerRange.setValues([[
+        "Date", "Time", 
+        "Requester", "Requester Email", 
+        "Tutor Requested", "Tutor Email", 
+        "Course", "Message"
+    ]]);
+  }
+  
+  // add the entry at the position right after the last row
+  lastRow++;
+  return sheet.getRange("A" + lastRow + ":H" + lastRow);
 }
 
 /**

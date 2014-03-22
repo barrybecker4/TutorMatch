@@ -226,7 +226,7 @@ function tutorSelectedHandler(e) {
   }
   
   app.close();
-  return app;
+  return app; 
 }
 
 /** store off the current selections in the hiddenResult widget */
@@ -403,31 +403,31 @@ function submitClickHandler(e) {
   var tutorInfo = 
     dataMap[selections.subject][selections.course][selections.tutor];
  
-  createTutoringRequest(selections, tutorInfo);
-  showConfirmationPopup(app);
+  var success = createTutoringRequest(selections, tutorInfo);
+ 
+  showPopup(app, (success) ? "REQUEST_CONFIRMATION" : "REQUEST_FAILURE");
   
   app.close();
   return app;
 }
 
 /** 
- * Give some feedback that the request for tutoring was accepted.
+ * Give some feedback that the request for tutoring was accepted (or failed).
  * A modal dialog with a confirmation message is popped open.
  */
-function showConfirmationPopup(app) {
+function showPopup(app, messageKey) {
   
   // Create a popup panel and set it to be modal.
   var popupPanel = app.createPopupPanel(false, true)
                       .setId("popupPanel");
   
   var panel = app.createVerticalPanel().setStyleAttributes(css.popup);
-  var label = app.createLabel(messages.getLabel("REQUEST_CONFIRMATION"))
+  var label = app.createLabel(messages.getLabel(messageKey))
                  .setStyleAttributes(css.text);
   var okButton = app.createButton(messages.getLabel("OK"))
                     .setStyleAttributes(css.button);
   
   var okHandler = app.createServerHandler('okClickHandler');
-  //okHandler.addCallbackElement(okButton);
   okButton.addClickHandler(okHandler);
   
   panel.add(label).add(okButton);
@@ -444,7 +444,7 @@ function showConfirmationPopup(app) {
 function okClickHandler(e) {
   var app = UiApp.getActiveApplication();
   var popupPanel = app.getElementById("popupPanel");
-  Logger.log("now hiding ok dlg");
+  Logger.log("now hiding ok dialog");
   popupPanel.hide();
   app.getElementById("subjectDroplist").setItemSelected(0, true);
   clearDownStreamSelections(app, ["courseDroplist", "tutorDroplist"]);
