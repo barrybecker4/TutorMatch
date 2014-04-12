@@ -50,13 +50,20 @@ function createLandingPage(app) {
   return body;
 }
 
-/** @returns new grid container with one column and the specified number of rows  */
-function createGrid(app, numRows, numCols) {
+/** 
+ * @param app UiApp
+ * @param numRows number of rows in grid.
+ * @param numCols number of columns in grid.
+ * @param cellStyle the styling to use for the inner grid cells
+ * @returns new grid container with one column and the specified number of rows  
+ */
+function createGrid(app, numRows, numCols, cellStyle) {
   var numColumns = numCols ? numCols : 1;
+  var gridCellStyle = cellStyle ? cellStyle : css.largeGridCell;
   var grid = app.createGrid(numRows, numColumns).setStyleAttributes(css.grid);
   for (var i = 0; i<numRows; i++) {
     for (var j = 0; j<numColumns; j++) {
-      grid.setStyleAttributes(i, j, css.gridCell);
+      grid.setStyleAttributes(i, j, gridCellStyle);
     }
   } 
   return grid; 

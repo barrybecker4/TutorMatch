@@ -173,7 +173,7 @@ function parentEmailFieldUpdateHandler(e) {
   var app = UiApp.getActiveApplication(); 
   
   var currentResult = JSON.parse(e.parameter.hiddenResult);
-  currentResult.studentId = e.parameter.parentEmailField;
+  currentResult.parentEmailField = e.parameter.parentEmailField;
   
   setHiddenResultValue(app, currentResult);
   app.close();
@@ -181,7 +181,7 @@ function parentEmailFieldUpdateHandler(e) {
 }
 
 /**
- * Collect the user's parent pnone number.
+ * Collect the user's parent phone number.
  */
 function createParentPhoneField(app) {
   var panel = app.createHorizontalPanel();
@@ -201,13 +201,13 @@ function createParentPhoneField(app) {
 }
 
 /**
- * Handler that is call when the requester's parent phone nubmer has been entered.
+ * Handler that is call when the requester's parent phone number has been entered.
  */ 
 function parentPhoneFieldUpdateHandler(e) {
   var app = UiApp.getActiveApplication(); 
   
   var currentResult = JSON.parse(e.parameter.hiddenResult);
-  currentResult.studentId = e.parameter.parentPhoneField;
+  currentResult.parentPhoneField = e.parameter.parentPhoneField;
   
   setHiddenResultValue(app, currentResult);
   app.close();
@@ -354,7 +354,7 @@ function showTutorDetails(app, tutorInfo) {
   
   var container = app.createSimplePanel()
                      .setStyleAttribute("paddingLeft", 50);
-  var grid = createGrid(app, 6, 2);
+  var grid = createGrid(app, 6, 2, css.smallGridCell);
   createGridRow(app, grid, 0, messages.getLabel("NAME"), tutorInfo.name);
   createGridRow(app, grid, 1, messages.getLabel("GENDER"), tutorInfo.gender); 
   createGridRow(app, grid, 2, messages.getLabel("EMAIL"), tutorInfo.email);
