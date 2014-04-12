@@ -45,6 +45,11 @@ css.text = {
   fontSize: 20,  
 };
 
+css.smallText = { 
+    color: TEXT_COLOR,
+    fontSize: 12,  
+ };
+
 css.link = {
   padding: 10,
   fontSize: 20,

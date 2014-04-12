@@ -14,8 +14,6 @@ function createTutoringRequestPage(app) {
   var title = app.createLabel(messages.getLabel("TUTORING_REQUEST_FORM"))
                  .setStyleAttributes(css.title);
   body.add(title);
-                               
-  var grid = createGrid(app, 7);
    
   var dataMap = getDataMap(app);
   
@@ -28,14 +26,18 @@ function createTutoringRequestPage(app) {
   // this will become visible when a tutor is selected.
   var tutorDetails = createTutorDetailsPanel(app);
   
+  var grid = createGrid(app, 10);
   // Place the UI elements in the cells of the grid
-  grid.setWidget(0, 0, createNameField(app));
-  grid.setWidget(1, 0, createInstructions(app));
-  grid.setWidget(2, 0, createSubjectSelection(app, dataMap));  
-  grid.setWidget(3, 0, createCourseSelection(app, dataMap));   
-  grid.setWidget(4, 0, createTutorSelection(app, dataMap)); 
-  grid.setWidget(5, 0, tutorDetails); 
-  grid.setWidget(6, 0, navigationButtonPanel);  
+  grid.setWidget(0, 0, createAgreement(app));
+  grid.setWidget(1, 0, createNameField(app));
+  grid.setWidget(2, 0, createStudentIdField(app));
+  grid.setWidget(3, 0, createParentEmailField(app));
+  grid.setWidget(4, 0, createParentPhoneField(app));
+  grid.setWidget(5, 0, createSubjectSelection(app, dataMap));
+  grid.setWidget(6, 0, createCourseSelection(app, dataMap));
+  grid.setWidget(7, 0, createTutorSelection(app, dataMap)); 
+  grid.setWidget(8, 0, tutorDetails); 
+  grid.setWidget(9, 0, navigationButtonPanel);  
   body.add(grid);  
   
   return body;
@@ -64,6 +66,13 @@ function createTutorDetailsPanel(app) {
   var placeholder = app.createSimplePanel();
   detailsPanel.add(placeholder);
   return detailsPanel;
+}
+
+/** The tutee agreement detail. */
+function createAgreement(app) {
+  var instrText = messages.getLabel("TUTEE_AGREEMENT");
+  return app.createHTML(instrText)
+            .setStyleAttributes(css.smallText);
 }
 
 /**
@@ -98,15 +107,111 @@ function nameFieldUpdateHandler(e) {
   currentResult.name = e.parameter.nameField;
   
   setHiddenResultValue(app, currentResult);
- 
   app.close();
   return app;
 }
 
-/** some request form instructions to guide the user */
-function createInstructions(app) {
-  var instrText = messages.getLabel("REQUEST_PAGE_INSTR");
-  return app.createLabel(instrText).setStyleAttributes(css.text);  
+/**
+ * Collect the user's student id for identification and security purposes.
+ * @returns a label and text field where the user can supply their student id.
+ */
+function createStudentIdField(app) {
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel(messages.getLabel("WHAT_STUDENT_ID"))
+                 .setStyleAttributes(css.text); 
+  var textField = app.createTextBox()
+                     .setName("studentIdField")
+                     .setStyleAttributes(css.textbox);
+  
+  var fieldHandler = app.createServerHandler("studentIdFieldUpdateHandler");
+  fieldHandler.addCallbackElement(textField)
+              .addCallbackElement(app.getElementById("hiddenResult"));
+  textField.addValueChangeHandler(fieldHandler);
+  
+  panel.add(label).add(textField);
+  return panel;
+}
+
+/**
+ * Handler that is call when the requester's student id has been entered.
+ */ 
+function studentIdFieldUpdateHandler(e) {
+  var app = UiApp.getActiveApplication(); 
+  
+  var currentResult = JSON.parse(e.parameter.hiddenResult);
+  currentResult.studentId = e.parameter.studentIdField;
+  
+  setHiddenResultValue(app, currentResult);
+  app.close();
+  return app;
+}
+
+/**
+ * Collect the user's parent email.
+ */
+function createParentEmailField(app) {
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel(messages.getLabel("WHAT_PARENT_EMAIL"))
+                 .setStyleAttributes(css.text); 
+  var textField = app.createTextBox()
+                     .setName("parentEmailField")
+                     .setStyleAttributes(css.textbox);
+  
+  var fieldHandler = app.createServerHandler("parentEmailFieldUpdateHandler");
+  fieldHandler.addCallbackElement(textField)
+              .addCallbackElement(app.getElementById("hiddenResult"));
+  textField.addValueChangeHandler(fieldHandler);
+  
+  panel.add(label).add(textField);
+  return panel;
+}
+
+/**
+ * Handler that is call when the requester's parent email has been entered.
+ */ 
+function parentEmailFieldUpdateHandler(e) {
+  var app = UiApp.getActiveApplication(); 
+  
+  var currentResult = JSON.parse(e.parameter.hiddenResult);
+  currentResult.studentId = e.parameter.parentEmailField;
+  
+  setHiddenResultValue(app, currentResult);
+  app.close();
+  return app;
+}
+
+/**
+ * Collect the user's parent pnone number.
+ */
+function createParentPhoneField(app) {
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel(messages.getLabel("WHAT_PARENT_PHONE"))
+                 .setStyleAttributes(css.text); 
+  var textField = app.createTextBox()
+                     .setName("parentPhoneField")
+                     .setStyleAttributes(css.textbox);
+  
+  var fieldHandler = app.createServerHandler("parentPhoneFieldUpdateHandler");
+  fieldHandler.addCallbackElement(textField)
+              .addCallbackElement(app.getElementById("hiddenResult"));
+  textField.addValueChangeHandler(fieldHandler);
+  
+  panel.add(label).add(textField);
+  return panel;
+}
+
+/**
+ * Handler that is call when the requester's parent phone nubmer has been entered.
+ */ 
+function parentPhoneFieldUpdateHandler(e) {
+  var app = UiApp.getActiveApplication(); 
+  
+  var currentResult = JSON.parse(e.parameter.hiddenResult);
+  currentResult.studentId = e.parameter.parentPhoneField;
+  
+  setHiddenResultValue(app, currentResult);
+  app.close();
+  return app;
 }
 
 /** @returns a panel with the subject droplist and its label */
