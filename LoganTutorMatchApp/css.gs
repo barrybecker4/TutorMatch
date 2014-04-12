@@ -4,7 +4,7 @@
  */
 var css={};
 var TEXT_FONT = 'sans-serif';
-var TEXT_COLOR = '#007799';
+var TEXT_COLOR = '#0066aa';
 var DISABLED_TEXT_COLOR = '#bbbbbb';
 
 css.body = { 
@@ -21,16 +21,16 @@ css.grid = {
   //borderWidth: 1,
   //borderColor: 'aaaaaa',
   //borderStyle: 'solid',
-  width: 600
+  width: 640
 };
 
 css.gridCell = {
-  padding: 5,
-  margin: 10,
+  padding: 2,
+  margin: 5,
   fontFamily: TEXT_FONT,
   color: TEXT_COLOR,
-  borderWidth: 3,
-  borderColor: 'f8f8f8',
+  borderWidth: 2,
+  borderColor: 'e9e9ff',
   borderStyle: 'solid'
 };
 
@@ -47,7 +47,7 @@ css.text = {
 
 css.smallText = { 
     color: TEXT_COLOR,
-    fontSize: 12,  
+    fontSize: 12, 
  };
 
 css.link = {

@@ -73,7 +73,14 @@ function sendEmailToTutor(selections, tutorInfo) {
   var body = tutorInfo.name + ", " 
       + selections.name + " has requested " + selections.course + " tutoring from you. \n" 
       + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. \n"
-      + "If you are unable to tutor them, please let them know, so they can find an alternate.";
+      + "If you are unable to tutor them, please let them know, so they can find an alternate.\n\n"
+      + "Some possible reasons for denying a tutoring request:\n"
+      + "  - Too busy to take on new tutors. (If this is the case, please update your tutor profile " 
+      + "    to show \"unavailable\" or contact a tutoring administrator : " + getConfig().adminEmails + ").\n"
+      + "  - You may deny if they requst had missing or inaccurate information.\n"
+      + "  - Some other legitmate reason. Please be considerate when sending a response.\n\n"
+      + "If for any reason you find it necessary to contact their parent, You may do so using "
+      + selections.parentEmail + " / " + selections.parentPhone; 
   
   var requesterEmail = Session.getEffectiveUser().getEmail();
   return sendEmail(tutorInfo.email, requesterEmail, subject, body);
@@ -126,7 +133,9 @@ function getAdminBodyText(selections, tutorInfo) {
   var body = "A tutoring request for " + selections.course 
     + " has been submitted by " + selections.name + " (" + requesterEmail + ")"
     + " for tutoring by " 
-    + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").";
+    + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").\n"
+    + " The contact info for " + selections.name + "'s parent is "
+    + selections.parentEmail + " / " + selections.parentPhone;
   return body;
 }
 
@@ -157,7 +166,7 @@ function writeErrorToLog(fromEmail, toEmail, subject, errorMessage) {
   rowRange.setValues([[
       date.toLocaleDateString(), date.toLocaleTimeString(), 
       "", Session.getEffectiveUser().getEmail(),
-      subject, "", "", errorMessage
+      subject, "", "", errorMessage, "", "", ""
   ]]);
 }
 
@@ -172,7 +181,8 @@ function writeLogEntry(selections, tutorInfo) {
   rowRange.setValues([[
       date.toLocaleDateString(), date.toLocaleTimeString(), 
       selections.name, Session.getEffectiveUser().getEmail(),
-      tutorInfo.name, tutorInfo.email, selections.course, "-"
+      tutorInfo.name, tutorInfo.email, selections.course, "-", 
+      selections.studentId, selections.parentEmail, selections.parentPhone
   ]]);
 }
 
@@ -187,18 +197,18 @@ function getNextLogEntryToWriteTo() {
   Logger.log("logging to "+ getConfig().loggingSpreadSheet + " lastRow = "+ lastRow);
   
   if (lastRow == 0) {
-    var headerRange = sheet.getRange("A1:H1");
+    var headerRange = sheet.getRange("A1:K1");
     headerRange.setValues([[
         "Date", "Time", 
         "Requester", "Requester Email", 
         "Tutor Requested", "Tutor Email", 
-        "Course", "Message"
+        "Course", "Message", "Requestor StudentID", "Requestor ParentEmail", "Requestor ParentPhone"
     ]]);
   }
   
   // add the entry at the position right after the last row
   lastRow++;
-  return sheet.getRange("A" + lastRow + ":H" + lastRow);
+  return sheet.getRange("A" + lastRow + ":K" + lastRow);
 }
 
 /**

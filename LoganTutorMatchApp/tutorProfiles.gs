@@ -17,9 +17,10 @@ var NBSP_REGEXP = new RegExp(String.fromCharCode(160), "g");
  */ 
 function getDataMap() {
   
+  Logger.log("A");
   var sheet = SpreadsheetApp.openById(getConfig().tutorProfilesSpreadSheet)
                             .getActiveSheet();
-  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 9);
+  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 17);
   
   var dataMap = {};
   for (var i=0; i < cellData.length; i++) {
@@ -31,7 +32,8 @@ function getDataMap() {
         phone: row[3],
         foreignLanguages: row[5],
         availability: row[6],
-        graduationYear: row[7]
+        graduationYear: row[7],
+        status: row[16] // the 18th column is always status, but it is not a field in the form
     };
     var courseList = row[4];
     addToMap(dataMap, tutorInfo, courseList);
@@ -41,10 +43,10 @@ function getDataMap() {
 }
 
 /** 
- * parse the subjects and courses out of courseList and put them in the dataMap.
+ * Parse the subjects and courses out of courseList and put them in the dataMap.
  * The dataMap maps subjects to courses and courses to the tutors who can tutor them.
  */
-function addToMap(dataMap, tutorInfo, courseList) {
+function addToMap(dataMap, tutorInfo, courseList) { 
   
   courseList = courseList.replace(NBSP_REGEXP, " ");
   var courses = courseList.split(ENTRY_DELIM);
@@ -60,7 +62,8 @@ function addToMap(dataMap, tutorInfo, courseList) {
     if (!courseMap[course]) {
       courseMap[course] = {};
     }
-    if (!courseMap[course][tutorInfo.name]) {
+    Logger.log("name=" + tutorInfo.name+ " status=" + tutorInfo.status);
+    if (!courseMap[course][tutorInfo.name] && tutorInfo.status == 'AVAILABLE') {
       var tutorMap = courseMap[course];
       tutorMap[tutorInfo.name] = tutorInfo;
     }

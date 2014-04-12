@@ -353,14 +353,14 @@ function showTutorDetails(app, tutorInfo) {
   details.remove(0);
   
   var container = app.createSimplePanel()
-                     .setStyleAttributes(css.text)
                      .setStyleAttribute("paddingLeft", 50);
-  var grid = createGrid(app, 5, 2);
+  var grid = createGrid(app, 6, 2);
   createGridRow(app, grid, 0, messages.getLabel("NAME"), tutorInfo.name);
-  createGridRow(app, grid, 1, messages.getLabel("EMAIL"), tutorInfo.email);
-  createGridRow(app, grid, 2, messages.getLabel("AVAILABILITY"), tutorInfo.availability);
-  createGridRow(app, grid, 3, messages.getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
-  createGridRow(app, grid, 4, messages.getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
+  createGridRow(app, grid, 1, messages.getLabel("GENDER"), tutorInfo.gender); 
+  createGridRow(app, grid, 2, messages.getLabel("EMAIL"), tutorInfo.email);
+  createGridRow(app, grid, 3, messages.getLabel("AVAILABILITY"), tutorInfo.availability);
+  createGridRow(app, grid, 4, messages.getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
+  createGridRow(app, grid, 5, messages.getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
   container.add(grid);
   
   details.add(container);
@@ -368,8 +368,8 @@ function showTutorDetails(app, tutorInfo) {
 }
 
 function createGridRow(app, grid, rowIndex, firstVal, secondVal) {
-  grid.setWidget(rowIndex, 0, app.createLabel(firstVal));
-  grid.setWidget(rowIndex, 1, app.createLabel(secondVal));
+  grid.setWidget(rowIndex, 0, app.createLabel(firstVal).setStyleAttributes(css.smallText));
+  grid.setWidget(rowIndex, 1, app.createLabel(secondVal).setStyleAttributes(css.smallText));
 }
 
 /** hide the current tutor details panel */
