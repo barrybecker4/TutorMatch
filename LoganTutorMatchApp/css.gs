@@ -24,15 +24,26 @@ css.grid = {
   width: 640
 };
 
-css.gridCell = {
+css.smallGridCell = {
   padding: 2,
-  margin: 5,
+  margin: 4,
   fontFamily: TEXT_FONT,
   color: TEXT_COLOR,
-  borderWidth: 2,
-  borderColor: 'e9e9ff',
+  borderWidth: 1,
+  borderColor: TEXT_COLOR,
   borderStyle: 'solid'
 };
+
+css.largeGridCell = {
+    padding: 10,
+    margin: 5,
+    fontFamily: TEXT_FONT,
+    color: TEXT_COLOR,
+    borderWidth: 5,
+    borderColor: 'f3f3ff',
+    borderStyle: 'solid'
+  };
+
 
 css.title = {
   fontSize: 54,
