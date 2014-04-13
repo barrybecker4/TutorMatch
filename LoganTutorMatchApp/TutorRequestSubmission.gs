@@ -70,7 +70,7 @@ function sendEmailToTutor(selections, tutorInfo) {
 
   var subject = "Tutoring Request from " + selections.name;
 
-  var body = tutorInfo.name + ", " 
+  var body = tutorInfo.name + ",<br> " 
       + selections.name + " has requested " + selections.course + " tutoring from you. <br>" 
       + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. \n"
       + "If you are unable to tutor them, please let them know, so they can find an alternate.<br><br>"
