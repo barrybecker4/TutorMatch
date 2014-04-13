@@ -21,7 +21,7 @@ css.grid = {
   //borderWidth: 1,
   //borderColor: 'aaaaaa',
   //borderStyle: 'solid',
-  width: 640
+  width: 740
 };
 
 css.smallGridCell = {
@@ -46,7 +46,7 @@ css.largeGridCell = {
 
 
 css.title = {
-  fontSize: 54,
+  fontSize: 42,
   fontWeight: 'bold',
   padding: 20
 };
