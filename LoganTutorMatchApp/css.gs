@@ -39,8 +39,8 @@ css.largeGridCell = {
     margin: 5,
     fontFamily: TEXT_FONT,
     color: TEXT_COLOR,
-    borderWidth: 5,
-    borderColor: 'f3f3ff',
+    borderWidth: 3,
+    borderColor: 'f3f3fe',
     borderStyle: 'solid'
   };
 

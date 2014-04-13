@@ -17,7 +17,7 @@ var NBSP_REGEXP = new RegExp(String.fromCharCode(160), "g");
  */ 
 function getDataMap() {
   
-  Logger.log("A");
+  Logger.log("B");
   var sheet = SpreadsheetApp.openById(getConfig().tutorProfilesSpreadSheet)
                             .getActiveSheet();
   var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, 17);
@@ -26,16 +26,16 @@ function getDataMap() {
   for (var i=0; i < cellData.length; i++) {
     var row = cellData[i];
     var tutorInfo = {
-        name: row[0], 
-        gender: row[1], 
-        email:row[2], 
-        phone: row[3],
-        foreignLanguages: row[5],
-        availability: row[6],
-        graduationYear: row[7],
+        email:row[0], 
+        name: row[1], 
+        gender: row[2], 
+        phone: row[4],
+        graduationYear: row[5],
+        foreignLanguages: row[10],
+        availability: row[11],
         status: row[16] // the 18th column is always status, but it is not a field in the form
     };
-    var courseList = row[4];
+    var courseList = row[9];  
     addToMap(dataMap, tutorInfo, courseList);
   }
   

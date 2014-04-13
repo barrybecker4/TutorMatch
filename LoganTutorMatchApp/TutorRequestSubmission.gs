@@ -40,7 +40,7 @@ function createTutoringRequest(selections, tutorInfo) {
       Logger.log("done sending emails.");
   }
   return success;
-}
+} 
 
 /** 
  * Let the requester know that their request was processed, and
@@ -71,14 +71,14 @@ function sendEmailToTutor(selections, tutorInfo) {
   var subject = "Tutoring Request from " + selections.name;
 
   var body = tutorInfo.name + ", " 
-      + selections.name + " has requested " + selections.course + " tutoring from you. \n" 
+      + selections.name + " has requested " + selections.course + " tutoring from you. <br>" 
       + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. \n"
-      + "If you are unable to tutor them, please let them know, so they can find an alternate.\n\n"
-      + "Some possible reasons for denying a tutoring request:\n"
-      + "  - Too busy to take on new tutors. (If this is the case, please update your tutor profile " 
-      + "    to show \"unavailable\" or contact a tutoring administrator : " + getConfig().adminEmails + ").\n"
-      + "  - You may deny if they requst had missing or inaccurate information.\n"
-      + "  - Some other legitmate reason. Please be considerate when sending a response.\n\n"
+      + "If you are unable to tutor them, please let them know, so they can find an alternate.<br><br>"
+      + "Some possible reasons for denying a tutoring request:<ul>"
+      + "  <li>Too busy to take on new tutors. (If this is the case, please update your tutor profile " 
+      + "    to show \"unavailable\" or contact a tutoring administrator : " + getConfig().adminEmails + ").</li>"
+      + "  <li>You may deny them if their request had missing or inaccurate information.</li>"
+      + "  <li>Some other legitmate reason. Please be considerate when sending a response.</li></ul>"
       + "If for any reason you find it necessary to contact their parent, You may do so using "
       + selections.parentEmail + " / " + selections.parentPhone; 
   
@@ -144,9 +144,14 @@ function getAdminBodyText(selections, tutorInfo) {
  * If an error occurs (probably because a quota was hit) log the error.
  * @return true if email successfully sent. False if quota exceeded or some other error.
  */
-function sendEmail(toEmail, fromEmail, subject, body) {
+function sendEmail(toEmail, fromEmail, subject, htmlBody) {
   try {
-    MailApp.sendEmail(toEmail, fromEmail, subject, String(body));
+    //MailApp.sendEmail(toEmail, fromEmail, subject, String(htmlBody));
+    MailApp.sendEmail({
+        to: toEmail,
+        subject: subject,
+        htmlBody: htmlBody
+      });
   }
   catch (error) {
     writeErrorToLog(fromEmail, toEmail, subject, "Unable to send email. " + error.message);
