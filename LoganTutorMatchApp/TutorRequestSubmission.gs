@@ -201,8 +201,8 @@ function getNextLogEntryToWriteTo() {
   var lastRow = sheet.getLastRow();
   Logger.log("logging to "+ getConfig().loggingSpreadSheet + " lastRow = "+ lastRow);
   
-  if (lastRow == 0) {
-    var headerRange = sheet.getRange("A1:K1");
+  if (lastRow == 1) {
+    var headerRange = sheet.getRange("A1:K1"); 
     headerRange.setValues([[
         "Date", "Time", 
         "Requester", "Requester Email", 
