@@ -72,7 +72,7 @@ function sendEmailToTutor(selections, tutorInfo) {
 
   var body = tutorInfo.name + ",<br> " 
       + selections.name + " has requested " + selections.course + " tutoring from you. <br>" 
-      + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. \n"
+      + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. <br>"
       + "If you are unable to tutor them, please let them know, so they can find an alternate.<br><br>"
       + "Some possible reasons for denying a tutoring request:<ul>"
       + "  <li>Too busy to take on new tutors. (If this is the case, please update your tutor profile " 
@@ -95,8 +95,8 @@ function sendEmailToAdmins(selections, tutorInfo) {
   Logger.log("Sending mail to "+ getConfig().adminEmails);
   
   var subject = "Tutor Match between tutor " + tutorInfo.name + " and " + selections.name;
-  var body = "TutorMatch Adminstrator, \n" + getAdminBodyText(selections, tutorInfo)
-      + "\nRemaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".\n";
+  var body = "TutorMatch Adminstrator, <br>" + getAdminBodyText(selections, tutorInfo)
+      + "<br>Remaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".<br>";
   
   var emails = getConfig().adminEmails.split(',');
 
@@ -116,7 +116,7 @@ function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
   Logger.log("Sending teacher mail to "+ teacherEmails);
  
   var subject = "There was a Tutor Match made between tutor " + tutorInfo.name + " and " + selections.name;
-  var body = "Dear " + selections.course + " teacher,\n  " + getAdminBodyText(selections, tutorInfo);
+  var body = "Dear " + selections.course + " teacher,<br>  " + getAdminBodyText(selections, tutorInfo);
   
   var emails = teacherEmails.split(',');
   for (var i = 0; i < emails.length; i++) {
@@ -133,7 +133,7 @@ function getAdminBodyText(selections, tutorInfo) {
   var body = "A tutoring request for " + selections.course 
     + " has been submitted by " + selections.name + " (" + requesterEmail + ")"
     + " for tutoring by " 
-    + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").\n"
+    + tutorInfo.name + " ("  + tutorInfo.email + " / "+ tutorInfo.phone +").<br>"
     + " The contact info for " + selections.name + "'s parent is "
     + selections.parentEmail + " / " + selections.parentPhone;
   return body;
