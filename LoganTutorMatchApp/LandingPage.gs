@@ -8,8 +8,8 @@ function createLandingPage(app) {
                 .setStyleAttributes(css.body);
   
   // show a droplist for selecting a language
-  var languageSelector = createLanguageSelector(app);
-  body.add(languageSelector);
+  var languageSelector = createLanguageSelector(app); 
+  body.add(languageSelector); 
   
   var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);

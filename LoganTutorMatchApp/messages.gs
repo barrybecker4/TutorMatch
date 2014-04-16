@@ -54,15 +54,22 @@ function initMessages(msg, cellData) {
   for (var i=1; i < cellData.length; i++) {
     var row = cellData[i];
     for (var j=1; j < row.length; j++) {
-       msg[localesList[j-1]][row[0]] = row[j];
+       msg[localesList[j-1]][row[0]] = row[j]; 
     }
   }
 }
 
-/** use the locale from UserProperties if its there, else use the first available. */
+/** 
+ * use the locale from UserProperties if its there, else use the browser locale. 
+ */
 function initCurrentLocale(msg) {
-  msg.defaultLocale = msg.localesList[0];
+  
+//Log the language setting of the person running the script.
+  var locale = Session.getActiveUserLocale();
+  Logger.log("Users locale = " + locale);
+  msg.defaultLocale = locale; //msg.localesList[0];
 
+  
   var currentLocale = UserProperties.getProperty(LOCALE_PROPERTY);
   if (!currentLocale || msg.localesList.indexOf(currentLocale) < 0) {
     currentLocale = msg.defaultLocale;
