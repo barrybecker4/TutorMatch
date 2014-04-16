@@ -48,7 +48,7 @@ function createTutoringRequest(selections, tutorInfo) {
  * @return true if email successfully sent. 
  */
 function sendEmailToRequester(selections, tutorInfo) {
-  var requesterEmail = Session.getEffectiveUser().getEmail();
+  var requesterEmail = getUserEmail();
   Logger.log("sending mail to "+ requesterEmail);
 
   var subject = messages.getLabel("REQUEST_CONFIRMATION_SUBJECT");
@@ -82,7 +82,7 @@ function sendEmailToTutor(selections, tutorInfo) {
       + "If for any reason you find it necessary to contact their parent, You may do so using "
       + selections.parentEmail + " / " + selections.parentPhone; 
   
-  var requesterEmail = Session.getEffectiveUser().getEmail();
+  var requesterEmail = getUserEmail();
   return sendEmail(tutorInfo.email, requesterEmail, subject, body);
 }
  
@@ -129,7 +129,7 @@ function sendEmailToTeacher(selections, tutorInfo, teacherEmails) {
 /** get the email body text for administrators and teachers */
 function getAdminBodyText(selections, tutorInfo) {
   
-  var requesterEmail = Session.getEffectiveUser().getEmail();
+  var requesterEmail = getUserEmail();
   var body = "A tutoring request for " + selections.course 
     + " has been submitted by " + selections.name + " (" + requesterEmail + ")"
     + " for tutoring by " 
@@ -170,8 +170,7 @@ function writeErrorToLog(fromEmail, toEmail, subject, errorMessage) {
   var date = new Date();
   rowRange.setValues([[
       date.toLocaleDateString(), date.toLocaleTimeString(), 
-      "", Session.getEffectiveUser().getEmail(),
-      subject, "", "", errorMessage, "", "", ""
+      "", getUserEmail(), subject, "", "", errorMessage, "", "", ""
   ]]);
 }
 
@@ -185,7 +184,7 @@ function writeLogEntry(selections, tutorInfo) {
   var date = new Date();
   rowRange.setValues([[
       date.toLocaleDateString(), date.toLocaleTimeString(), 
-      selections.name, Session.getEffectiveUser().getEmail(),
+      selections.name, getUserEmail(),
       tutorInfo.name, tutorInfo.email, selections.course, "-", 
       selections.studentId, selections.parentEmail, selections.parentPhone
   ]]);
@@ -207,13 +206,22 @@ function getNextLogEntryToWriteTo() {
         "Date", "Time", 
         "Requester", "Requester Email", 
         "Tutor Requested", "Tutor Email", 
-        "Course", "Message", "Requestor StudentID", "Requestor ParentEmail", "Requestor ParentPhone"
+        "Course", "Message", "Requestor StudentID", "Requestor ParentEmail", "Requestor ParentPhone" 
     ]]);
   }
   
   // add the entry at the position right after the last row
   lastRow++;
   return sheet.getRange("A" + lastRow + ":K" + lastRow);
+}
+
+/**
+
+ * @return the email of the current user using the app
+ */
+function getUserEmail()
+{
+	return Session.getEffectiveUser().getEmail(); 
 }
 
 /**
