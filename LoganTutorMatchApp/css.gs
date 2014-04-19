@@ -35,13 +35,13 @@ css.smallGridCell = {
 };
 
 css.largeGridCell = {
-    padding: 10,
+    padding: 8,
     margin: 5,
     fontFamily: TEXT_FONT,
     color: TEXT_COLOR,
-    borderWidth: 3,
-    borderColor: 'f3f3fe',
-    borderStyle: 'solid'
+    //borderWidth: 3,
+    //borderColor: 'f3f3fe',
+    //borderStyle: 'solid'
   };
 
 
@@ -85,7 +85,7 @@ css.button = {
 css.buttonDisabled = {
   color: DISABLED_TEXT_COLOR,
   fontSize: 20,  
-  borderRadius: '6px'
+  borderRadius: '6px' 
 };
 
 css.textbox = {
@@ -113,17 +113,18 @@ css.droplist = {
 };
 
 css.languageLabel = {
-    marginLeft : 440,
-    paddingTop: 4,
-    fontSize: 11,
+    marginLeft : 500,
+    paddingTop: 1,
+    fontSize: 10,
     fontFamily: TEXT_FONT,
     color: TEXT_COLOR, 
   };
 
 css.languageDroplist = {
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: TEXT_FONT,
     color: TEXT_COLOR, 
+    
  };
 
 css.notification = {

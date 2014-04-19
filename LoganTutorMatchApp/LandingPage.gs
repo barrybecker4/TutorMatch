@@ -81,7 +81,7 @@ function tutoringClickHandler(e) {
   app.getElementById(LANDING_PAGE).setVisible(false);
   
   app.close();
-  return app;
+  return app; 
 }
 
 /**
@@ -98,16 +98,18 @@ function createLanguageSelector(app) {
                             .setId("languageDroplist")
                             .setStyleAttributes(css.languageDroplist);
   var panel = app.createHorizontalPanel();
-  var label = app.createLabel("Language :")
+  var label = app.createLabel(messages.getLabel("LANGUAGE") + " : ")
                  .setStyleAttributes(css.languageLabel); 
   panel.add(label).add(languageDroplist);
      
+  languageDroplist.addItem(messages.getLabel("DEFAULT"), DEFAULT);
   for (var i=0; i<messages.localesList.length; i++) {
     var locale = messages.localesList[i];
     languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
   }
 
-  var index = messages.localesList.indexOf(messages.currentLocale);
+  var selectedLocale = getSelectedLocale();
+  var index = selectedLocale == DEFAULT ? 0 : messages.localesList.indexOf(selectedLocale) + 1;
   languageDroplist.setItemSelected(index, true);
   
   var languageSelectedHandler = app.createServerHandler('languageSelectedHandler');
@@ -123,7 +125,7 @@ function createLanguageSelector(app) {
 function languageSelectedHandler(e) {
   
   var app = UiApp.getActiveApplication();
-  var selectedValue = e.parameter.languageDroplist;  
+  var selectedValue = e.parameter.languageDroplist;
   messages.setLocale(selectedValue);
   
   // refresh the page by removing the body and recreating it with the new locale.
