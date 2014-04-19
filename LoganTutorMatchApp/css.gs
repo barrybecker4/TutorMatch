@@ -16,7 +16,7 @@ css.body = {
 };
 
 css.grid = {
-  //padding: 10,
+  paddingBottom: 20,
   //margin: 10,
   //borderWidth: 1,
   //borderColor: 'aaaaaa',

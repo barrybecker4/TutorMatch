@@ -11,7 +11,7 @@ function createLandingPage(app) {
   var languageSelector = createLanguageSelector(app); 
   body.add(languageSelector); 
   
-  var title = app.createLabel(messages.getLabel("APP_TITLE")) 
+  var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);
   
   body.add(title);
@@ -33,7 +33,7 @@ function createLandingPage(app) {
  */
 function showContent(app, body) {
 
-  var instructions = app.createHTML(messages.getLabel("APP_INSTRUCTIONS")) 
+  var instructions = app.createHTML(messages.getLabel("APP_INSTRUCTIONS"))
                          .setStyleAttributes(css.smallText);
   
   var question = app.createLabel(messages.getLabel("DO_YOU_WANT_TO")) 
@@ -64,6 +64,22 @@ function showContent(app, body) {
   var tutoringHandler = app.createServerHandler('tutoringClickHandler');
   tutoringHandler.addCallbackElement(tutorButton);
   tutoringButton.addClickHandler(tutoringHandler);
+  
+  var feedbackInstructions = 
+    app.createHTML(messages.getLabel("FEEDBACK_INSTRUCTIONS")) 
+                           .setStyleAttributes(css.smallText); 
+  var tutorFeedbackAnchor = 
+    app.createAnchor(messages.getLabel("TUTOR_FEEDBACK_FORM"), 
+                     config.tutorSessionCompletedFormUrl);
+  var tuteeFeedbackAnchor = 
+    app.createAnchor(messages.getLabel("TUTEE_FEEDBACK_FORM"), 
+                     config.tuteeSessionCompletedFormUrl);
+  
+  var feedbackGrid = createGrid(app, 3);
+  feedbackGrid.setWidget(0, 0, feedbackInstructions);
+  feedbackGrid.setWidget(1, 0, tutorFeedbackAnchor);
+  feedbackGrid.setWidget(2, 0, tuteeFeedbackAnchor);
+  body.add(feedbackGrid);  
 }
 
 /**
