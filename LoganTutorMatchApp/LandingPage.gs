@@ -11,17 +11,36 @@ function createLandingPage(app) {
   var languageSelector = createLanguageSelector(app); 
   body.add(languageSelector); 
   
-  var title = app.createLabel(messages.getLabel("APP_TITLE"))
+  var title = app.createLabel(messages.getLabel("APP_TITLE")) 
                  .setStyleAttributes(css.title);
-
-  var instructions = app.createHTML(messages.getLabel("APP_INSTRUCTIONS"))
-                        .setStyleAttributes(css.smallText);
   
-  var question = app.createLabel(messages.getLabel("DO_YOU_WANT_TO"))
+  body.add(title);
+  if (isValidUser()) {
+    showContent(app, body); 
+  }
+  else {
+    var warning = app.createLabel(messages.getLabel("INVALID_USER_WARNING")) 
+                     .setStyleAttributes(css.warning);
+    body.add(warning);
+  }
+  
+  return body;
+}
+
+/**
+ * Show the instructions and user options. There is a button for the tutor, and one for the tutee. 
+ * @param body widget to add UI elements to.
+ */
+function showContent(app, body) {
+
+  var instructions = app.createHTML(messages.getLabel("APP_INSTRUCTIONS")) 
+                         .setStyleAttributes(css.smallText);
+  
+  var question = app.createLabel(messages.getLabel("DO_YOU_WANT_TO")) 
                     .setStyleAttributes(css.text);
 
   var tutorButtonText = messages.getLabel("BE_AT_TUTOR");
-  var tutorProfileLink = app.createAnchor(tutorButtonText, getConfig().tutorProfileFormUrl)
+  var tutorProfileLink = app.createAnchor(tutorButtonText, getConfig().tutorProfileFormUrl)   
                             .setTarget("_self")
                             .setStyleAttributes(css.hiddenLink);
   
@@ -29,14 +48,12 @@ function createLandingPage(app) {
                        .setStyleAttributes(css.button);
   var tutorButtonPanel = app.createVerticalPanel().setStyleAttributes(css.buttonPanel)
                             .add(tutorButton)
-                            .add(tutorProfileLink);
+                            .add(tutorProfileLink); 
                   
   var tutoringButton = app.createButton(messages.getLabel("BE_TUTORED"))
                   .setStyleAttributes(css.button);
 
   var grid = createGrid(app, 4);
-  
-  body.add(title);
   
   grid.setWidget(0, 0, instructions);
   grid.setWidget(1, 0, question);
@@ -47,7 +64,17 @@ function createLandingPage(app) {
   var tutoringHandler = app.createServerHandler('tutoringClickHandler');
   tutoringHandler.addCallbackElement(tutorButton);
   tutoringButton.addClickHandler(tutoringHandler);
-  return body;
+}
+
+/**
+ * @return true if the user is in the configured domain.
+ */
+function isValidUser() {
+  var email = getUserEmail();
+  var indexAt = email.indexOf("@") + 1;
+  var domain = email.substring(indexAt);
+  Logger.log("domain=" + domain + " config.domain="+ config.domain);
+  return (domain == config.domain);
 }
 
 /** 

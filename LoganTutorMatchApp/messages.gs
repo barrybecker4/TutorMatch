@@ -79,7 +79,7 @@ function initCurrentLocale(msg) {
   
   var defaultLocale = getDefaultLocale(msg);
   Logger.log("Locales: User=" + userLocale + " first=" + msg.firstLocale 
-      +" default=" +defaultLocale +" selected=" + selectedLocale);
+      +" default=" +defaultLocale +" selected=" + selectedLocale); 
   
   if (!selectedLocale || selectedLocale == DEFAULT) {
     selectedLocale = defaultLocale;

@@ -33,6 +33,7 @@ function getConfig() {
  *   - loggingSpreadSheet
  *   - tutoringSessionCompleteFormUrl
  *   - tuteeSessionCompleteFormUrl 
+ *   - domain
  *   - adminEmails
  *   - course: <course>   [Optional emails for individual courses]
  * 
@@ -49,7 +50,7 @@ function createConfig(configSpreadSheetId) {
   
   for (var i=0; i < cellData.length; i++) {
     var row = cellData[i];
-    Logger.log("value="+ row[1]);
+    Logger.log("key=" + row[0] + " value="+ row[1]);
     // row[0] is the KEY and row[1] is the value
     cfg[row[0]] = row[1];
   }

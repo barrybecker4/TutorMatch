@@ -61,6 +61,11 @@ css.smallText = {
     fontSize: 12, 
  };
 
+css.warning = { 
+    color: '#ff4400',
+    fontSize: 24,  
+};
+
 css.link = {
   padding: 10,
   fontSize: 20,

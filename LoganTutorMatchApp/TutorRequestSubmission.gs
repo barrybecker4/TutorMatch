@@ -72,7 +72,7 @@ function sendEmailToTutor(selections, tutorInfo) {
 
   var body = tutorInfo.name + ",<br> " 
       + selections.name + " has requested " + selections.course + " tutoring from you. <br>" 
-      + "If you are willing to tutor them, respond to this email with a propsed meeting time and place. <br>"
+      + "If you are willing to tutor him/her, respond to this email with a proposed meeting time and place. <br>"
       + "If you are unable to tutor them, please let them know, so they can find an alternate.<br><br>"
       + "Some possible reasons for denying a tutoring request:<ul>"
       + "  <li>Too busy to take on new tutors. (If this is the case, please update your tutor profile " 
@@ -216,7 +216,6 @@ function getNextLogEntryToWriteTo() {
 }
 
 /**
-
  * @return the email of the current user using the app
  */
 function getUserEmail()
