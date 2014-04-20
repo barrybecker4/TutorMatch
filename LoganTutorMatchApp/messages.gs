@@ -26,7 +26,7 @@ function createMessages(spreadSheetId) {
   var msg = {};
   
   var sheet = SpreadsheetApp.openById(spreadSheetId).getActiveSheet(); 
-  var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow(), sheet.getLastColumn());  
+  var cellData = sheet.getSheetValues(1, 1, sheet.getLastRow(), sheet.getLastColumn());
   
   initLocalesList(msg, cellData[0]);
   initMessages(msg, cellData);

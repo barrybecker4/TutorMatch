@@ -358,7 +358,7 @@ function showTutorDetails(app, tutorInfo) {
   createGridRow(app, grid, 0, messages.getLabel("NAME"), tutorInfo.name);
   createGridRow(app, grid, 1, messages.getLabel("GENDER"), tutorInfo.gender); 
   createGridRow(app, grid, 2, messages.getLabel("EMAIL"), tutorInfo.email);
-  createGridRow(app, grid, 3, messages.getLabel("AVAILABILITY"), tutorInfo.availability);
+  createGridRow(app, grid, 3, messages.getLabel("AVAILABILITY"), tutorInfo.whenAvailable);
   createGridRow(app, grid, 4, messages.getLabel("ALT_LANGUAGE"), tutorInfo.foreignLanguages);
   createGridRow(app, grid, 5, messages.getLabel("GRAD_YEAR"), tutorInfo.graduationYear);
   container.add(grid);

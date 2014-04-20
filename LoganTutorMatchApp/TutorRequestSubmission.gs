@@ -98,7 +98,7 @@ function sendEmailToAdmins(selections, tutorInfo) {
   var body = "TutorMatch Adminstrator, <br>" + getAdminBodyText(selections, tutorInfo)
       + "<br>Remaining email quota for today is " + MailApp.getRemainingDailyQuota() + ".<br>";
   
-  var emails = getConfig().adminEmails.split(',');
+  var emails = getConfig().adminEmails.split(','); 
 
   for (var i = 0; i < emails.length; i++) {
     if (!sendEmail(emails[i], tutorInfo.email, subject, body))

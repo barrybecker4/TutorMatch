@@ -124,7 +124,7 @@ css.droplist = {
 };
 
 css.languageLabel = {
-    marginLeft : 400,
+    marginLeft : 500,
     paddingTop: 1,
     fontSize: 10,
     fontFamily: TEXT_FONT,

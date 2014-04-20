@@ -7,9 +7,8 @@ function createLandingPage(app) {
                 .setId(LANDING_PAGE)
                 .setStyleAttributes(css.body);
   
-  // show a droplist for selecting a language
-  var languageSelector = createLanguageSelector(app); 
-  body.add(languageSelector); 
+  var header = createHeader(app); 
+  body.add(header); 
   
   var title = app.createLabel(messages.getLabel("APP_TITLE"))
                  .setStyleAttributes(css.title);
@@ -24,7 +23,7 @@ function createLandingPage(app) {
     body.add(warning);
   }
   
-  return body;
+  return body; 
 }
 
 /**
@@ -61,31 +60,44 @@ function showContent(app, body) {
   grid.setWidget(3, 0, tutoringButton);
   body.add(grid);  
   
-  var tutoringHandler = app.createServerHandler('tutoringClickHandler');
+  var tutoringHandler = app.createServerHandler('tutoringClickHandler'); 
   tutoringHandler.addCallbackElement(tutorButton);
   tutoringButton.addClickHandler(tutoringHandler);
   
+  body.add(createFeedbackLinks(app));
+}
+
+/**
+ * Allow the tutor or tutee to provide feedback on tutor sessions.
+ * @return a panel containing some instructional test and feedback form links.
+ */
+function createFeedbackLinks(app) {
   var flow = app.createFlowPanel().setStyleAttributes(css.flowPanel);  
   flow.add(app.createInlineLabel(messages.getLabel("TUTOR_FEEDBACK_LEAD")));
   flow.add(app.createAnchor(messages.getLabel("TUTOR_FEEDBACK_LINK"), 
       config.tutorSessionCompletedFormUrl));
   flow.add(app.createInlineLabel(". "));
   flow.add(app.createInlineLabel(messages.getLabel("TUTEE_FEEDBACK_LEAD")));
-  flow.add(app.createAnchor(messages.getLabel("TUTEE_FEEDBACK_LINK"), 
+  flow.add(app.createAnchor(messages.getLabel("TUTEE_FEEDBACK_LINK"),
       config.tuteeSessionCompletedFormUrl));
   flow.add(app.createInlineLabel("."));
-  body.add(flow);
+  return flow; 
 }
 
 /**
+ * The user is valid if there is a specified domain configured,
+ * and the user's domain matches it. If no domain configured,
+ * then anyone matches and valid is always true.
  * @return true if the user is in the configured domain.
  */
 function isValidUser() {
   var email = getUserEmail();
   var indexAt = email.indexOf("@") + 1;
   var domain = email.substring(indexAt);
-  Logger.log("domain=" + domain + " config.domain="+ config.domain);
-  return (domain == config.domain);
+  var valid = !config.domain || (domain == config.domain); 
+  Logger.log("domain=" + domain + " config.domain=" + config.domain + " valid=" + valid + "");
+  
+  return valid;
 }
 
 /** 
@@ -123,11 +135,32 @@ function tutoringClickHandler(e) {
 }
 
 /**
+ * The header shows the id of the user, and a language selector.
+ * @returns a panel that contains the header row at the top.
+ */
+function createHeader(app) {
+  
+  var languageDroplist = createLanguageSelector(app);
+  var panel = app.createHorizontalPanel();
+  var label = app.createLabel(messages.getLabel("LANGUAGE") + " : ")
+                 .setStyleAttributes(css.languageLabel); 
+  
+  var email = getUserEmail();
+  var id = email.substring(0, email.indexOf("@"));
+  var emailLabel = app.createLabel(id)
+                      .setStyleAttributes(css.emailLabel); 
+  
+  panel.add(emailLabel).add(label).add(languageDroplist);
+  
+  return panel;
+} 
+
+/**
  * Allows selecting the default language for a user.
  * The selection will be persisted in UserProperties. 
  * In the process of creating this selector the users current locale
  * is set. If it was previously set, then that value will be used.
- * @returns a panel that contains the selector.
+ * @returns a droplist that allows selecting a locale (i.e. language).
  */
 function createLanguageSelector(app) {
   
@@ -135,14 +168,7 @@ function createLanguageSelector(app) {
                             .setName("languageDroplist")
                             .setId("languageDroplist")
                             .setStyleAttributes(css.languageDroplist);
-  var panel = app.createHorizontalPanel();
-  var label = app.createLabel(messages.getLabel("LANGUAGE") + " : ")
-                 .setStyleAttributes(css.languageLabel); 
-  panel.add(label).add(languageDroplist);
-  var emailLabel = app.createLabel(getUserEmail())
-                      .setStyleAttributes(css.emailLabel); 
-  panel.add(emailLabel);
-     
+
   languageDroplist.addItem(messages.getLabel("DEFAULT"), DEFAULT);
   for (var i=0; i<messages.localesList.length; i++) {
     var locale = messages.localesList[i];
@@ -157,7 +183,7 @@ function createLanguageSelector(app) {
   languageSelectedHandler.addCallbackElement(languageDroplist);
   languageDroplist.addChangeHandler(languageSelectedHandler);
   
-  return panel;
+  return languageDroplist;
 }
 
 /**
