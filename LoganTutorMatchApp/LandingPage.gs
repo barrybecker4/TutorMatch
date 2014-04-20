@@ -65,21 +65,16 @@ function showContent(app, body) {
   tutoringHandler.addCallbackElement(tutorButton);
   tutoringButton.addClickHandler(tutoringHandler);
   
-  var feedbackInstructions = 
-    app.createHTML(messages.getLabel("FEEDBACK_INSTRUCTIONS")) 
-                           .setStyleAttributes(css.smallText); 
-  var tutorFeedbackAnchor = 
-    app.createAnchor(messages.getLabel("TUTOR_FEEDBACK_FORM"), 
-                     config.tutorSessionCompletedFormUrl);
-  var tuteeFeedbackAnchor = 
-    app.createAnchor(messages.getLabel("TUTEE_FEEDBACK_FORM"), 
-                     config.tuteeSessionCompletedFormUrl);
-  
-  var feedbackGrid = createGrid(app, 3);
-  feedbackGrid.setWidget(0, 0, feedbackInstructions);
-  feedbackGrid.setWidget(1, 0, tutorFeedbackAnchor);
-  feedbackGrid.setWidget(2, 0, tuteeFeedbackAnchor);
-  body.add(feedbackGrid);  
+  var flow = app.createFlowPanel().setStyleAttributes(css.flowPanel);  
+  flow.add(app.createInlineLabel(messages.getLabel("TUTOR_FEEDBACK_LEAD")));
+  flow.add(app.createAnchor(messages.getLabel("TUTOR_FEEDBACK_LINK"), 
+      config.tutorSessionCompletedFormUrl));
+  flow.add(app.createInlineLabel(". "));
+  flow.add(app.createInlineLabel(messages.getLabel("TUTEE_FEEDBACK_LEAD")));
+  flow.add(app.createAnchor(messages.getLabel("TUTEE_FEEDBACK_LINK"), 
+      config.tuteeSessionCompletedFormUrl));
+  flow.add(app.createInlineLabel("."));
+  body.add(flow);
 }
 
 /**
@@ -129,7 +124,7 @@ function tutoringClickHandler(e) {
 
 /**
  * Allows selecting the default language for a user.
- * The selection will be persisted in UserProperties.
+ * The selection will be persisted in UserProperties. 
  * In the process of creating this selector the users current locale
  * is set. If it was previously set, then that value will be used.
  * @returns a panel that contains the selector.
@@ -144,6 +139,9 @@ function createLanguageSelector(app) {
   var label = app.createLabel(messages.getLabel("LANGUAGE") + " : ")
                  .setStyleAttributes(css.languageLabel); 
   panel.add(label).add(languageDroplist);
+  var emailLabel = app.createLabel(getUserEmail())
+                      .setStyleAttributes(css.emailLabel); 
+  panel.add(emailLabel);
      
   languageDroplist.addItem(messages.getLabel("DEFAULT"), DEFAULT);
   for (var i=0; i<messages.localesList.length; i++) {

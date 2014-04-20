@@ -4,24 +4,22 @@
  */
 var css={};
 var TEXT_FONT = 'sans-serif';
-var TEXT_COLOR = '#0066aa';
+var TEXT_COLOR = '#0088aa';
 var DISABLED_TEXT_COLOR = '#bbbbbb';
+var MAX_WIDTH = 740;
 
 css.body = { 
   margin:'20px auto',
   border: '1px solid #ccc',
   padding:'10px',
   fontFamily: TEXT_FONT,
-  color: TEXT_COLOR,
+  color: TEXT_COLOR, 
 };
 
 css.grid = {
   paddingBottom: 20,
   //margin: 10,
-  //borderWidth: 1,
-  //borderColor: 'aaaaaa',
-  //borderStyle: 'solid',
-  width: 740
+  width: MAX_WIDTH
 };
 
 css.smallGridCell = {
@@ -35,14 +33,14 @@ css.smallGridCell = {
 };
 
 css.largeGridCell = {
-    padding: 8,
-    margin: 5,
-    fontFamily: TEXT_FONT,
-    color: TEXT_COLOR,
-    //borderWidth: 3,
-    //borderColor: 'f3f3fe',
-    //borderStyle: 'solid'
-  };
+  padding: 10,
+  margin: 5,
+  fontFamily: TEXT_FONT,
+  color: TEXT_COLOR,
+  //borderWidth: 3,
+  //borderColor: 'f3f3fe',
+  //borderStyle: 'solid'
+};
 
 
 css.title = {
@@ -94,11 +92,19 @@ css.buttonDisabled = {
 };
 
 css.textbox = {
-    marginLeft: 24,
-    fontSize: 20,
-    //fontFamily: TEXT_FONT,
-    color: TEXT_COLOR, 
-  };
+  marginLeft: 24,
+  fontSize: 20,
+  //fontFamily: TEXT_FONT,
+  color: TEXT_COLOR, 
+};
+
+css.flowPanel = {
+  padding: 10,
+  width: MAX_WIDTH, 
+  //borderWidth: 1,
+  //borderColor: 'aaaaaa',
+  //borderStyle: 'solid',
+};
 
 css.popup = {
     padding: 40,
@@ -118,7 +124,15 @@ css.droplist = {
 };
 
 css.languageLabel = {
-    marginLeft : 500,
+    marginLeft : 400,
+    paddingTop: 1,
+    fontSize: 10,
+    fontFamily: TEXT_FONT,
+    color: TEXT_COLOR, 
+  };
+
+css.emailLabel = {
+    marginLeft : 20,
     paddingTop: 1,
     fontSize: 10,
     fontFamily: TEXT_FONT,
