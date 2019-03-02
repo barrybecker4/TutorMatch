@@ -1,18 +1,28 @@
 /**
  * Serves HTML of the application for HTTP GET requests.
+ * Get "LandingPage", or a requested page using 'page' parameter in query string.
  *
  * @param {Object} e event parameter that can contain information
  *                 about any URL parameters provided.
+ * @returns {String/html} Html to be served
  */
 function doGet(e) {
-  var template = HtmlService.createTemplateFromFile('LandingPage');
+
+  Logger.log( Utilities.jsonStringify(e) );
+
+  var pageName = e.parameter.page ? e.parameter['page'] : 'LandingPage';
 
   // Build and return HTML in IFRAME sandbox mode.
-  return template.evaluate()
-      .setTitle('TutorMatch App')
+  return HtmlService.createTemplateFromFile(pageName).evaluate()
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 }
 
+/**
+ * Get the URL for this Google Apps Script running as a WebApp.
+ */
+function getAppUrl() {
+  return ScriptApp.getService().getUrl();
+}
 
 /**
  * @return all data from first spreadsheet as an array. Can be used

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <title>Tutoring Request</title>
+</head>
+<body>
+
+<!--
+ * Make a request for tutoring.
+-->
+
+<div class="title">Make a Tutoring Request</div>
+<div class="text">
+    blah...
+</div>
+<div class="text">
+    Do you want to...
+</div>
+
+
+<?var url = getAppUrl();?><a href='<?=url?>?page=LandingPage'><button class="text">go back to landing page</button></a>
+
+
+<br>
+<button class="text">be tutored?</button>
+<br><br>
+
+</body>
+</html>
+
+<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('common.js').getContent(); ?>
+

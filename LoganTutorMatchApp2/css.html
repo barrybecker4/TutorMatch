@@ -21,9 +21,7 @@ body {
   margin: 4;
   font-family: sans-serif;
   color: #0088aa;
-  borderWidth: 1;
-  borderColor: #0088aa;
-  borderStyle: solid;
+  border: 1px solid #0088aa;
 }
 
 .largeGridCell {
@@ -31,20 +29,29 @@ body {
   margin: 5;
   font-family: sans-serif;
   color: #0088aa;
-  border-width: 3;
-  border-color: #f3f3fe;
-  border-style: solid;
+  border: 3px solid #f3f3fe;
 }
 
 .title {
   font-size: 42px;
   font-weight: bold;
   padding: 20px;
+  //border: 1px solid #0088aa;
 }
 
 .text {
   color: #0088aa;
   font-size: 20px;
+  padding: 20px;
+  /*border: 1px solid #0088aa;*/
+}
+
+button.text {
+  text-align: center;
+  line-height: 2px;
+  margin: 15px;
+  border: 1px solid #0088aa;
+  cursor: pointer;
 }
 
 .smallText {
@@ -93,16 +100,12 @@ body {
 .flowPanel {
   padding: 10;
   width: 740;
-  border-width: 1;
-  border-color: #aaaaaa;
-  border-style: 'solid';
+  border: 1px solid #aaaaaa;
 }
 
 .popup {
   padding: 40;
-  border-width: 3;
-  border-color: #11aa99;
-  border-style: solid;
+  border: 3px solid #11aa99;
 }
 
 .droplist {
@@ -115,7 +118,7 @@ body {
 
 .languageLabel {
   margin-left: 500;
-  padding-top: 1;
+  padding-top: 1px;
   font-size: 10;
   font-family: sans-serif;
   color: #0088aa;
@@ -139,6 +142,10 @@ body {
   border: 2px solid #0c0;
   padding: 0.5em;
   margin: 1em 0;
+}
+
+.hidden {
+  display: none;
 }
 
 /** children will have absolute positioning relative to this parent */

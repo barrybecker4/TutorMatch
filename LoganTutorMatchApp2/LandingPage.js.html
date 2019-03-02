@@ -1,6 +1,3 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
 <script>
   // Load the Visualization API and desired package(s).
   google.load('visualization', '1.0', {'packages':['controls']});
@@ -11,7 +8,6 @@
   $(function() {
     // Set a callback to run when the Google Visualization API is loaded.
     // Note: could also be accomplished via google.load options.
-    alert("hello1");
     google.setOnLoadCallback(sendQuery);
   });
 
@@ -19,7 +15,6 @@
    * Issue asynchronous request for spreadsheet data.
    */
   function sendQuery() {
-    alert("hello2");
     google.script.run
       .withSuccessHandler(drawDashboard)
       .withFailureHandler(function(msg) {
@@ -39,7 +34,6 @@
    */
   function drawDashboard(response) {
     $('#main-heading').addClass("hidden");
-    alert("hello3 drawing dash");
 
     if (response == null) {
       alert('Error: Invalid source data.')
@@ -88,5 +82,4 @@
       dashboard.draw(data);
     }
   }
-
 </script>
