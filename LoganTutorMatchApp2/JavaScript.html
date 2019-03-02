@@ -1,0 +1,89 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+  // Load the Visualization API and desired package(s).
+  google.load('visualization', '1.0', {'packages':['controls']});
+
+  /**
+   * Run initializations on dialog load.
+   */
+  $(function() {
+    // Set a callback to run when the Google Visualization API is loaded.
+    // Note: could also be accomplished via google.load options.
+    google.setOnLoadCallback(sendQuery);
+  });
+
+  /**
+   * Issue asynchronous request for spreadsheet data.
+   */
+  function sendQuery() {
+    google.script.run
+      .withSuccessHandler(drawDashboard)
+      .withFailureHandler(function(msg) {
+            // Respond to failure conditions here.
+            $('#main-heading').text(msg);
+            $('#main-heading').addClass("error");
+            $('#error-message').show();
+          })
+      .getSpreadsheetData();
+  }
+
+  /**
+   * Callback function to generate visualization using data in response parameter.
+   * From gist.github.com/mogsdad/60dcc4116ed74fceb5f9
+   *
+   * @param {Object[][]}  Two-Dim array of visualization data
+   */
+  function drawDashboard(response) {
+    $('#main-heading').addClass("hidden");
+
+    if (response == null) {
+      alert('Error: Invalid source data.')
+      return;
+    }
+    else {
+      // Transmogrify spreadsheet contents (array) to a DataTable object
+      var data = google.visualization.arrayToDataTable(response, false);
+
+      var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard-div'));
+
+      var pieChart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'containerId': 'piechart-div',
+        // The pie chart will use the columns 'Name' and 'Donuts eaten'
+        // out of all the available ones.
+        'view': {'columns': [0, 3]}
+      });
+
+      var table = new google.visualization.ChartWrapper({
+        'chartType': 'Table',
+        'containerId': 'table-div'
+      });
+
+      var donutSlider = new google.visualization.ControlWrapper({
+        'controlType': 'NumberRangeFilter',
+        'containerId': 'slider-div',
+        'options': {
+          'filterColumnLabel': 'Age'
+         }
+      });
+
+      var genderPicker = new google.visualization.ControlWrapper({
+        'controlType': 'CategoryFilter',
+        'containerId': 'selector-div',
+        'options': {
+          'filterColumnLabel': 'Gender'
+        }
+      });
+
+      // Set up dependencies between controls and charts
+      dashboard.bind(donutSlider, [pieChart, table]);
+      dashboard.bind(genderPicker, [pieChart, table]);
+
+      // Draw all visualization components of the dashboard
+      dashboard.draw(data);
+    }
+  }
+
+</script>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
+<?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Blah</h1>
+<div class="title">Another Blah</div>
+<div class="text">
+    Some random text
+</div>
+
+<h1 id="main-heading">Loading...</h1>
+<div id="dashboard-div">
+    Some more text
+    <div id="control-div">
+        <div id="slider-div"></div>
+        <div id="selector-div"></div>
+    </div>
+    <div id="charts-div">
+        <div id="piechart-div"></div>
+        <div id="table-div"></div>
+    </div>
+</div>
+<div class="hidden" id="error-message"></div>
+</body>
+</html>
+
+<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<?!= HtmlService.createHtmlOutputFromFile('JavaScript').getContent(); ?>
