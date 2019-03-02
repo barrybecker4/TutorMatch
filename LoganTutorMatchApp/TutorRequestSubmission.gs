@@ -220,7 +220,7 @@ function getNextLogEntryToWriteTo() {
  */
 function getUserEmail()
 {
-	return Session.getEffectiveUser().getEmail(); 
+  return Session.getEffectiveUser().getEmail();
 }
 
 /**

@@ -18,6 +18,13 @@ function doGet(e) {
 }
 
 /**
+ * @return the html to show from the specified file
+ */
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+/**
  * Get the URL for this Google Apps Script running as a WebApp.
  */
 function getAppUrl() {
@@ -33,4 +40,11 @@ function getSpreadsheetData() {
   var sheetId = '1TVzDS3ab-VZNNCNxkhO5yBmK7CC5AhLWgL48tRfWJmk';  // spreadsheet ID.
   var data = SpreadsheetApp.openById(sheetId).getSheets()[0].getDataRange().getValues();
   return (data.length > 1) ? data : null;
+}
+
+/**
+ * @return the email of the current user using the app
+ */
+function getUserEmail() {
+  return Session.getEffectiveUser().getEmail();
 }

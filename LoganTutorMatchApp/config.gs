@@ -2,7 +2,7 @@
  * Some global configuration properties for the TutorMatch application.
  * The parameter is the id to the spreadsheet containing the properties.
  * To protect the information in the configuration file, set the CONFIG_SHEET_ID once, remove it, 
- * ant then only access it as a script property. ScriptProperties are scoped per script 
+ * and then only access it as a script property. ScriptProperties are scoped per script
  * regardless of the user running it. 
  * For security reasons, do not check in the id of your configuration spreadsheet into revision control.
  * Do not access this variable directly. Instead use getConfig().

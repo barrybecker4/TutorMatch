@@ -3,7 +3,7 @@
 <html>
 <head>
     <!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
-    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+    <?!= include('css'); ?>
     <meta charset="UTF-8">
     <base target="_top">
     <title>Logan Tutor Match App</title>
@@ -19,6 +19,10 @@
  * 2) the Tutor Profile form - which writes to a TutorProfiles spreadsheet.
  * 3) Tutoring Request page - page with a dynamically generated form for creating a request.
 -->
+
+<div class="header">
+    <span id="userid" class="smallText"><?=getUserEmail()?></span>
+</div>
 
 <div class="title">Logan TutorMatch</div>
 <div class="text">
@@ -59,5 +63,5 @@
 </html>
 
 <!-- Use a templated HTML printing scriptlet to import JavaScript. -->
-<?!= HtmlService.createHtmlOutputFromFile('common.js').getContent(); ?>
-<?!= HtmlService.createHtmlOutputFromFile('LandingPage.js').getContent(); ?>
+<?!= include('common.js'); ?>
+<?!= include('LandingPage.js'); ?>

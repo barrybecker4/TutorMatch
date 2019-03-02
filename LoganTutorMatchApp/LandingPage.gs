@@ -170,7 +170,7 @@ function createLanguageSelector(app) {
                             .setStyleAttributes(css.languageDroplist);
 
   languageDroplist.addItem(messages.getLabel("DEFAULT"), DEFAULT);
-  for (var i=0; i<messages.localesList.length; i++) {
+  for (var i = 0; i < messages.localesList.length; i++) {
     var locale = messages.localesList[i];
     languageDroplist.addItem(messages[locale].LOCALE_LABEL, locale);
   }
