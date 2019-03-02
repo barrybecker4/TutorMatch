@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
-<?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+
 <html>
 <head>
+    <!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Logan Tutor Match App</title>
 </head>
 <body>
-<h1>Blah</h1>
+
+<!--
+ * The entry point for TutorMatch web application.
+ * A link to this application should be placed on the JLHS homepage.
+ *
+ * It has 3 primary components:
+ * 1) this Landing page - which directs you to fill out a tutor profile form, or a tutoring request.
+ * 2) the Tutor Profile form - which writes to a TutorProfiles spreadsheet.
+ * 3) Tutoring Request page - page with a dynamically generated form for creating a request.
+-->
+
+<div class="title">Logan TutorMatch</div>
+<div class="text">
+    The purpose of this application is to match student tutors with students looking for tutoring at James Logan High School.
+</div>
+<br>
+<div class="text">
+    Do you want to...
+</div>
+<br>
+<button class="text">be a tutor?</button><br>
+<button class="text">be tutored?</button>
+<br><br><br>
+
+
 <div class="title">Another Blah</div>
 <div class="text">
     Some random text

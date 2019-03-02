@@ -11,6 +11,7 @@
   $(function() {
     // Set a callback to run when the Google Visualization API is loaded.
     // Note: could also be accomplished via google.load options.
+    alert("hello1");
     google.setOnLoadCallback(sendQuery);
   });
 
@@ -18,6 +19,7 @@
    * Issue asynchronous request for spreadsheet data.
    */
   function sendQuery() {
+    alert("hello2");
     google.script.run
       .withSuccessHandler(drawDashboard)
       .withFailureHandler(function(msg) {
@@ -37,6 +39,7 @@
    */
   function drawDashboard(response) {
     $('#main-heading').addClass("hidden");
+    alert("hello3 drawing dash");
 
     if (response == null) {
       alert('Error: Invalid source data.')

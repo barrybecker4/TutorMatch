@@ -111,8 +111,8 @@ function createGrid(app, numRows, numCols, cellStyle) {
   var numColumns = numCols ? numCols : 1;
   var gridCellStyle = cellStyle ? cellStyle : css.largeGridCell;
   var grid = app.createGrid(numRows, numColumns).setStyleAttributes(css.grid);
-  for (var i = 0; i<numRows; i++) {
-    for (var j = 0; j<numColumns; j++) {
+  for (var i = 0; i < numRows; i++) {
+    for (var j = 0; j < numColumns; j++) {
       grid.setStyleAttributes(i, j, gridCellStyle);
     }
   } 
