@@ -2,7 +2,6 @@
 
 <html>
 <head>
-    <!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
     <?!= include('css'); ?>
     <meta charset="UTF-8">
     <base target="_top">
@@ -51,6 +50,6 @@
 </body>
 </html>
 
-<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
+<!-- put the javascript includes last so that the page loads first and faster -->
 <?!= include('common.js'); ?>
 <?!= include('LandingPage.js'); ?>

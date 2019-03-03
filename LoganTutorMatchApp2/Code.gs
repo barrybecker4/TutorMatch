@@ -16,6 +16,7 @@ function doGet(e) {
 }
 
 /**
+ * Use a templated HTML printing scriptlet to import javascript or css stylesheets.
  * @return the html to show from the specified file
  */
 function include(filename) {

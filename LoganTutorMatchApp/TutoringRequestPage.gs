@@ -231,7 +231,7 @@ function createSubjectSelection(app, dataMap) {
 }
 
 /**
- * Handler that is call when a subject is selected.
+ * Handler that is called when a subject is selected.
  * The selected value will be used to limit successive selectors.
  */ 
 function subjectSelectedHandler(e) {
@@ -482,12 +482,12 @@ function setHiddenResultValue(app, value) {
 
 /**
  * When a selection is changed, to prevent invalid submissions, all
- * the down stream droplists should have their current selections cleared, 
+ * the down-stream droplists should have their current selections cleared,
  * and the submit button is disabled. 
  * @param droplists an array of down stream droplists to clear.
  */
 function clearDownStreamSelections(app, droplists) {
-  for (var i=0; i<droplists.length; i++) {
+  for (var i = 0; i < droplists.length; i++) {
     var droplist = app.getElementById(droplists[i]);
     droplist.clear();
   }

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-    <!-- Use a templated HTML printing scriptlet to import common stylesheet. -->
     <?!= include('css'); ?>
     <base target="_top">
     <meta charset="UTF-8">
@@ -14,9 +12,31 @@
  * Make a request for tutoring.
 -->
 
-<div class="title">Make a Tutoring Request</div>
+<div class="title">Tutoring Request Form</div>
 <div class="text">
-    Do you want to...
+    <p>By completing the following form, you agree to these conditions. </p>
+    <ol>
+        <li> I agree to meet with my assigned tutor at least twice a week for a minimum of 30 minutes,
+            to review concepts being learned, assist with homework, and review for upcoming tests and quizzes.
+            I understand that it is our responsibility to agree upon a time, location, and duration that fits both of our schedules.
+        </li>
+        <li> I agree to be punctual to our meetings, and will give my undivided attention to my tutor.
+            I will not be distracted by texting, making phone calls, eating, or talking with friends.
+        </li>
+        <li>I agree to be responsible and professional when meeting with my tutor,
+            and that I will be friendly, courteous, patient, and respectful at all times.
+        </li>
+        <li>I understand that it is my responsibility to arrive on time, prepared with questions about what I am learning,
+            homework problems I need help with, or material that I need help reviewing.
+        </li>
+        <li>I understand that my tutor’s role is to help me better understand and learn about the subject
+            that I have requested help with, and I understand this does not mean asking my tutor to do homework
+            or make-up work for me.
+        </li>
+    </ol>
+    <p>Your parent/guardian should be aware of this tutoring arrangement.
+        They may be contacted by the tutor or administrator at any time.
+    </p>
 </div>
 
 <?var url = getAppUrl();?><a href='<?=url?>?page=LandingPage'><button class="text">go back to landing page</button></a>
@@ -28,5 +48,4 @@
 </body>
 </html>
 
-<!-- Use a templated HTML printing scriptlet to import JavaScript. -->
 <?!= include('common.js'); ?>
