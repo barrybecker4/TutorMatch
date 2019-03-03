@@ -10,9 +10,13 @@
   });
 
   function initialize() {
-    //$('#tasklist').bind('change', loadTasks);
-    //$('#new-task').bind('submit', onNewTaskFormSubmit);
     loadDataMap();
+
+    // initially hide later selects until earlier ones are set
+    $('#subjectSelect select').bind('change', populateCourseSelect);
+    $('#courseSelect select').bind('change', populateTutorSelect);
+    $('#courseSelect').hide();
+    $('#tutorSelect').hide();
   }
 
   /**
@@ -30,10 +34,38 @@
    */
   function populateSubjectSelect(dm) {
     dataMap = dm;
-    var select = $('#subjectSelect');
+    var select = $('#subjectSelect select');
+    populateSelect(select, dataMap);
+  }
+
+  function populateCourseSelect() {
+  $('#courseSelect').show();
+    var select = $('#courseSelect select');
+    populateSelect(select, dataMap[getSelectedSubject()]);
+  }
+
+  function populateTutorSelect() {
+    $('#tutorSelect').show();
+    var select = $('#tutorSelect select');
+    populateSelect(select, dataMap[getSelectedSubject()][getSelectedCourse()]);
+  }
+
+  function getSelectedSubject() {
+    return $('#subjectSelect select').val();
+  }
+
+  function getSelectedCourse() {
+    return $('#courseSelect select').val();
+  }
+
+  /**
+   * @param select the droplist to populate with items.
+   * @param map objects whose keys contains the items. There will always be an initial "not selected" value.
+   */
+  function populateSelect(select, map) {
     select.empty();
     select.append(getNotSelectedOption());
-    for (var subject in dataMap) {
+    for (var subject in map) {
       var option = $('<option>')
           .attr('value', subject)
           .text(subject);
@@ -42,7 +74,7 @@
   }
 
   function getNotSelectedOption() {
-    $('<option>')
+    return $('<option>')
           .attr('value', "NOT-SELECTED")
           .text("--- Select ---");
   }
