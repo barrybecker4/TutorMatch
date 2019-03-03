@@ -17,3 +17,16 @@ When the submit button is clicked, an email is sent to the following people.
 
 A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dHZhWFFpaHZrSVp5V2lYSzlKWEZiSmc#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
  
+## How to Run and Contribute
+This is a Google App Script (GAS) application. 
+If you would like to contribute, first install [CLASP](https://github.com/google/clasp).
+Next git clone this repository somewhere on your local machine. 
+Then, from the root of the cloned project directory, run the following commands:
+* clasp login     &nbsp; &nbsp;&nbsp;    (_using your github credentials_)
+* clasp create --type webapp  &nbsp;  
+ (_this creates a script with this name in your Google Drive_)
+* clasp push &nbsp;&nbsp;&nbsp; (push all the files in the project directory into that script in the cloud)
+  
+Now you are good to go. Deploy the web-app from your script on Google Drive.
+Make changes, do "clasp push", and refresh the deployed app script page to see the change. 
+Do git commit, push, and PR, when you have a feature or fix to contribute.

@@ -30,6 +30,7 @@ function getAppUrl() {
 }
 
 /**
+REMOVE
  * @return all data from first spreadsheet as an array. Can be used
  * via google.script.run to get data without requiring publication
  * of spreadsheet. Returns null if spreadsheet does not contain more than one row.
