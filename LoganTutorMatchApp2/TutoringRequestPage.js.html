@@ -1,5 +1,6 @@
 <script>
 
+  var NOT_SELECTED = "NOT-SELECTED";
   var dataMap;  // the map from subjects to courses to tutors
 
   /**
@@ -13,11 +14,12 @@
     loadDataMap();
 
     // initially hide later selects until earlier ones are set
-    $('#subjectSelect select').bind('change', populateCourseSelect);
-    $('#courseSelect select').bind('change', populateTutorSelect);
+    $('#subjectSelect select').bind('change', subjectChangedHandler);
+    $('#courseSelect select').bind('change', courseChangedHandler);
     $('#tutorSelect select').bind('change', showTutorDetails);
     $('#courseSelect').hide();
     $('#tutorSelect').hide();
+    $('#tutorDetails').hide();
   }
 
   /**
@@ -27,6 +29,27 @@
     google.script.run.withSuccessHandler(populateSubjectSelect)
         .withFailureHandler(showError)
         .getDataMap();
+  }
+
+  function subjectChangedHandler() {
+    var subject = selectedSubject();
+    $('#tutorDetails').hide();
+    $('#tutorSelect').hide();
+    if (subject == NOT_SELECTED) {
+      $('#courseSelect').hide();
+    } else {
+      populateCourseSelect();
+    }
+  }
+
+  function courseChangedHandler() {
+    var course = selectedCourse();
+    $('#tutorDetails').hide();
+    if (course == NOT_SELECTED) {
+      $('#tutorSelect').hide();
+    } else {
+      populateTutorSelect();
+    }
   }
 
   /**
@@ -68,7 +91,7 @@
 
   function getNotSelectedOption() {
     return $('<option>')
-          .attr('value', "NOT-SELECTED")
+          .attr('value', NOT_SELECTED)
           .text("--- Select ---");
   }
 
@@ -79,6 +102,7 @@
       var tutorInfo = dataMap[selectedSubject()][selectedCourse()][selectedTutor()];
       //alert("tutorInfo = " + JSON.stringify(tutorInfo));
 
+      $('#tutorDetails').show();
       var table = $("#tutorDetails table")
       table.empty();
       addRow(table, "Name", tutorInfo.name);
