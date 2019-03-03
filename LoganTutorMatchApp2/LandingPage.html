@@ -28,43 +28,26 @@
 <div class="text">
     The purpose of this application is to match student tutors with students looking for tutoring at James Logan High School.
 </div>
-<div class="text">
-    Do you want to...
-</div>
+<div class="text">Do you want to...</div>
 
-
-
-<button class="text">be a tutor?</button>
+<a href='<?=getConfig().tutorProfileFormUrl?>' target="_blank">
+  <button class="text">be a tutor?</button>
+</a>
 <br>
-<?var url = getAppUrl();?><a href='<?=url?>?page=TutoringRequestPage'><button class="text">be tutored?</button></a>
-<!--?var url = getAppUrl();?><a href='<?=url?>?page=TutoringRequestPage'><input type='button' name='button' value='TutoringRequestPage.html'></a-->
+<a href='<?=getAppUrl()?>?page=TutoringRequestPage'>
+    <button class="text">be tutored?</button>
+</a>
 <br><br>
 
 <div class="text">
-    At the end of a tutoring session, tutors must fill out a <a href='<?=getConfig().tutorSessionCompletedFormUrl?>'>Tutoring Completed Form</a>
+    At the end of a tutoring session, tutors must fill out a
+    <a href='<?=getConfig().tutorSessionCompletedFormUrl?>'>Tutoring Completed Form</a>
 </div>
 <div class="text">
-    Students being tutored may also provide feedback, if they wish, using a  <a href='<?=getConfig().tuteeSessionCompletedFormUrl?>'>Tutee Completed Form</a>
+    Students being tutored may also provide feedback, if they wish, using a
+    <a href='<?=getConfig().tuteeSessionCompletedFormUrl?>'>Tutee Completed Form</a>
 </div>
 
-<div class="title">Another Blah</div>
-<div class="text">
-    Some random text
-</div>
-
-<h1 id="main-heading">Loading...</h1>
-<div id="dashboard-div">
-    Some more text
-    <div id="control-div">
-        <div id="slider-div"></div>
-        <div id="selector-div"></div>
-    </div>
-    <div id="charts-div">
-        <div id="piechart-div"></div>
-        <div id="table-div"></div>
-    </div>
-</div>
-<div class="hidden" id="error-message"></div>
 </body>
 </html>
 

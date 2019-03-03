@@ -7,9 +7,7 @@
  * @returns {String/html} Html to be served
  */
 function doGet(e) {
-
   Logger.log( Utilities.jsonStringify(e) );
-
   var pageName = e.parameter.page ? e.parameter['page'] : 'LandingPage';
 
   // Build and return HTML in IFRAME sandbox mode.
