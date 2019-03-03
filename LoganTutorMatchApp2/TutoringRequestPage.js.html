@@ -15,6 +15,7 @@
     // initially hide later selects until earlier ones are set
     $('#subjectSelect select').bind('change', populateCourseSelect);
     $('#courseSelect select').bind('change', populateTutorSelect);
+    $('#tutorSelect select').bind('change', showTutorDetails);
     $('#courseSelect').hide();
     $('#tutorSelect').hide();
   }
@@ -41,21 +42,13 @@
   function populateCourseSelect() {
   $('#courseSelect').show();
     var select = $('#courseSelect select');
-    populateSelect(select, dataMap[getSelectedSubject()]);
+    populateSelect(select, dataMap[selectedSubject()]);
   }
 
   function populateTutorSelect() {
     $('#tutorSelect').show();
     var select = $('#tutorSelect select');
-    populateSelect(select, dataMap[getSelectedSubject()][getSelectedCourse()]);
-  }
-
-  function getSelectedSubject() {
-    return $('#subjectSelect select').val();
-  }
-
-  function getSelectedCourse() {
-    return $('#courseSelect select').val();
+    populateSelect(select, dataMap[selectedSubject()][selectedCourse()]);
   }
 
   /**
@@ -77,6 +70,39 @@
     return $('<option>')
           .attr('value', "NOT-SELECTED")
           .text("--- Select ---");
+  }
+
+  /**
+   * Populate table with selected tutor details
+   */
+  function showTutorDetails() {
+      var tutorInfo = dataMap[selectedSubject()][selectedCourse()][selectedTutor()];
+      //alert("tutorInfo = " + JSON.stringify(tutorInfo));
+
+      var table = $("#tutorDetails table")
+      table.empty();
+      addRow(table, "Name", tutorInfo.name);
+      addRow(table, "Gender", tutorInfo.gender);
+      addRow(table, "Email", tutorInfo.email);
+      addRow(table, "Availability", tutorInfo.whenAvailable);
+      addRow(table, "Alternative languages", tutorInfo.foreignLanguages);
+      addRow(table, "Graduation year", tutorInfo.graduationYear);
+  }
+
+  function addRow(table, label, value) {
+    table.append('<tr><td>' + label + '</td><td>' + value + '</td></tr>');
+  }
+
+  function selectedSubject() {
+    return $('#subjectSelect select').val();
+  }
+
+  function selectedCourse() {
+    return $('#courseSelect select').val();
+  }
+
+  function selectedTutor() {
+    return $('#tutorSelect select').val();
   }
 
   /**
