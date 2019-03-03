@@ -31,18 +31,6 @@ function getAppUrl() {
 }
 
 /**
-REMOVE
- * @return all data from first spreadsheet as an array. Can be used
- * via google.script.run to get data without requiring publication
- * of spreadsheet. Returns null if spreadsheet does not contain more than one row.
- */
-function getSpreadsheetData() {
-  var sheetId = '1TVzDS3ab-VZNNCNxkhO5yBmK7CC5AhLWgL48tRfWJmk';  // spreadsheet ID.
-  var data = SpreadsheetApp.openById(sheetId).getSheets()[0].getDataRange().getValues();
-  return (data.length > 1) ? data : null;
-}
-
-/**
  * @return the email of the current user using the app
  */
 function getUserEmail() {

@@ -25,10 +25,10 @@ function getDataMap() {
   var sheet = SpreadsheetApp.openById(getConfig().tutorProfilesSpreadSheet)
                             .getActiveSheet();
   var header = sheet.getSheetValues(1, 2, 1, MAX_COLUMNS);
-  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow()-1, MAX_COLUMNS);
+  var cellData = sheet.getSheetValues(2, 2, sheet.getLastRow() - 1, MAX_COLUMNS);
   
   var dataMap = {};
-  for (var i=0; i < cellData.length; i++) {
+  for (var i = 0; i < cellData.length; i++) {
     var row = cellData[i];
     createMapEntry(header[0], row, dataMap);
   }

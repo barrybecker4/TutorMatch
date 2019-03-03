@@ -1,0 +1,57 @@
+<script>
+
+  var dataMap;  // the map from subjects to courses to tutors
+
+  /**
+   * Run initializations on page load.
+   */
+  $(function() {
+    initialize();
+  });
+
+  function initialize() {
+    //$('#tasklist').bind('change', loadTasks);
+    //$('#new-task').bind('submit', onNewTaskFormSubmit);
+    loadDataMap();
+  }
+
+  /**
+   * Retrieve the dataMap from the server and populate the subject select when done.
+   */
+  function loadDataMap() {
+    google.script.run.withSuccessHandler(populateSubjectSelect)
+        .withFailureHandler(showError)
+        .getDataMap();
+  }
+
+  /**
+   * Show the returned list of subjects in the dropdown.
+   * @param {Array.<Object>} db the dataMap. The keys are subjects.
+   */
+  function populateSubjectSelect(dm) {
+    dataMap = dm;
+    var select = $('#subjectSelect');
+    select.empty();
+    select.append(getNotSelectedOption());
+    for (var subject in dataMap) {
+      var option = $('<option>')
+          .attr('value', subject)
+          .text(subject);
+      select.append(option);
+    };
+  }
+
+  function getNotSelectedOption() {
+    $('<option>')
+          .attr('value', "NOT-SELECTED")
+          .text("--- Select ---");
+  }
+
+  /**
+   * Logs an error message and shows an alert to the user.
+   */
+  function showError(error) {
+    console.log(error);
+    window.alert('An error has occurred, please try again.');
+  }
+</script>

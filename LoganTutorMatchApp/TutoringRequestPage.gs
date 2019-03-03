@@ -278,7 +278,7 @@ function courseSelectedHandler(e) {
   
   clearDownStreamSelections(app, ["tutorDroplist"]);
   
-  if (selectedCourse != messages.getLabel("NOT_SELECTED")) {  
+  if (selectedCourse != messages.getLabel("NOT_SELECTED")) {
     var tutorDroplist = app.getElementById("tutorDroplist");
     tutorDroplist.setTag(selectedSubject + DELIMITER + selectedCourse);
   
