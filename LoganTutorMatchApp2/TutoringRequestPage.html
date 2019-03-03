@@ -38,6 +38,27 @@
         They may be contacted by the tutor or administrator at any time.
     </p>
 </div>
+<div class="text">
+    What is your name? : <input type="text" name="name"><br>
+    What is your student ID? : <input type="text" name="studentID"><br>
+    What is your parent's email? : <input type="text" name="parentEmail"><br>
+    What is your parent's phone number? : <input type="text" name="parentPhone"><br>
+</div>
+<div class="text">
+    1) Select the subject you would like tutoring in.
+    <select id="subjectSelect">
+    </select>
+</div>
+<div class="text">
+    2) Select the specific course you would like tutoring in.
+    <select id="courseSelect">
+    </select>
+</div>
+<div class="text">
+    3) Select from this list of available tutors for that course.
+    <select id="tutorSelect">
+    </select>
+</div>
 
 <?var url = getAppUrl();?><a href='<?=url?>?page=LandingPage'><button class="text">go back to landing page</button></a>
 

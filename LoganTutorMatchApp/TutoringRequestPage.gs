@@ -98,7 +98,7 @@ function createNameField(app) {
 }
 
 /**
- * Handler that is call when the requester's name has been entered.
+ * Handler that is called when the requester's name has been entered.
  */ 
 function nameFieldUpdateHandler(e) {
   var app = UiApp.getActiveApplication(); 
