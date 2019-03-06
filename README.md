@@ -22,7 +22,7 @@ This is a Google App Script (GAS) application.
 If you would like to contribute, first install [CLASP](https://github.com/google/clasp).
 Next git clone this repository somewhere on your local machine. 
 Then, from the root of the cloned project directory, run the following commands:
-* clasp login     &nbsp; &nbsp;&nbsp;    (_using your github credentials_)
+* clasp login     &nbsp; &nbsp;&nbsp;    (_using gmail account_)
 * clasp create --type webapp  &nbsp; (_this creates a script with this name in your Google Drive_)
 * clasp push &nbsp;&nbsp;&nbsp; (_push all the files in the project directory into that script in the cloud_)
   

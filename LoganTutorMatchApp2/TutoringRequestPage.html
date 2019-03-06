@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<!--
- * Make a request for tutoring.
--->
+<!-- This page is for making a request for tutoring. Click submit at bottom when form is completed. -->
 
 <div class="title">Tutoring Request Form</div>
 <div class="text">
@@ -66,7 +64,11 @@
     </table>
 </div>
 
-<?var url = getAppUrl();?><a href='<?=url?>?page=LandingPage'><button class="text">go back to landing page</button></a>
+<div id="navigation">
+    <a href='<?=getAppUrl()?>?page=LandingPage' id="backButton"><button class="text">Back</button></a>
+    <button class="text" id="submitButton">Submit</button>
+</div>
+
 
 </body>
 </html>

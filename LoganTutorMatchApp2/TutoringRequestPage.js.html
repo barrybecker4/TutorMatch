@@ -17,9 +17,11 @@
     $('#subjectSelect select').bind('change', subjectChangedHandler);
     $('#courseSelect select').bind('change', courseChangedHandler);
     $('#tutorSelect select').bind('change', showTutorDetails);
+    $('#submitButton').bind('click', doSubmit);
     $('#courseSelect').hide();
     $('#tutorSelect').hide();
     $('#tutorDetails').hide();
+    enableSubmitButton(false);
   }
 
   /**
@@ -95,6 +97,10 @@
           .text("--- Select ---");
   }
 
+  function addRow(table, label, value) {
+    table.append('<tr><td>' + label + '</td><td>' + value + '</td></tr>');
+  }
+
   /**
    * Populate table with selected tutor details
    */
@@ -111,11 +117,9 @@
       addRow(table, "Availability", tutorInfo.whenAvailable);
       addRow(table, "Alternative languages", tutorInfo.foreignLanguages);
       addRow(table, "Graduation year", tutorInfo.graduationYear);
+      enableSubmitButton(true);
   }
 
-  function addRow(table, label, value) {
-    table.append('<tr><td>' + label + '</td><td>' + value + '</td></tr>');
-  }
 
   function selectedSubject() {
     return $('#subjectSelect select').val();
@@ -127,6 +131,38 @@
 
   function selectedTutor() {
     return $('#tutorSelect select').val();
+  }
+
+  /** @return an abject that has all the form data */
+  function getCurrentSelections() {
+    var selections = {
+       name: $("input[name=name]").val(),
+       studentID: $("input[name=studentID]").val(),
+       parentEmail: $("input[name=parentEmail]").val(),
+       parentPhone: $("input[name=parentPhone]").val(),
+       subject: selectedSubject(),
+       course: selectedCourse(),
+       tutor: selectedTutor()
+    };
+    return selections;
+  }
+
+  /** Called after the tutoring request submit is made. Shows success or failure */
+  function showConfirmationDialog() {
+    alert("show dialog");
+  }
+
+  function doSubmit() {
+    enableSubmitButton(false);  // disable to prevent repeated clicks
+    google.script.run
+        .withSuccessHandler(showConfirmationDialog)
+        .withFailureHandler(showError)
+        .createTutoringRequest(getCurrentSelections(), dataMap);
+     alert("submitted");
+  }
+
+  function enableSubmitButton(enable) {
+    $('#submitButton').prop("disabled", !enable);
   }
 
   /**

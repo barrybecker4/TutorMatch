@@ -2,8 +2,7 @@
  * Serves HTML of the application for HTTP GET requests.
  * Get "LandingPage", or a requested page using 'page' parameter in query string.
  *
- * @param {Object} e event parameter that can contain information
- *                 about any URL parameters provided.
+ * @param {Object} e event parameter that can contain information about any URL parameters provided.
  * @returns {String/html} Html to be served
  */
 function doGet(e) {
