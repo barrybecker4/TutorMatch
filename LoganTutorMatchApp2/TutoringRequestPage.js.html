@@ -148,17 +148,35 @@
   }
 
   /** Called after the tutoring request submit is made. Shows success or failure */
-  function showConfirmationDialog() {
-    alert("show dialog");
+  function showConfirmationDialog(success) {
+    var dlg = $("#confirmation-dialog");
+
+    var msg = success ?
+      "Request for tutoring accepted. Emails sent." :
+      "Request failed. There was a problem sending some or all emails. " +
+        "This may have happened if quotas were exceeded because of high volume. Please try again tomorrow.";
+    dlg.find("p").text(msg);
+
+    dlg.dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $(this).dialog("close");
+        }
+      }
+    });
   }
 
+  /** Submit the form information to the server */
   function doSubmit() {
     enableSubmitButton(false);  // disable to prevent repeated clicks
+
+    var tutorInfo = dataMap[selectedSubject()][selectedCourse()][selectedTutor()];
+
     google.script.run
         .withSuccessHandler(showConfirmationDialog)
         .withFailureHandler(showError)
-        .createTutoringRequest(getCurrentSelections(), dataMap);
-     alert("submitted");
+        .createTutoringRequest(getCurrentSelections(), tutorInfo);
   }
 
   function enableSubmitButton(enable) {
