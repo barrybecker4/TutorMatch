@@ -149,23 +149,37 @@
 
   /** Called after the tutoring request submit is made. Shows success or failure */
   function showConfirmationDialog(success) {
-    var dlg = $("#confirmation-dialog");
 
     var msg = success ?
       "Request for tutoring accepted. Emails sent." :
       "Request failed. There was a problem sending some or all emails. " +
         "This may have happened if quotas were exceeded because of high volume. Please try again tomorrow.";
-    dlg.find("p").text(msg);
+
+    var buttons = {
+        Ok: function() {  $(this).dialog("close"); }
+    };
+
+     showDialog("Submitted", msg, buttons);
+
+     // clear out the droplists so they do not resubmit right away
+
+  }
+
+  /**
+   * @param message text to show in dialog
+   * @param buttons (optional) the buttons to show, if any
+   */
+  function showDialog(title, message, theButtons) {
+    var dlg = $("#confirmation-dialog");
+    dlg.find("p").text(message);
 
     dlg.dialog({
+      title: title,
       modal: true,
-      buttons: {
-        Ok: function() {
-          $(this).dialog("close");
-        }
-      }
+      buttons: theButtons ? theButtons : {}
     });
   }
+
 
   /** Submit the form information to the server */
   function doSubmit() {
@@ -177,6 +191,8 @@
         .withSuccessHandler(showConfirmationDialog)
         .withFailureHandler(showError)
         .createTutoringRequest(getCurrentSelections(), tutorInfo);
+
+     showDialog("Submitting", "Processing your request ...");
   }
 
   function enableSubmitButton(enable) {
