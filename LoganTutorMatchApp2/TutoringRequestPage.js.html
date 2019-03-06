@@ -156,13 +156,14 @@
         "This may have happened if quotas were exceeded because of high volume. Please try again tomorrow.";
 
     var buttons = {
-        Ok: function() {  $(this).dialog("close"); }
+        Ok: function() {
+          $(this).dialog("close");
+          $('#subjectSelect select').val(NOT_SELECTED);
+          subjectChangedHandler();
+        }
     };
 
      showDialog("Submitted", msg, buttons);
-
-     // clear out the droplists so they do not resubmit right away
-
   }
 
   /**
