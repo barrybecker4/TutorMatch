@@ -54,6 +54,14 @@ function getUserEmail() {
 }
 
 /**
+ * @return the user's id. Its the first part of the email.
+ */
+function getUserId() {
+  var email = getUserEmail();
+  return email.substring(0, email.indexOf("@"));
+}
+
+/**
  * The user is valid if there is a specified domain configured,
  * and the user's domain matches it. If no domain configured,
  * then anyone matches and valid is always true.
