@@ -96,7 +96,6 @@ function isValidUser() {
   var domain = email.substring(indexAt);
   var valid = !config.domain || (domain == config.domain); 
   Logger.log("domain=" + domain + " config.domain=" + config.domain + " valid=" + valid + "");
-  
   return valid;
 }
 

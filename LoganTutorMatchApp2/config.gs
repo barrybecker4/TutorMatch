@@ -7,8 +7,8 @@
  * For security reasons, do not check in the id of your configuration spreadsheet into revision control.
  * Do not access this variable directly. Instead use getConfig().
  */
-//PropertiesService.getScriptProperties()
-//                 .setProperty("CONFIG_SHEET_ID", <your config spreadsheet id here>");
+PropertiesService.getScriptProperties()
+                 .setProperty("CONFIG_SHEET_ID", <your config spreadsheet id here>");
 var config;
 
 /**

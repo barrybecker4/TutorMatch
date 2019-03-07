@@ -8,7 +8,22 @@
   });
 
   function initialize() {
-    //$("#userid").text("<?= getUserEmail() ?>");
+    google.script.run
+        .withSuccessHandler(authentication)
+        .withFailureHandler(showError)
+        .isValidUser();
+    $("#main-div").hide();
   }
 
+  function authentication(validUser) {
+    if (validUser) {
+      $("#main-div").show();
+    }
+    else {
+      // "INVALID_USER_WARNING" must have domain, config.domain
+      $("#userid")
+        .addClass("warning")
+        .text("You must login using your NHUSD Google account for this application to work.");
+    }
+  }
 </script>

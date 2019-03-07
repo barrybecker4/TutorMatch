@@ -35,3 +35,18 @@ function getAppUrl() {
 function getUserEmail() {
   return Session.getEffectiveUser().getEmail();
 }
+
+/**
+ * The user is valid if there is a specified domain configured,
+ * and the user's domain matches it. If no domain configured,
+ * then anyone matches and valid is always true.
+ * @return true if the user is in the configured domain.
+ */
+function isValidUser() {
+  var email = getUserEmail();
+  var indexAt = email.indexOf("@") + 1;
+  var domain = email.substring(indexAt);
+  var valid = !config.domain || (domain == config.domain);
+  Logger.log("domain=" + domain + " config.domain=" + config.domain + " valid=" + valid + "");
+  return valid;
+}
