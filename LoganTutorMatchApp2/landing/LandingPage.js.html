@@ -12,6 +12,10 @@
         .withSuccessHandler(authentication)
         .withFailureHandler(showError)
         .isValidUser();
+    google.script.run
+        .withSuccessHandler(populateLanguageDropList)
+        .withFailureHandler(showError)
+        .getSupportedLocales();
     $("#main-div").hide();
   }
 
@@ -24,6 +28,21 @@
       $("#userid")
         .addClass("warning")
         .text("You must login using your NHUSD Google account for this application to work.");
+    }
+  }
+
+  /**
+   * @param supportedLocales an array of supported languages based on what is in the configured messages sheet.
+   */
+  function populateLanguageDropList(supportedLocales) {
+    var select = $("#languageSelector select");
+    select.empty();
+    for (var i = 0; i < supportedLocales.length; i++) {
+      var locale = supportedLocales[i];
+      var option = $('<option>')
+          .attr('value', locale.value)
+          .text(locale.label);
+      select.append(option);
     }
   }
 </script>

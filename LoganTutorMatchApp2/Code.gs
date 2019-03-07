@@ -30,6 +30,23 @@ function getAppUrl() {
 }
 
 /**
+ * @return array of locale objects, where each object contains locale value and label.
+ *         For example {value: en, label: English}
+ */
+function getSupportedLocales() {
+  var locales = [];
+  var localesList = messages.localesList;
+  for (var i = 0; i < localesList.length; i++) {
+     var locale = messages.localesList[i];
+     locales.push({
+       value: locale,
+       label: messages[locale].LOCALE_LABEL
+     });
+  }
+  return locales;
+}
+
+/**
  * @return the email of the current user using the app
  */
 function getUserEmail() {
