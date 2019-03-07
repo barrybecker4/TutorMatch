@@ -57,17 +57,6 @@
     retrieveMessages(selectedLocale());
   }
 
-  /**
-   * Retrieve the messages for the user's selected locale to the client
-   * @param locale (optional) the locale to retrieve. If not specified, then get users default locale.
-   */
-  function retrieveMessages(locale) {
-    google.script.run
-        .withSuccessHandler(localizePage)
-        .withFailureHandler(showError)
-        .getMessagesForLocale(locale);
-  }
-
   function localizePage(mBundle) {
     messageBundle = mBundle;
     $("#languageSelector span").text(mBundle["LANGUAGE"] + ":");

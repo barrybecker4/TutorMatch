@@ -12,6 +12,7 @@
 
   function initialize() {
     loadDataMap();
+    retrieveMessages();
 
     // initially hide later selects until earlier ones are set
     $('#subjectSelect select').bind('change', subjectChangedHandler);
@@ -22,6 +23,10 @@
     $('#tutorSelect').hide();
     $('#tutorDetails').hide();
     enableSubmitButton(false);
+  }
+
+  function localizePage(mBundle) {
+    messageBundle = mBundle;
   }
 
   /**
@@ -112,15 +117,14 @@
       $('#tutorDetails').show();
       var table = $("#tutorDetails table")
       table.empty();
-      addRow(table, "Name", tutorInfo.name);
-      addRow(table, "Gender", tutorInfo.gender);
-      addRow(table, "Email", tutorInfo.email);
-      addRow(table, "Availability", tutorInfo.whenAvailable);
-      addRow(table, "Alternative languages", tutorInfo.foreignLanguages);
-      addRow(table, "Graduation year", tutorInfo.graduationYear);
+      addRow(table, messageBundle["NAME"], tutorInfo.name);
+      addRow(table, messageBundle["GENDER"], tutorInfo.gender);
+      addRow(table, messageBundle["EMAIL"], tutorInfo.email);
+      addRow(table, messageBundle["AVAILABILITY"], tutorInfo.whenAvailable);
+      addRow(table, messageBundle["ALT_LANGUAGE"], tutorInfo.foreignLanguages);
+      addRow(table, messageBundle["GRAD_YEAR"], tutorInfo.graduationYear);
       enableSubmitButton(true);
   }
-
 
   function selectedSubject() {
     return $('#subjectSelect select').val();
