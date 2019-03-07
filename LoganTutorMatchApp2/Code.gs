@@ -7,7 +7,7 @@
  */
 function doGet(e) {
   Logger.log( Utilities.jsonStringify(e) );
-  var pageName = e.parameter.page ? e.parameter['page'] : 'LandingPage';
+  var pageName = e.parameter.page ? e.parameter['page'] : 'landing/LandingPage';
 
   // Build and return HTML in IFRAME sandbox mode.
   return HtmlService.createTemplateFromFile(pageName).evaluate()

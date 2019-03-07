@@ -7,8 +7,8 @@
  * For security reasons, do not check in the id of your configuration spreadsheet into revision control.
  * Do not access this variable directly. Instead use getConfig().
  */
-PropertiesService.getScriptProperties()
-                 .setProperty("CONFIG_SHEET_ID", <your config spreadsheet id here>");
+//PropertiesService.getScriptProperties()
+//                 .setProperty("CONFIG_SHEET_ID", <your config spreadsheet id here>);
 var config;
 
 /**
@@ -43,7 +43,7 @@ function getConfig() {
 function createConfig(configSpreadSheetId) {
   var cfg = {};
 
-  Logger.log("config sheet ID = "+ configSpreadSheetId);
+  Logger.log("config sheet ID = " + configSpreadSheetId);
   var sheet = SpreadsheetApp.openById(configSpreadSheetId).getActiveSheet();
 
   var cellData = sheet.getSheetValues(2, 1, sheet.getLastRow(), 2);
