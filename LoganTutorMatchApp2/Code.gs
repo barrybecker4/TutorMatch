@@ -6,7 +6,6 @@
  * @returns {String/html} Html to be served
  */
 function doGet(e) {
-  Logger.log( Utilities.jsonStringify(e) );
   var pageName = e.parameter.page ? e.parameter['page'] : 'landing/LandingPage';
 
   // Build and return HTML in IFRAME sandbox mode.
@@ -48,6 +47,14 @@ function getSupportedLocales() {
 }
 
 /**
+ * @param key message label key
+ * @return the label for the specified key using the current local bundle.
+ */
+function getLabel(key) {
+  return messages.getLabel(key);
+}
+
+/**
  * @param locale (optional) the users locale to get bundle for. Use default if not specified.
  * @return messages for the specified locale. Returns a map from key to label.
  */
@@ -59,7 +66,6 @@ function getMessagesForLocale(locale) {
   }
   return messages[locale];
 }
-
 
 /**
  * @return the email of the current user using the app
@@ -87,6 +93,6 @@ function isValidUser() {
   var indexAt = email.indexOf("@") + 1;
   var domain = email.substring(indexAt);
   var valid = !config.domain || (domain == config.domain);
-  Logger.log("domain=" + domain + " config.domain=" + config.domain + " valid=" + valid + "");
+  Logger.log("domain=" + domain + " config.domain=" + config.domain + " valid=" + valid);
   return valid;
 }

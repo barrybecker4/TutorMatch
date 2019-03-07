@@ -27,10 +27,9 @@
       $("#main-div").show();
     }
     else {
-      // "INVALID_USER_WARNING" must have domain, config.domain
       $("#userid")
         .addClass("warning")
-        .text("You must login using your NHUSD Google account for this application to work.");
+        .text(messageBundle["INVALID_USER_WARNING"]); // must have domain, config.domain
     }
   }
 
@@ -75,7 +74,6 @@
 
     $("#title").text(mBundle["APP_TITLE"]);
     $("#instructions").text(mBundle["APP_INSTRUCTIONS"]);
-
     $("#intro-question").text(mBundle["DO_YOU_WANT_TO"]);
     $("#be-tutor").text(mBundle["BE_TUTOR"]);
     $("#be-tutee").text(mBundle["BE_TUTORED"]);

@@ -51,7 +51,7 @@ function createMapEntry(header, row, dataMap) {
   for (var i = 0; i < row.length; i++) {
     
     var question = header[i];
-    Logger.log("header " + i + " = " + question);
+    // Logger.log("header " + i + " = " + question);
     if (question.indexOf("What is your name") >= 0) {
       tutorInfo.name = row[i]; 
     }
@@ -95,8 +95,8 @@ function createMapEntry(header, row, dataMap) {
  */
 function addToMap(dataMap, tutorInfo, courseList) { 
   
-  Logger.log("adding name=" + tutorInfo.name + " course=" + course 
-        + " status=" + tutorInfo.status + " available=" + tutorInfo.available+ " with courses = "+ courseList);
+  //Logger.log("adding name=" + tutorInfo.name + " course=" + course
+  //      + " status=" + tutorInfo.status + " available=" + tutorInfo.available+ " with courses = "+ courseList);
   courseList = courseList.replace(NBSP_REGEXP, " ");
   var courses = courseList.split(ENTRY_DELIM);
   
@@ -111,8 +111,8 @@ function addToMap(dataMap, tutorInfo, courseList) {
     if (!courseMap[course]) {
       courseMap[course] = {};
     }
-    Logger.log("name=" + tutorInfo.name + " course=" + course 
-        + " status=" + tutorInfo.status + " available=" + tutorInfo.available);
+    // Logger.log("name=" + tutorInfo.name + " course=" + course
+    //    + " status=" + tutorInfo.status + " available=" + tutorInfo.available);
     if (!courseMap[course][tutorInfo.name] && tutorInfo.status == 'AVAILABLE') {
       var tutorMap = courseMap[course];
       tutorMap[tutorInfo.name] = tutorInfo;
