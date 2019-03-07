@@ -154,11 +154,7 @@
 
   /** Called after the tutoring request submit is made. Shows success or failure */
   function showConfirmationDialog(success) {
-
-    var msg = success ?
-      "Request for tutoring accepted. Emails sent." :
-      "Request failed. There was a problem sending some or all emails. " +
-        "This may have happened if quotas were exceeded because of high volume. Please try again tomorrow.";
+    var msg = success ? messageBundle["REQUEST_CONFIRMATION"] : messageBundle["REQUEST_FAILURE"];
 
     var buttons = {
         Ok: function() {
@@ -168,7 +164,7 @@
         }
     };
 
-     showDialog("Submitted", msg, buttons);
+     showDialog(messageBundle["SUBMITTED"], msg, buttons);
   }
 
   /**
@@ -197,7 +193,7 @@
         .withFailureHandler(showError)
         .createTutoringRequest(getCurrentSelections(), tutorInfo);
 
-     showDialog("Submitting", "Processing your request ...");
+     showDialog(messageBundle["SUBMITTING"], messageBundle["PROCESSING"]);
   }
 
   function enableSubmitButton(enable) {

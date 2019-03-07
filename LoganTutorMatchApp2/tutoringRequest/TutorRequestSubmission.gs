@@ -78,7 +78,7 @@ function sendEmailToTutor(selections, tutorInfo) {
       + "  <li>Too busy to take on new tutors. (If this is the case, please update your tutor profile "
       + "    to show \"unavailable\" or contact a tutoring administrator : " + getConfig().adminEmails + ").</li>"
       + "  <li>You may deny them if their request had missing or inaccurate information.</li>"
-      + "  <li>Some other legitmate reason. Please be considerate when sending a response.</li></ul>"
+      + "  <li>Some other legitimate reason. Please be considerate when sending a response.</li></ul>"
       + "If for any reason you find it necessary to contact their parent, You may do so using "
       + selections.parentEmail + " / " + selections.parentPhone;
 
