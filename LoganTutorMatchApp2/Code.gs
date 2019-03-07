@@ -30,8 +30,8 @@ function getAppUrl() {
 }
 
 /**
- * @return array of locale objects, where each object contains locale value and label.
- *         For example {value: en, label: English}
+ * @return array of locale objects, where each object contains locale value,  label, and if it is selected.
+ *         For example {value: en, label: English, selected: false}.
  */
 function getSupportedLocales() {
   var locales = [];
@@ -40,11 +40,26 @@ function getSupportedLocales() {
      var locale = messages.localesList[i];
      locales.push({
        value: locale,
-       label: messages[locale].LOCALE_LABEL
+       label: messages[locale].LOCALE_LABEL,
+       selected: locale == messages.currentLocale
      });
   }
   return locales;
 }
+
+/**
+ * @param locale (optional) the users locale to get bundle for. Use default if not specified.
+ * @return messages for the specified locale. Returns a map from key to label.
+ */
+function getMessagesForLocale(locale) {
+  if (locale) {
+    messages.setLocale(locale);
+  } else {
+    locale = getSelectedLocale();
+  }
+  return messages[locale];
+}
+
 
 /**
  * @return the email of the current user using the app

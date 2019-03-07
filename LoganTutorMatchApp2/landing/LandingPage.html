@@ -22,35 +22,33 @@
 <div class="header">
     <span id="userid" class="smallText"><?=getUserId()?></span>
     <span id="languageSelector" class="smallText droplist">
-        Language:
+        <span class="smallText">Language:</span>
         <select>
             <option>...</option>
         </select>
     </span>
 </div>
 
-<div class="title">Logan TutorMatch</div>
-<div class="text">
-    The purpose of this application is to match student tutors with students looking for tutoring at James Logan High School.
-</div>
+<div id="title" class="title">Logan TutorMatch</div>
+<div id="instructions" class="text"></div>
 <div id="main-div">
-    <div class="text">Do you want to...</div>
+    <div id="intro-question" class="text">Do you want to...</div>
 
     <a href='<?=getConfig().tutorProfileFormUrl?>' target="_blank">
-      <button class="text">be a tutor?</button>
+      <button id="be-tutor" class="text">be a tutor?</button>
     </a>
     <br>
     <a href='<?=getAppUrl()?>?page=tutoringRequest/TutoringRequestPage'>
-        <button class="text">be tutored?</button>
+        <button id="be-tutee" class="text">be tutored?</button>
     </a>
     <br><br>
 
-    <div class="text">
-        At the end of a tutoring session, tutors must fill out a
+    <div id="tutoring-completed" class="text">
+        <span>At the end of a tutoring session, tutors must fill out a</span>
         <a href='<?=getConfig().tutorSessionCompletedFormUrl?>'>Tutoring Completed Form</a>
     </div>
-    <div class="text">
-        Students being tutored may also provide feedback, if they wish, using a
+    <div id="tutee-completed" class="text">
+        <span>Students being tutored may also provide feedback, if they wish, using a</span>
         <a href='<?=getConfig().tuteeSessionCompletedFormUrl?>'>Tutee Completed Form</a>
     </div>
 </div>

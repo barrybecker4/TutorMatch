@@ -16,7 +16,10 @@
         .withSuccessHandler(populateLanguageDropList)
         .withFailureHandler(showError)
         .getSupportedLocales();
+
     $("#main-div").hide();
+    $('#languageSelector select').bind('change', localeChangedHandler);
+    retrieveMessages();
   }
 
   function authentication(validUser) {
@@ -41,8 +44,44 @@
       var locale = supportedLocales[i];
       var option = $('<option>')
           .attr('value', locale.value)
+          .attr('selected', locale.selected)
           .text(locale.label);
       select.append(option);
     }
+  }
+
+  function selectedLocale() {
+    return $("#languageSelector select").val();
+  }
+
+  function localeChangedHandler(locale) {
+    retrieveMessages(selectedLocale());
+  }
+
+  /**
+   * Retrieve the messages for the user's selected locale to the client
+   * @param locale (optional) the locale to retrieve. If not specified, then get users default locale.
+   */
+  function retrieveMessages(locale) {
+    google.script.run
+        .withSuccessHandler(localizePage)
+        .withFailureHandler(showError)
+        .getMessagesForLocale(locale);
+  }
+
+  function localizePage(mBundle) {
+    messageBundle = mBundle;
+    $("#languageSelector span").text(mBundle["LANGUAGE"] + ":");
+
+    $("#title").text(mBundle["APP_TITLE"]);
+    $("#instructions").text(mBundle["APP_INSTRUCTIONS"]);
+
+    $("#intro-question").text(mBundle["DO_YOU_WANT_TO"]);
+    $("#be-tutor").text(mBundle["BE_TUTOR"]);
+    $("#be-tutee").text(mBundle["BE_TUTORED"]);
+    $("#tutoring-completed span").text(mBundle["TUTOR_FEEDBACK_LEAD"]);
+    $("#tutoring-completed a").text(mBundle["TUTOR_FEEDBACK_LINK"]);
+    $("#tutee-completed span").text(mBundle["TUTEE_FEEDBACK_LEAD"]);
+    $("#tutee-completed a").text(mBundle["TUTEE_FEEDBACK_LINK"]);
   }
 </script>
