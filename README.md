@@ -13,7 +13,7 @@ When the submit button is clicked, an email is sent to the following people.
 * To the requester to let them know that their request has been made, and provide a link to a feedback form.
 * To the tutor requested to let them know to make tutoring arrangements with requester, and also provide a link to a progress form that can be filled out to track tutoring progress over time.
 * To administrator(s) to notify of the new pairing and to review it.
-* Optionally, to the teacher who's course it is. The configuration can specify teachers that should be emails for specific courses.
+* Optionally, to the teacher who's course it is. The configuration can specify teachers that should be emailed for specific courses.
 
 A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43-kBNSp0dHZhWFFpaHZrSVp5V2lYSzlKWEZiSmc#gid=0) is specified that provides the resources (such as forms, spreadsheets, and emails) to use when deployed.
  
@@ -29,3 +29,5 @@ Then, from the root of the cloned project directory, run the following commands:
 Now you are good to go. Deploy the web-app from your script on Google Drive.
 Make changes, do "clasp push", and refresh the deployed app script page to see the change. 
 Do git commit, push, and PR, when you have a feature or fix to contribute.
+
+This application has been full internationalized and localized to 3 languages. More languages can be added by editing [this sheet of messages](https://docs.google.com/spreadsheets/d/1sHjTEk0cVcYM3skj9lDyZUI9JVcEnN-bQkPgpJVfLDg/edit#gid=0).

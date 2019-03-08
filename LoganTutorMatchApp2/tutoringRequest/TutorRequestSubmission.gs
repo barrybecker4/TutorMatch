@@ -206,7 +206,7 @@ function getNextLogEntryToWriteTo() {
         "Date", "Time",
         "Requester", "Requester Email",
         "Tutor Requested", "Tutor Email",
-        "Course", "Message", "Requestor StudentID", "Requestor ParentEmail", "Requestor ParentPhone"
+        "Course", "Message", "Requester StudentID", "Requester ParentEmail", "Requester ParentPhone"
     ]]);
   }
 
