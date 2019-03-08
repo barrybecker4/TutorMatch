@@ -4,7 +4,7 @@ var LOCALE_PROPERTY = "LOCALE";
 
 /** 
  * The droplist selection for default locale.
- * This is either the users locale, if translations exist for it, 
+ * This is either the user's locale, if translations exist for it,
  * or the first locale in the localization spreadsheet. 
  */
 var DEFAULT = "default";
@@ -43,10 +43,10 @@ function createMessages(spreadSheetId) {
  */
 function initLocalesList(msg, firstRow) {
   var localesList = [];
-  for (var j=1; j < firstRow.length; j++) {
+  for (var j = 1; j < firstRow.length; j++) {
     var locale = firstRow[j];
     localesList.push(locale);
-    //Logger.log("adding obj for "+ locale);
+    //Logger.log("adding obj for " + locale);
     msg[locale] = {};
   }
   msg["localesList"] = localesList;
@@ -60,14 +60,14 @@ function initMessages(msg, cellData) {
   var localesList = msg["localesList"];
   for (var i=1; i < cellData.length; i++) { 
     var row = cellData[i];
-    for (var j=1; j < row.length; j++) {
+    for (var j = 1; j < row.length; j++) {
        msg[localesList[j-1]][row[0]] = row[j]; 
     }
   }
 }
 
 /** 
- * The default locale is either the users locale if translations exist for it, or
+ * The default locale is either the user's locale if translations exist for it, or
  * the first locale for which translations exist.
  * If the user has explicitly selected a locale other than "default" then use that.
  */
@@ -79,13 +79,13 @@ function initCurrentLocale(msg) {
   
   var defaultLocale = getDefaultLocale(msg);
   Logger.log("Locales: User=" + userLocale + " first=" + msg.firstLocale 
-      +" default=" +defaultLocale +" selected=" + selectedLocale); 
+      + " default=" +defaultLocale + " selected=" + selectedLocale);
   
   if (!selectedLocale || selectedLocale == DEFAULT) {
     selectedLocale = defaultLocale;
   }
   msg.currentLocale = selectedLocale;
-  Logger.log("currentLocale set to "+ msg.currentLocale);
+  Logger.log("currentLocale set to " + msg.currentLocale);
 }
 
 /** @return the locale most recently selected from the droplist */
@@ -96,7 +96,7 @@ function getSelectedLocale()
 }
 
 /**
- * The default locale is the users locale if there exist translations for it
+ * The default locale is the user's locale if there exist translations for it
  * else its just the first locale.
  */
 function getDefaultLocale(msg) {
@@ -127,7 +127,7 @@ messages.getLabel = function(key, substitutions) {
   if (bundle[key]) {
     result = bundle[key];
     if (substitutions) {
-      for (var i=0; i<substitutions.length; i++) {
+      for (var i = 0; i < substitutions.length; i++) {
         // replace all occurrences of {i} with substitutions[i] 
         var re = new RegExp('{'+i+'}', 'g');
         result = result.replace(re, substitutions[i]);
