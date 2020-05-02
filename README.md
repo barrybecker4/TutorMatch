@@ -24,13 +24,15 @@ A [configuration spreadsheet](https://docs.google.com/spreadsheet/ccc?key=0ArK43
 This is a Google App Script (GAS) application. 
 If you would like to contribute, first install [CLASP](https://github.com/google/clasp).
 Next git clone this repository somewhere on your local machine. 
-Then, from the root of the cloned project directory, run the following commands:
+Then, from the LoganTutorMatchApp directory within the cloned project directory, run the following commands:
 * clasp login     &nbsp; &nbsp;&nbsp;    (_using gmail account_)
 * clasp create --type webapp  &nbsp; (_this creates a script with this name in your Google Drive_)
 * clasp push &nbsp;&nbsp;&nbsp; (_push all the files in the project directory into that script in the cloud_)
   
 Now you are good to go. Deploy the web-app from your script on Google Drive.
-Make changes, do "clasp push", and refresh the deployed app script page to see the change. 
+Make changes locally (in intelliJ for example), do "clasp push", and refresh the deployed app script page to see the change. 
 Do git commit, push, and create pull requests through Github when you have a feature or fix to contribute.
+
+The very first time you need to run, set the id of the configuration spreadsheet in config.js (see comment there).
 
 This application has been full internationalized and localized to 3 languages (English, Spanish, Chinese). More languages can be added by editing [this sheet of messages](https://docs.google.com/spreadsheets/d/1sHjTEk0cVcYM3skj9lDyZUI9JVcEnN-bQkPgpJVfLDg/edit#gid=0).
