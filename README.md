@@ -1,6 +1,6 @@
 Logan TutorMatch
 ==========
-A [tutor matching web application](https://script.google.com/macros/s/AKfycbzu3mOvm6nqAH2lGgFltuolTqIXDmmMoXSGyEY3Ohu2D2NtcRo8/exec). The purpose is to automate [the process](https://docs.google.com/document/d/14xwcChkZ1Gk4oduqrkuyaEkqJUPF4BayAd5MBjmS9dU/edit?usp=sharing) of matching students who need tutoring with those willing to tutor. 
+A [tutor matching web application](https://script.google.com/macros/s/AKfycbwZ3o-4itudlivFAfpzU0y4CvKIGonuAHEPvAlhK-NHdVIhaHa2/exec). The purpose is to automate [the process](https://docs.google.com/document/d/14xwcChkZ1Gk4oduqrkuyaEkqJUPF4BayAd5MBjmS9dU/edit?usp=sharing) of matching students who need tutoring with those willing to tutor. 
 The work was done in collaboration with the students of James Logan High School's 
 [Computer Science Club](https://groups.google.com/forum/#!forum/logan-computer-science), 
 but the application should be appropriate for use by any learning institution. 
